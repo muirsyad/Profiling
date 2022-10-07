@@ -16,6 +16,9 @@ return new class extends Migration
         Schema::create('clients', function (Blueprint $table) {
             $table->id();
             $table->string('client');
+            $table->string('address');
+            $table->string('email');
+            $table->date('created_at');
         });
     }
 

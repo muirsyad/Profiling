@@ -22,6 +22,7 @@ return new class extends Migration
             $table->unsignedBigInteger('role_id');
             $table->unsignedBigInteger('department_id');
             $table->date('created_at');
+            $table->integer('status');
 
             $table->foreign('client_id')->references('id')->on('clients');
             $table->foreign('role_id')->references('id')->on('roles');
