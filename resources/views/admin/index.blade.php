@@ -1,8 +1,7 @@
 @extends('admin_template')
 @section('content')
-
-{{ date('m') }}
-
+    {{ date('m') }}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <div class="d-sm-flex justify-content-between align-items-center mb-4">
         <h3 class="text-dark mb-0">Dashboard</h3><a class="btn btn-primary btn-sm d-none d-sm-inline-block" role="button"
             href="#"><i class="fas fa-download fa-sm text-white-50"></i>&nbsp;Generate Report</a>
@@ -64,7 +63,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-lg-7 col-xl-8">
+        <div class="col-lg-6 col-xl-6">
             <div class="card shadow mb-4">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h6 class="text-primary fw-bold m-0">Earnings Overview</h6>
@@ -87,6 +86,58 @@
                 </div>
             </div>
         </div>
-    </div>
+        <div class="col-lg-6 col-xl-6">
+            <div class="card shadow mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h6 class="text-primary fw-bold m-0">Earnings Overview</h6>
 
+                </div>
+                <div class="card-body">
+                    <canvas id="myChart" style="height:85vh; width:80vw"></canvas>
+
+                    <script>
+                        const ctx = document.getElementById('myChart').getContext('2d');
+
+                        // <block:setup:1>
+                        // const labels = Utils.months({
+                        //     count: 7
+                        // });
+                        const data = {
+
+                            labels: ['D', 'I', 'S', 'C'],
+                            datasets: [{
+                                    label: 'My First Dataset',
+                                    data: [-12, 3, 4, 45],
+                                    fill: false,
+                                    borderColor: 'rgb(75, 192, 192)',
+                                    tension: 0.1
+                                },
+                                {
+                                    label: 'middle',
+                                    data: [20, 20, 20, 20],
+                                    fill: false,
+                                    borderColor: 'rgb(40, 40, 41)',
+                                    tension: 0.1
+                                }
+
+
+                            ]
+                        };
+                        // </block:setup>
+
+                        // <block:config:0>
+                        const config = {
+                            type: 'line',
+                            data: data,
+                        };
+                        // </block:config>
+
+
+                        const myChart = new Chart(ctx, config);
+                    </script>
+
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection

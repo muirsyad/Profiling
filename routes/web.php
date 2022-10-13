@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\userController;
 use App\Http\Controllers\adminController;
+use App\Http\Controllers\questionsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,7 +17,8 @@ use App\Http\Controllers\adminController;
 */
 
 Route::get('/',[userController::class,'index'])->name('login');
-
+Route::post('/auth',[userController::class,'auth'])->name('auth');
+Route::post('/logout',[userController::class,'logout'])->name('logout');
 Route::get('/register',[userController::class,'create'])->name('register');
 Route::post('/Cadmin',[userController::class,'Rstore'])->name('adminR');
 
@@ -32,6 +34,19 @@ Route::get('/admin/clients/update/{clients}',[adminController::class,'update'])-
 Route::post('/admin/clients/change/{clients}',[adminController::class,'change'])->name('update');
 Route::get('/admin/questions',[adminController::class,'vquest'])->name('vquest');
 Route::get('/admin/profile',[adminController::class,'profile'])->name('profile');
+
+
+//cliet routes
+Route::get('/registerC',[userController::class,'create2'])->name('register2');
+Route::get('/home',[questionsController::class,'index'])->name('Qhome');
+Route::get('/quiz',[questionsController::class,'quiz'])->name('quiz');
+Route::get('/Squiz',[questionsController::class,'Squiz'])->name('Squiz');
+Route::post('/storeQuiz',[questionsController::class,'storQ'])->name('StoreQuiz');
+Route::get('/results',[questionsController::class,'results'])->name('results');
+
+
+Route::post('/Cuser',[userController::class,'Ustore'])->name('userR');
+
 
 //
 

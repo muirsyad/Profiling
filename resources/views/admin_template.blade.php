@@ -27,12 +27,12 @@
 
 <body id="page-top">
     <div id="wrapper">
-        <nav
-            class="navbar navbar-dark side-admin bg-gradient align-items-start sidebar sidebar-dark accordion  p-0">
+        <nav class="navbar navbar-dark side-admin bg-gradient align-items-start sidebar sidebar-dark accordion  p-0">
             <div class="container-fluid d-flex flex-column p-0"><a
                     class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0"
                     href="#">
-                    <div class="sidebar-brand-icon "><img src="{{ asset('assets/img/logo.png') }}" style="width:100px" alt=""></div><br>
+                    <div class="sidebar-brand-icon "><img src="{{ asset('assets/img/logo.png') }}" style="width:100px"
+                            alt=""></div><br>
 
                 </a>
                 <div class="sidebar-brand-text text-white"><span>Disc Profiling</span></div>
@@ -47,6 +47,19 @@
                     <li class="nav-item"><a class="nav-link" href="{{ route('profile') }}"><i
                                 class="far fa-user"></i><span>Profile</span></a><a class="nav-link" href="table.html"><i
                                 class="fas fa-external-link-alt"></i><span>Logout</span></a></li>
+                    <li class="nav-item">
+                        <form class="nav-link" method="POST" action="/logout">
+                            @csrf
+                            <i
+                                class="fas fa-external-link-alt"></i>
+                            {{-- <span>logout</span> --}}
+                            <button class="btn success">Logout</button>
+                        </form>
+                    </li>
+                        {{-- <a class="nav-link" href="{{ route('vquest') }}"><i
+                                class="fas fa-question"></i><span>Logout</span></a></li> --}}
+
+
                 </ul>
                 <div class="text-center d-none d-md-inline"></div><button class="btn rounded-circle border-0"
                     id="sidebarToggle" type="button"></button>
@@ -165,7 +178,7 @@
                             <li class="nav-item dropdown no-arrow">
                                 <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link"
                                         aria-expanded="false" data-bs-toggle="dropdown" href="#"><span
-                                            class="d-none d-lg-inline me-2 text-gray-600 small">Valerie Luna</span><img
+                                            class="d-none d-lg-inline me-2 text-gray-600 small">{{ auth()->user()->email }}</span><img
                                             class="border rounded-circle img-profile"
                                             src="../assets/img/avatars/avatar1.jpeg"></a>
                                     <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in"><a
