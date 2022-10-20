@@ -7,6 +7,7 @@ use App\Models\User;
 use GuzzleHttp\Client;
 use App\Models\Clients;
 use App\Models\Questions;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
@@ -44,7 +45,26 @@ public function vquest(){
 }
 
 public function create(){
-    return view('admin.new_clients');
+
+    $random = Str::random(4);
+    $code = 'LoUY';
+    $email = DB::table('clients')->where('link_code', 'LoUY')->value('link_code');
+    dd($email,$code,$random);
+    $x=0;
+    $inc=0;
+    while($x < 1){
+        if($code != $email){
+            $x++;
+        } else{
+            $random = Str::random(100);
+        }
+
+    }
+    dd($random);
+
+    return view('admin.new_clients',[
+        'code' => $random,
+    ]);
 }
 
 public function view(){
@@ -53,6 +73,7 @@ public function view(){
     ]);
 }
 public function store(Request $request){
+
     //dd($request);
     //dd($request);
     $formFields = $request->validate([

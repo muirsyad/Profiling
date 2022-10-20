@@ -22,8 +22,15 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <title>Document</title>
 </head>
-
-<body style="background: rgb(5,87,47);">
+<style>
+    body{
+        background-image: url("{{ URL::asset('assets/img/back.png') }}");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    }
+</style>
+<body>
     <header>
         <nav class="navbar navbar-expand-lg bg-light">
             <div class="container-fluid">
@@ -55,15 +62,27 @@
 
 
         @yield('content')
+
         @if (session()->has('message'))
             <script>
                 Swal.fire({
-                    title: 'Not Allowed',
+                    title: 'Success',
                     text: '{{ session()->get('message') }}',
-                    icon: 'error',
+                    icon: 'success',
                     confirmButtonText: 'Cool'
                 })
             </script>
+        @endif
+
+        @if (session()->has('error'))
+        <script>
+            Swal.fire({
+                title: 'Not Allowed',
+                text: '{{ session()->get('error') }}',
+                icon: 'error',
+                confirmButtonText: 'Cool'
+            })
+        </script>
         @endif
 
     </div>

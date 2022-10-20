@@ -162,13 +162,16 @@
                 background-color: #fdcb77;
             }
         }
+
     </style>
 
 
     {{-- @foreach ($groups as $groups)
 
         @endforeach --}}
-    <form action="{{ route('StoreQuiz') }}" method="post" style="margin-top: 250px">
+
+        <h1 class="text-center text-white " style="margin-top: 50px"><strong>I</strong></h1>
+    <form action="{{ route('StoreQuiz') }}" method="post" style="margin-top: 100px">
 @csrf
         @foreach ($groups as $groups)
 
@@ -203,8 +206,11 @@
         @endforeach
         <div style="overflow:auto;">
             <div style="float:right;">
+
+
                 <button class="btn btn-danger" type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
                 <button class="btn btn-primary" type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
+
             </div>
         </div>
 

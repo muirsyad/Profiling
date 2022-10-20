@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\Signup;
+use App\Models\Clients;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\DB;
 use PhpParser\Node\Stmt\Switch_;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class userController extends Controller
 {
@@ -16,6 +19,9 @@ class userController extends Controller
     }
     public function create(){
         return view('register');
+    }
+    public function createcode(Clients $clients){
+        return view();
     }
     public function create2(){
         return view('user.register');
@@ -118,5 +124,14 @@ class userController extends Controller
         $request->session()->regenerateToken();
 
         return redirect('/')->with('message', 'You have beem logout');
+    }
+
+    public function sendMail(){
+
+        $name = 'salim';
+        $url = route('register2');
+        Mail::to('muirsyad2399@gmail.com')->send(new Signup($name,$url));
+        return view('login');
+
     }
 }

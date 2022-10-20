@@ -14,6 +14,7 @@
                                                 <div class="mb-3"><input class="form-control" type="text" id="name-2" name="client" placeholder="Name"></div>
                                                 <div class="mb-3"><input class="form-control" type="email" id="email-2" name="email" placeholder="Email"></div>
                                                 <div class="mb-3"><input class="form-control" type="text" id="address-1" name="address" placeholder="Address"></div>
+                                                <input type="hidden" name="link_code" value="{{ $code }}">
                                                 <div class="mb-3"></div>
                                                 <input type="hidden" value="{{ date('Y-m-d') }}" name="created_at">
                                                 <div><button class="btn btn-primary d-block w-100" type="submit">Submit</button></div>
