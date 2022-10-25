@@ -24,8 +24,15 @@
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </head>
-
-<body style="background: rgb(5,87,47);">
+<style>
+    body{
+    background-image: url("{{ URL::asset('assets/img/back.png') }}");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    }
+</style>
+<body>
     <div class="container"
         style="position:absolute; left:0; right:0; top: 50%; transform: translateY(-50%); -ms-transform: translateY(-50%); -moz-transform: translateY(-50%); -webkit-transform: translateY(-50%); -o-transform: translateY(-50%);">
         <div class="row justify-content-center">

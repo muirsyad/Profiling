@@ -22,7 +22,7 @@ Route::get('/', [userController::class, 'index'])->name('login');
 Route::post('/auth', [userController::class, 'auth'])->name('auth');
 Route::post('/logout', [userController::class, 'logout'])->name('logout');
 Route::get('/register', [userController::class, 'create'])->name('register');
-Route::get('/register', [userController::class, 'create'])->name('register');
+Route::get('/register/{name}', [userController::class, 'createcode'])->name('link');
 Route::post('/Cadmin', [userController::class, 'Rstore'])->name('adminR');
 
 //admin routes
@@ -32,6 +32,7 @@ Route::get('/admin/clients/create', [adminController::class, 'create'])->name('C
 Route::post('/admin/clients/create/store', [adminController::class, 'store'])->name('Cstore');
 Route::get('/admin/clients/view', [adminController::class, 'view'])->name('Cview');
 Route::get('/admin/clients/details/{clients}', [adminController::class, 'details'])->name('details');
+Route::get('/admin/clients/details/{clients}/invite', [adminController::class, 'invite'])->name('invite');
 Route::get('/admin/clients/delete/{clients}', [adminController::class, 'Cdelete'])->name('delete');
 Route::get('/admin/clients/update/{clients}', [adminController::class, 'update'])->name('update');
 Route::post('/admin/clients/change/{clients}', [adminController::class, 'change'])->name('update');
@@ -61,7 +62,8 @@ route::get('/dd', function () {
 });
 
 //email test
-Route::get('/sendmail', [userController::class, 'sendMail'])->name('mail');
+Route::get('/sendmail/{name}', [userController::class, 'sendMail'])->name('mail');
+Route::post('/sentmail/{code}', [userController::class, 'sentMail'])->name('smail');
 //random string
 route::get('/code', function () {
 

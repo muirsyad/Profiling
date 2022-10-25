@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\Signup;
 use App\Models\Clients;
+use App\Models\Departments;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -14,16 +15,31 @@ use Illuminate\Support\Facades\Mail;
 class userController extends Controller
 {
     //
-    public function index(){
+    public function index()
+    {
         return view('login');
     }
-    public function create(){
+    public function create()
+    {
         return view('register');
     }
-    public function createcode(Clients $clients){
-        return view();
+    public function createcode($name)
+    {
+
+        $departments = DB::table('departments')->get();
+        $code = DB::table('clients')->where('link_code', $name)->first();
+        //dd($departments);
+        return view(
+            'registercode',
+            [
+                'clients' => $code,
+                'dp' => $departments,
+
+            ]
+        );
     }
-    public function create2(){
+    public function create2()
+    {
         return view('user.register');
     }
     public function Rstore(Request $request)
@@ -94,15 +110,13 @@ class userController extends Controller
 
         if (auth()->attempt($formFields)) {
             $request->session()->regenerate();
-            switch($role){
+            switch ($role) {
                 case 2:
                     return redirect("/home")->with('message', 'Logged in successfully');
                     break;
                 case 1:
                     return redirect('/admin/index')->with('message', 'Logged in successfully');
                     break;
-
-
             }
             // if ($role == 2) {
 
@@ -126,12 +140,49 @@ class userController extends Controller
         return redirect('/')->with('message', 'You have beem logout');
     }
 
-    public function sendMail(){
+    public function sendMail($name)
+    {
 
-        $name = 'salim';
-        $url = route('register2');
-        Mail::to('muirsyad2399@gmail.com')->send(new Signup($name,$url));
+
+
+        $url = route('link', $name);
+        //dd($name,$url);
+        Mail::to('muirsyad2399@gmail.com')->send(new Signup($name, $url));
         return view('login');
+    }
+    public function sentMail(Request $request, $code)
+    {
 
+        $var = -1;
+        $data = $request->all();
+
+        foreach ($data as $value) {
+            $var++;
+        }
+
+        //dd($code, $request , $var);
+        $url = route('link', $code);
+
+        //dd($name,$url);
+        $arr=[];
+
+        $j=0;
+        for($i=0; $i<$var; $i++) {
+            $j=$i+1;
+            $j="email".$j;
+            $j= $request->$j;
+            //dd($j);
+            array_push($arr,$j);
+            //dd($j);
+            //dd($request->$j);
+            //Mail::to($j)->send(new Signup($code, $url));
+        }
+        //dd($arr);
+        foreach( $arr as $arr){
+            Mail::to($arr)->send(new Signup($code, $url));
+        }
+
+        // Mail::to($request->email2)->send(new Signup($code, $url));
+        return redirect(route('Cview'));
     }
 }

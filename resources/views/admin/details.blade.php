@@ -7,7 +7,8 @@
 <div class="card" id="TableSorterCard">
     <div class="card-header py-3">
         <div class="row table-topper align-items-center">
-            <div class="col"><button class="btn btn-primary btn-sm reset" type="button" style="margin: 2px;">Generate Report</button></div>
+            <div class="mb-3"><a href="{{ route('invite',$clients->id) }}" class="btn btn-primary text-decoration-none">Invite Participants</a></div>
+
         </div>
     </div>
     <div class="row">

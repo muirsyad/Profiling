@@ -1,6 +1,6 @@
 @extends('lr_template')
 @section('content')
-{{--
+    {{--
     <div class="text-center">
         <h4 class="text-dark mb-4">Create an Account!</h4>
     </div>
@@ -35,40 +35,56 @@
 
     <div class="card">
         <div class="card-body">
-            <h1>Register</h1>
+            <h1>Register {{ $clients->id }}</h1>
             <form method="POST" action="{{ route('adminR') }}">
                 @csrf
                 <div class="mb-3">
                     <label for="exampleFormControlInput1" class="form-label">Name</label>
                     <input type="text" class="form-control" id="exampleFormControlInput1"
                         placeholder="example: Muhammad Kasim" name="name">
-                        @error('name')
+                    @error('name')
                         <p class="text-danger">{{ $message }}</p>
-                        @enderror
+                    @enderror
+                </div>
+                <div class="mb-3">
+                    <label for="department_id">Choose your departments:</label>
+                    <select name="department_id" id="department_id">
+
+                        @foreach ($dp as $dp)
+                            <option value="{{ $dp->id }}">{{ $dp->department }}</option>
+                        @endforeach
+                    </select>
                 </div>
                 <div class="mb-3">
                     <label for="exampleFormControlTextarea1" class="form-label">Email address</label>
                     <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com"
-                    name="email">
+                        name="email">
                     @error('email')
                         <p class="text-danger">{{ $message }}</p>
-                        @enderror
+                    @enderror
                 </div>
                 <div class="mb-3">
                     <label for="exampleFormControlTextarea1" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="exampleFormControlInput1"
-                        placeholder="************" name="password">
-                        @error('password')
+                    <input type="password" class="form-control" id="pass" placeholder="************"
+                        name="password">
+                        <div class="mt-2">
+                            <input type="checkbox" onclick="showPass()">Show Password
+                        </div>
+
+                    @error('password')
                         <p class="text-danger">{{ $message }}</p>
-                        @enderror
+                    @enderror
                 </div>
                 <div class="mb-3">
                     <label for="exampleFormControlTextarea1" class="form-label">Password confirmation</label>
-                    <input type="password" class="form-control" id="exampleFormControlInput1"
-                        placeholder="************" name="password_confirmation">
-                        @error('password_confirmation')
+                    <input type="password" class="form-control" id="pass2" placeholder="************"
+                        name="password_confirmation">
+                        <div class="mt-2">
+                            <input type="checkbox" onclick="showPass2()">Show Password
+                        </div>
+                    @error('password_confirmation')
                         <p class="text-danger">{{ $message }}</p>
-                        @enderror
+                    @enderror
                 </div>
                 {{-- <div class="mb-3">
                     <label for="exampleFormControlTextarea1" class="form-label">No-tel</label>
@@ -79,9 +95,9 @@
                         <p class="text-danger">{{ $message }}</p>
                         @enderror
                 </div> --}}
-                <input type="hidden" name="client_id" value="1">
-                <input type="hidden" name="department_id" value="1">
-                <input type="hidden" name="role_id" value="1">
+                <input type="hidden" name="client_id" value='{{ $clients->id }}'>
+                {{-- <input type="hidden" name="department_id" value="1"> --}}
+                <input type="hidden" name="role_id" value="2">
                 <input type="hidden" name="status" value="1">
                 <input type="hidden" name="created_at" value="{{ date('Y-m-d') }}">
                 <div class="mb-3">
@@ -90,4 +106,22 @@
             </form>
         </div>
     </div>
+    <script>
+        function showPass() {
+            var x = document.getElementById("pass");
+            if (x.type === "password") {
+                x.type = "text";
+            } else {
+                x.type = "password";
+            }
+        }
+        function showPass2() {
+            var x = document.getElementById("pass2");
+            if (x.type === "password") {
+                x.type = "text";
+            } else {
+                x.type = "password";
+            }
+        }
+    </script>
 @endsection
