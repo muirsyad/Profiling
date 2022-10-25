@@ -152,7 +152,7 @@ class userController extends Controller
     }
     public function sentMail(Request $request, $code)
     {
-
+        //to count and exclude token
         $var = -1;
         $data = $request->all();
 
@@ -167,6 +167,7 @@ class userController extends Controller
         $arr=[];
 
         $j=0;
+        //to put value in array
         for($i=0; $i<$var; $i++) {
             $j=$i+1;
             $j="email".$j;

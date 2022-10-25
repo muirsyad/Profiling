@@ -100,9 +100,13 @@ class adminController extends Controller
     {
 
         $clients = DB::table('clients')->where('id', $clients->id)->first();
-        //dd($clients);
+        $participants = DB::table('users')->where('client_id', $clients->id)->get();
+        $department = DB::table('departments')->get();
+        //dd($clients,$participants,$department);
         return view('admin.details', [
-            'clients' => $clients,
+            'client' => $clients,
+            'participants' => $participants,
+            'department' => $department,
         ]);
     }
     public function invite(Clients $clients)

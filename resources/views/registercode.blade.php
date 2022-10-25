@@ -35,7 +35,7 @@
 
     <div class="card">
         <div class="card-body">
-            <h1>Register {{ $clients->id }}</h1>
+            <h1>Register</h1>
             <form method="POST" action="{{ route('adminR') }}">
                 @csrf
                 <div class="mb-3">

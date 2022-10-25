@@ -22,6 +22,7 @@ Route::get('/', [userController::class, 'index'])->name('login');
 Route::post('/auth', [userController::class, 'auth'])->name('auth');
 Route::post('/logout', [userController::class, 'logout'])->name('logout');
 Route::get('/register', [userController::class, 'create'])->name('register');
+//register by client
 Route::get('/register/{name}', [userController::class, 'createcode'])->name('link');
 Route::post('/Cadmin', [userController::class, 'Rstore'])->name('adminR');
 
@@ -45,6 +46,7 @@ Route::get('/registerC', [userController::class, 'create2'])->name('register2');
 Route::get('/home', [questionsController::class, 'index'])->name('Qhome');
 Route::get('/quiz', [questionsController::class, 'quiz'])->name('quiz');
 Route::get('/Squiz', [questionsController::class, 'Squiz'])->name('Squiz');
+Route::get('/quizzz', [questionsController::class, 'quiz2'])->name('qz');
 Route::post('/storeQuiz', [questionsController::class, 'storQ'])->name('StoreQuiz');
 Route::get('/results', [questionsController::class, 'results'])->name('results');
 

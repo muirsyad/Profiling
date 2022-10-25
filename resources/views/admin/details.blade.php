@@ -1,49 +1,98 @@
 @extends('admin_template')
 @section('content')
+    {{-- {{ $clients->id }}
+    {{ $clients->address }} --}}
+    <div class="mb-5"><a href="{{ route('invite', $client->id) }}" class="btn btn-primary text-decoration-none">Invite
+            Participants</a></div>
+    <style>
+        .styled-table {
+            border-collapse: collapse;
+            margin: 25px 0;
+            font-size: 0.9em;
+            min-width: 400px;
+            border-radius: 5px 5px 0 0;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            text-align: center;
 
+        }
 
-{{ $clients->id }}
-{{ $clients->address }}
-<div class="card" id="TableSorterCard">
-    <div class="card-header py-3">
-        <div class="row table-topper align-items-center">
-            <div class="mb-3"><a href="{{ route('invite',$clients->id) }}" class="btn btn-primary text-decoration-none">Invite Participants</a></div>
+        .styled-table thead tr {
+            background-color: #009879;
+            color: #ffffff;
+            /* text-align: left; */
+            font-weight: bold;
+        }
 
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-12">
-            <div class="table-responsive">
-                <table class="table table-striped table tablesorter" id="ipi-table">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th class="text-center">No</th>
-                            <th class="text-center">Participants</th>
-                            <th class="text-center">Department</th>
-                            <th class="text-center">Status</th>
-                            <th class="text-center filter-false sorter-false">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody class="text-center">
-                        <tr>
-                            <td>1</td>
-                            <td>Kamarul bin Zaman</td>
-                            <td>Buissness</td>
-                            <td>Amswer</td>
-                            <td class="text-center align-middle" style="max-height: 60px;height: 60px;"><a class="btn btnMaterial btn-flat primary semicircle" role="button" href="#"><i class="far fa-eye"></i></a><a class="btn btnMaterial btn-flat success semicircle" role="button" href="#"><i class="fas fa-pen"></i></a><a class="btn btnMaterial btn-flat accent btnNoBorders checkboxHover" role="button" style="margin-left: 5px;" data-bs-toggle="modal" data-bs-target="#delete-modal" href="#"><i class="fas fa-trash btnNoBorders" style="color: #DC3545;"></i></a></td>
-                        </tr>
-                        <tr>
-                            <td>2<br></td>
-                            <td>Zairuddin</td>
-                            <td>IT</td>
-                            <td>Not</td>
-                            <td class="text-center align-middle" style="max-height: 60px;height: 60px;"><a class="btn btnMaterial btn-flat primary semicircle" role="button" href="#"><i class="far fa-eye"></i></a><a class="btn btnMaterial btn-flat success semicircle" role="button" href="#"><i class="fas fa-pen"></i></a><a class="btn btnMaterial btn-flat accent btnNoBorders checkboxHover" role="button" style="margin-left: 5px;" data-bs-toggle="modal" data-bs-target="#delete-modal" href="#"><i class="fas fa-trash btnNoBorders" style="color: #DC3545;"></i></a></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
+        .styled-table th,
+        .styled-table td {
+            padding: 12px 15px;
+        }
 
+        .styled-table tbody tr {
+            border-bottom: 1px solid #dddddd;
+        }
+
+        .styled-table tbody tr:nth-of-type(even) {
+            background-color: #f3f3f3;
+        }
+
+        .styled-table tbody tr:last-of-type {
+            border-bottom: 2px solid #009879;
+        }
+
+        .styled-table tbody tr:hover {
+            font-weight: bold;
+            color: #009879;
+        }
+
+        #icon {
+            font-size: 50px;
+            color: red;
+            transition-duration: .6s;
+        }
+
+        .igreen {
+            color: #009879
+        }
+    </style>
+    <h1 class="fw-bolder text-dark mb-0">List of Participants</h1>
+
+    <table class="styled-table">
+        <thead>
+            <tr>
+                <th style="width:10%">No</th>
+                <th style="width:20%">Name</th>
+                <th style="width:30%">email</th>
+                <th style="width:30%">department</th>
+                <th style="width:10%">action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($participants as $participants)
+                <tr>
+                    <td>{{ $participants->id }}</td>
+                    <td>{{ $participants->name }}</td>
+                    <td>{{ $participants->email }}</td>
+                    @php
+                        $dp = DB::table('departments')->where('id',$participants->department_id)->get();
+                        $dp = $dp->department;
+                        dd($dp);
+
+                    @endphp
+                    <td>{{ $dp }}</td>
+                    <td>
+                        <div class="row">
+                            <div class="col"><a href="/admin/clients/details/{{ $participants->id }}"><i
+                                        class="far fa-eye igreen"></i></a></div>
+                            <div class="col"><a href="/admin/clients/update/{{ $participants->id }}"><i
+                                        class="fas fa-pencil-alt igreen"></i></a></div>
+                            <div class="col"><a href="/admin/clients/delete/{{ $participants->id }}"><i
+                                        class="fas fa-trash-alt igreen"></i></a></div>
+                        </div>
+
+                    </td>
+            @endforeach
+        </tbody>
+    </table>
 @endsection

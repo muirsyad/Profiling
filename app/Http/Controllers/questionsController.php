@@ -31,6 +31,24 @@ class questionsController extends Controller
         }
         dd($record);
     }
+    public function quiz2(){
+
+        $Question = Questions::all();
+        $Groups = Groups::all();
+        $Cgroup = $Groups->count();
+        //$Cgroup = gettype($Cgroup);
+        //dd($Cgroup);
+        //xdd($Question);
+        return view(
+            'user.quizz',
+            [
+                'questions' => $Question,
+                'groups' => $Groups,
+                'countG' => $Cgroup,
+            ]
+
+        );
+    }
     public function Squiz()
     {
         $Question = Questions::all();

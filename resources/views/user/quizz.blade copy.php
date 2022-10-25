@@ -162,54 +162,85 @@
                 background-color: #fdcb77;
             }
         }
+
+        .Qtitle {
+            color: black;
+            font-weight: bold;
+        }
+
+        .hr {
+            border-top: solid 3px red;
+        }
+
+        h4 {
+            color: black
+        }
     </style>
 
 
-
-
-    <h1 class="text-center text-white " style="margin-top: 50px"><strong>I</strong></h1>
-    <form action="{{ route('StoreQuiz') }}" method="post" style="margin-top: 100px">
+    <form action="{{ route('StoreQuiz') }}" method="post">
         @csrf
-        @foreach ($groups as $groups)
-            @php
-                $grp = DB::table('questions')
-                    ->where('group_id', $groups->id)
-                    ->get();
-            @endphp
-            <div class="tab">
-                <div class="card mb-3 p-3">
-                    <div class="card-header">
-                        <span>Question {{ $groups->id }} of {{ $countG }}</span>
-                    </div>
+        <div class="row">
+            <div class="col-lg-6 col-sm-12 mx-auto">
+                <div class="card p-3" style="margin-top: 5em">
                     <div class="card-body">
-
-
-
-                        @foreach ($grp as $questions)
-                            <div class="radiobtn">
-                                <input type="radio" name="Q{{ $questions->group_id }}" id="Q{{ $questions->id }}"
-                                    value="{{ $questions->value }}" />
-                                <label for="Q{{ $questions->id }}">{{ $questions->question }}</label>
+                        <div class="tab">
+                            <h4>1 of 28</h4>
+                            <hr class="">
+                            <h5 class="Qtitle mb-5">Please choose answer that <strong style="color: red">describe</strong>
+                                you the Best</h5>
+                            <div class="radiobtn mb-3">
+                                <input type="radio" name="Q" id="Q1" value="1" />
+                                <label for="Q1">11</label>
                             </div>
-                        @endforeach
+                            <div class="radiobtn mb-3">
+                                <input type="radio" name="Q" id="Q2" value="1" />
+                                <label for="Q2">11</label>
+                            </div>
+                            <div class="radiobtn mb-3">
+                                <input type="radio" name="Q" id="Q3" value="1" />
+                                <label for="Q3">11</label>
+                            </div>
+                        </div>
+                        <div class="tab">
+                            <h4>2 of 28</h4>
+                            <hr class="">
+                            <h5 class="Qtitle mb-5">Please choose answer that <strong style="color: red">describe</strong>
+                                you the most</h5>
+                            <div class="radiobtn mb-3">
+                                <input type="radio" name="Q" id="Q1" value="1" />
+                                <label for="Q1">11</label>
+                            </div>
+                            <div class="radiobtn mb-3">
+                                <input type="radio" name="Q" id="Q2" value="1" />
+                                <label for="Q2">11</label>
+                            </div>
+                            <div class="radiobtn mb-3">
+                                <input type="radio" name="Q" id="Q3" value="1" />
+                                <label for="Q3">11</label>
+                            </div>
+                        </div>
+
+                            <div class="row">
+                                {{-- <div><button class="btn btn-danger" type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button></div>
+                                <div><button class="btn btn-primary" type="button" id="nextBtn" onclick="nextPrev(1)">Next</button></div> --}}
+                                <div class="text-left mt-3">
+                                    <button class="btn btn-danger float-start" type="button" id="prevBtn" onclick="nextPrev(-1)" >Previous</button>
+                                    <button class="btn btn-primary float-end" type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
+                                </div>
+                            </div>
+
                     </div>
                 </div>
-
-            </div>
-        @endforeach
-
-        <div style="overflow:auto;">
-            <div style="float:right;">
-
-
-                <button class="btn btn-danger" type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
-                <button class="btn btn-primary" type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
-
             </div>
         </div>
 
+
+
+
+
         <!-- Circles which indicates the steps of the form: -->
-        <div style="text-align:center;margin-top:150px;">
+        <div class="d-none" style="d-none text-align:center;margin-top:150px;">
 
             @for ($i = 0; $i < $countG; $i++)
                 <span class="step"></span>
@@ -220,7 +251,10 @@
 
 
         </div>
+
     </form>
+
+
     <script>
         var currentTab = 0; // Current tab is set to be the first tab (0)
         showTab(currentTab); // Display the current tab
