@@ -23,6 +23,7 @@
     <link rel="stylesheet" href="{{ URL::asset('assets/css/luden.css') }}">
     <link rel="stylesheet" href="{{ URL::asset('customcss/cus.css') }}">
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 
 <body id="page-top">
@@ -45,18 +46,17 @@
                     <li class="nav-item"><a class="nav-link" href="{{ route('vquest') }}"><i
                                 class="fas fa-question"></i><span>Question</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('profile') }}"><i
-                                class="far fa-user"></i><span>Profile</span></a><a class="nav-link" href="table.html"><i
-                                class="fas fa-external-link-alt"></i><span>Logout</span></a></li>
+                                class="fas fa-book"></i><span>Template report</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('profile') }}"><i
+                                class="far fa-user"></i><span>Profile</span></a></li>
                     <li class="nav-item">
-                        <form class="nav-link" method="POST" action="/logout">
+                        <form method="POST" action="/logout">
                             @csrf
-                            <i
-                                class="fas fa-external-link-alt"></i>
-                            {{-- <span>logout</span> --}}
-                            <button class="btn success">Logout</button>
+                            <button class="btn btn-link nav-link btnlg"><i
+                                    class="fas fa-external-link-alt"></i>Logout</button>
                         </form>
                     </li>
-                        {{-- <a class="nav-link" href="{{ route('vquest') }}"><i
+                    {{-- <a class="nav-link" href="{{ route('vquest') }}"><i
                                 class="fas fa-question"></i><span>Logout</span></a></li> --}}
 
 

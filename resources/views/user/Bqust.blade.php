@@ -32,7 +32,7 @@
 
                             <ol class="text-dark">
 
-                            <li>Please answer <span class="text-danger fw-bold">all question</span>  before submit</li>
+                            <li>Please answer <span class="text-danger fw-bold">all question</span>before submit</li>
                             <li>Do not refresh page before answer and submit the question</li>
                             <li>Answer were situation is the best for you</li>
 
@@ -44,7 +44,7 @@
                         <div class="row">
                             <div class="col-12 offset-0 d-flex justify-content-center"><a
                                     class="btn btn-primary text-center border rounded-pill bounce animated" role="button"
-                                    href="{{ route('Squiz') }}">Take the Quiz</a></div>
+                                    href="{{ route('qz') }}">Take the Quiz</a></div>
                         </div>
                     </div>
                 </div>
@@ -52,4 +52,6 @@
         </div>
 
     </div>
+
+
 @endsection

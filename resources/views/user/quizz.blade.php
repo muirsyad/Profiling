@@ -184,56 +184,47 @@
             <div class="col-lg-6 col-sm-12 mx-auto">
                 <div class="card p-3" style="margin-top: 5em">
                     <div class="card-body">
-                        <div class="tab">
-                            <h4>1 of 28</h4>
-                            <hr class="">
-                            <h5 class="Qtitle mb-5">Please choose answer that <strong style="color: red">describe</strong>
-                                you the Best</h5>
-                            <div class="radiobtn mb-3">
-                                <input type="radio" name="Q" id="Q1" value="1" />
-                                <label for="Q1">11</label>
-                            </div>
-                            <div class="radiobtn mb-3">
-                                <input type="radio" name="Q" id="Q2" value="1" />
-                                <label for="Q2">11</label>
-                            </div>
-                            <div class="radiobtn mb-3">
-                                <input type="radio" name="Q" id="Q3" value="1" />
-                                <label for="Q3">11</label>
-                            </div>
-                        </div>
-                        <div class="tab">
-                            <h4>2 of 28</h4>
-                            <hr class="">
-                            <h5 class="Qtitle mb-5">Please choose answer that <strong style="color: red">describe</strong>
-                                you the most</h5>
-                            <div class="radiobtn mb-3">
-                                <input type="radio" name="Q" id="Q4" value="1" />
-                                <label for="Q4">11</label>
-                            </div>
-                            <div class="radiobtn mb-3">
-                                <input type="radio" name="Q" id="Q5" value="1" />
-                                <label for="Q5">11</label>
-                            </div>
-                            <div class="radiobtn mb-3">
-                                <input type="radio" name="Q" id="Q6" value="1" />
-                                <label for="Q6">11</label>
-                            </div>
-                        </div>
+                        @foreach ($groups as $groups)
+                            @php
+                                $grp = DB::table('questions')
+                                    ->where('group_id', $groups->id)
+                                    ->get();
+                            @endphp
 
-                            <div class="row">
-                                {{-- <div><button class="btn btn-danger" type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button></div>
-                                <div><button class="btn btn-primary" type="button" id="nextBtn" onclick="nextPrev(1)">Next</button></div> --}}
-                                <div class="text-left mt-3">
-                                    <button class="btn btn-danger float-start" type="button" id="prevBtn" onclick="nextPrev(-1)" >Previous</button>
-                                    <button class="btn btn-primary float-end" type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
-                                </div>
+                            <div class="tab">
+                                <h4>{{ $groups->id }} of {{ $countG }}</h4>
+                                <hr class="">
+                                <h5 class="Qtitle mb-5">Please choose answer that <strong
+                                        style="color: red">describe</strong>
+                                    you the most</h5>
+
+                                @foreach ($grp as $questions)
+                                    <div class="radiobtn mb-3">
+                                        <input type="radio" name="Q{{ $questions->group_id }}" id="Q{{ $questions->id }}"
+                                            value="{{ $questions->value }}" />
+                                        <label for="Q{{ $questions->id }}">{{ $questions->question }}</label>
+                                    </div>
+                                @endforeach
+
                             </div>
+                        @endforeach
+
+                        <div class="row">
+                            {{-- <div><button class="btn btn-danger" type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button></div>
+                                <div><button class="btn btn-primary" type="button" id="nextBtn" onclick="nextPrev(1)">Next</button></div> --}}
+                            <div class="text-left mt-3">
+                                <button class="btn btn-danger float-start" type="button" id="prevBtn"
+                                    onclick="nextPrev(-1)">Previous</button>
+                                <button class="btn btn-primary float-end" type="button" id="nextBtn"
+                                    onclick="nextPrev(1)">Next</button>
+                            </div>
+                        </div>
 
                     </div>
                 </div>
             </div>
         </div>
+
 
 
 
@@ -253,7 +244,6 @@
         </div>
 
     </form>
-
 
     <script>
         var currentTab = 0; // Current tab is set to be the first tab (0)

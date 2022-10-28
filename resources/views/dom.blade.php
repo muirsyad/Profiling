@@ -14,6 +14,7 @@
         }
         </style>
 <h1 class="page-break">Test dom pdf</h1>
-<h2>Anotger page</h2>
+<h2 class="page-break">Anotger page1</h2>
+<h2 class="page-break">Anotger page2</h2>
 </body>
 </html>

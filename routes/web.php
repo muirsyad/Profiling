@@ -49,19 +49,9 @@ Route::get('/Squiz', [questionsController::class, 'Squiz'])->name('Squiz');
 Route::get('/quizzz', [questionsController::class, 'quiz2'])->name('qz');
 Route::post('/storeQuiz', [questionsController::class, 'storQ'])->name('StoreQuiz');
 Route::get('/results', [questionsController::class, 'results'])->name('results');
-
+route::get('/dd',[questionsController::class,'pdf'])->name('pdf');
 
 Route::post('/Cuser', [userController::class, 'Ustore'])->name('userR');
-
-
-//dompdf
-
-route::get('/dd', function () {
-    // return view('dom');
-
-    $pdf = Pdf::loadView('dom');
-    return $pdf->stream('invoice.pdf');
-});
 
 //email test
 Route::get('/sendmail/{name}', [userController::class, 'sendMail'])->name('mail');

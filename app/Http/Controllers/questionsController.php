@@ -6,6 +6,7 @@ use App\Models\Groups;
 use App\Models\Questions;
 use App\Models\Departments;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
 use App\Models\Answer_records as record;
 
@@ -31,7 +32,8 @@ class questionsController extends Controller
         }
         dd($record);
     }
-    public function quiz2(){
+    public function quiz2()
+    {
 
         $Question = Questions::all();
         $Groups = Groups::all();
@@ -70,7 +72,7 @@ class questionsController extends Controller
 
     public function storQ(Request $request)
     {
-        //dd($request->Q1);
+        //dd($request);
         $formFields = $request->validate(
             [
 
@@ -156,7 +158,8 @@ class questionsController extends Controller
         $record->C = $varC;
         $record->save();
 
-        return redirect('/home')->with('success', 'Your have answer the test');
+        //return redirect('/home')->with('success', 'Your have answer the test');
+        return redirect('/results')->with('success', 'Your have answer the test');
     }
 
     public function results()
@@ -322,7 +325,7 @@ class questionsController extends Controller
                 array_push($plot, 46);
         }
 
-        switch ($record->C){
+        switch ($record->C) {
             case 0;
                 array_push($plot, 1);
                 break;
@@ -355,7 +358,6 @@ class questionsController extends Controller
                 break;
             default:
                 array_push($plot, 46);
-
         }
 
 
@@ -374,5 +376,11 @@ class questionsController extends Controller
             'department' => $dept->department,
             'plot' => $plot,
         ]);
+    }
+
+    public function pdf()
+    {
+        $pdf = Pdf::loadView('dom');
+        return $pdf->stream('invoice.pdf');
     }
 }

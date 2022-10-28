@@ -1,5 +1,61 @@
 @extends('U_template')
 @section('content')
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+        }
+
+        .chartMenu {
+            width: 100vw;
+            height: 40px;
+            background: #1A1A1A;
+            color: rgba(255, 26, 104, 1);
+        }
+
+        .chartMenu p {
+            padding: 10px;
+            font-size: 20px;
+        }
+
+        .chartCard {
+            width: 100vw;
+            height: calc(100vh - 40px);
+            background: rgba(255, 26, 104, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .chartBox {
+            width: 700px;
+            padding: 20px;
+            border-radius: 20px;
+            border: solid 3px rgba(255, 26, 104, 1);
+            background: white;
+        }
+
+        .chartb {
+            width: 70%;
+            height: 300px;
+        }
+
+        @media screen and (min-width: 300px) {
+            .chartb {
+                width: 100%;
+                height: 400px;
+            }
+
+            @media screen and (min-width: 800px) {
+                .chartb {
+                    width: 70%;
+                    height: 500px;
+                }
+
+            }
+    </style>
+
     <div class="card mt-3">
         <div class="card-body">
             <p class="text-center display-4 text-dark mb-3"> <strong>Your Results</strong> </p>
@@ -33,10 +89,14 @@
 
             <div class="row">
                 <p class="text-center display-4 text-dark mb-3"> <strong>Graphs</strong> </p>
+                <div class="d-flex justify-content-center ">
 
-                <div class="col-12">
 
-                    <canvas id="myChart" class="mb-5" style="height:100px; width:100px"></canvas>
+
+                    <div class="chartb">
+                        <canvas id="myChart" class="mb-5">
+
+                        </canvas>
 
 
 
@@ -51,15 +111,23 @@
                             $plotC = $plot[3];
                             //dd($D, $I, $S, $C);
                         @endphp
-
-
-
                     </div>
+
+
+
+
+
+                </div>
+
+
+
                 <div class="col text center">
-                    <a href="#" class="btn btn-primary">Download</a>
+                    <a href="{{ route('pdf') }}" class="btn btn-primary">Download</a>
                     <a href="#" class="btn btn-primary">Home</a>
                 </div>
             </div>
+
+
         </div>
 
         aswer records
@@ -118,10 +186,14 @@
                 type: 'line',
                 data: data,
                 options: {
+                    // responsive: true,
+                    maintainAspectRatio: false,
+
                     scales: {
                         y: {
                             beginAtZero: true
-                        }
+                        },
+
                     }
                 }
             };
