@@ -65,3 +65,8 @@ route::get('/code', function () {
         'random' => $random,
     ]);
 });
+
+
+//test pdf
+Route::get('tpdf', [questionsController::class, 'tpdf']);
+

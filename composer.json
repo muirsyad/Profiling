@@ -7,8 +7,11 @@
     "require": {
         "php": "^8.0.2",
         "barryvdh/laravel-dompdf": "^2.0",
+        "barryvdh/laravel-snappy": "^1.0",
         "dompdf/dompdf": "^2.0",
+        "elibyy/tcpdf-laravel": "^9.1",
         "guzzlehttp/guzzle": "^7.2",
+        "ianw/quickchart": "^1.2",
         "itsgoingd/clockwork": "^5.1",
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^3.0",

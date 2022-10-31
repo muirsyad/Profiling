@@ -5,8 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Groups;
 use App\Models\Questions;
 use App\Models\Departments;
-use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Http\Request;
+// use Barryvdh\DomPDF\Facade\Pdf;
+// use PDF;
+use SPDF;
+
+use QuickChart;
 use Illuminate\Support\Facades\DB;
 use App\Models\Answer_records as record;
 
@@ -381,6 +386,125 @@ class questionsController extends Controller
     public function pdf()
     {
         $pdf = Pdf::loadView('dom');
+
+        return $pdf->stream('invoice.pdf');
+
+        // return view('dom');
+    }
+    public function tpdf()
+    {
+        // $pdf = Pdf::loadView('dom');
+
+        // return $pdf->stream('invoice.pdf');
+        $qc = new QuickChart(array(
+            'width' => 600,
+            'height' => 300,
+        ));
+
+        $qc->setConfig('{
+            type: "line",
+            data: {
+              labels: ["Hello world", "Test"],
+              datasets: [{
+                label: "Foo",
+                data: [1, 2]
+              }]
+            }
+          }');
+
+        // Print the chart URL
+
+        //dd($qc->getUrl());
+        $img = $qc->getUrl();
+
+
+        // chart
+        $qc = new QuickChart(array(
+            'width'=> 500,
+            'height'=> 300,
+            'version'=> '2',
+          ));
+
+        $qc->setConfig('{
+            type: "line",
+            data: {
+                labels: ["January", "February", "March", "April", "May", "June", "July"],
+                datasets: [
+                  {
+                    label: "My First dataset",
+                    backgroundColor: "rgb(255, 99, 132)",
+                    borderColor: "rgb(255, 99, 132)",
+                    data: [93, -29, -17, -8, 73, 98, 40],
+                    fill: false,
+                  },
+                  {
+                    label: "My Second dataset",
+                    fill: false,
+                    backgroundColor: "rgb(54, 162, 235)",
+                    borderColor: "rgb(54, 162, 235)",
+                    data: [20, 85, -79, 93, 27, -81, -22],
+                  },
+                ],
+              },
+              options: {
+                title: {
+                  display: true,
+                  text: "Chart.js Line Chart",
+                },
+              },
+        }');
+
+        //dd($qc->getUrl());
+        $line = $qc->getUrl();
+
+        // $ch=$qc->getUrl();
+        // //dd($ch);
+
+        // $path = "https://picsum.photos/200";
+        // $type = pathinfo($path, PATHINFO_EXTENSION);
+        // $data = file_get_contents($path);
+        // $pic = 'data:image/'.';base64' . base64_encode($data);
+        // $pdf = Pdf::loadView('dom',[
+        //     'charts' => $ch,
+        // ]);
+        // $pdf->set_option('isRemoteEnabled',true);
+        // $pdf->setPaper('A4', 'landscape');
+
+        // $content = view('dom');
+        // $view = \View::make('dom',[
+        //     'img' => $ch,
+        // ]);
+        // $html_content = $view->render();
+        // PDF::SetTitle('Hello World');
+        // PDF::AddPage();
+        // // PDF::Write(0, $html_content);
+        // PDF::writeHTML($html_content, true, false, true, false, '');
+        // PDF::Output('hello_world.pdf');
+        // return $pdf->stream('invoice.pdf');
+        //     return view('dom',
+        //       [
+        //         'charts' => $qc->getUrl(),
+        //       ]
+        // );
+        $ch = "zz";
+        $img1 = "https://picsum.photos/200";
+        $pdf = pdf::loadView('dom',[
+            'ch'=>$ch,
+            'img' => $img,
+            'line'=>$line,
+
+        ]);
+        $pdf->getDomPDF()->setHttpContext(
+            stream_context_create([
+                'ssl' => [
+                    'allow_self_signed'=> TRUE,
+                    'verify_peer' => FALSE,
+                    'verify_peer_name' => FALSE,
+                ]
+            ])
+        );
+
+        $pdf->setOption('isRemoteEnabled', true);
         return $pdf->stream('invoice.pdf');
     }
 }
