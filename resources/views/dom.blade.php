@@ -191,10 +191,10 @@
             class="log-center" alt="t">
         <hr class="green mb-3">
         <div class="namebox mb-3">
-            <h4>Name: Khatijah</h4>
-            <h4>Email: Khatijah@gmail.com</h4>
-            <h4>Department: Information Technology</h4>
-            <h4>Date: 12 / 10 / 2022</h4>
+            <h4>Name :{{ $user->name }}</h4>
+            <h4>Email: {{ $user->email }}</h4>
+            <h4>Department: {{ $user->department }}</h4>
+            <h4>Date: {{ $user->created_at }}</h4>
         </div>
         <hr class="green mb-3">
     </div>

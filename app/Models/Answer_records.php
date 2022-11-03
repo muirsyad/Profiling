@@ -9,4 +9,13 @@ class Answer_records extends Model
 {
     use HasFactory;
     public $timestamps = false;
+    protected $fillable =[
+        'answer_records',
+        'created_at',
+        'user_id',
+        'D',
+        'I',
+        'S',
+        'C',
+    ];
 }

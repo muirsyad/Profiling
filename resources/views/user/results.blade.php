@@ -122,7 +122,7 @@
 
 
                 <div class="col text center">
-                    <a href="{{ route('pdf') }}" class="btn btn-primary">Download</a>
+                    <a href="{{ route('dlpdf') }}" class="btn btn-primary">Download</a>
                     <a href="#" class="btn btn-primary">Home</a>
                 </div>
             </div>

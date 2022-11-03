@@ -68,6 +68,6 @@ route::get('/code', function () {
 
 
 //test pdf
-Route::get('tpdf', [questionsController::class, 'tpdf']);
+Route::get('tpdf', [questionsController::class, 'tpdf'])->name('dlpdf');
 Route::get('vtpdf', [questionsController::class, 'vtpdf']);
 

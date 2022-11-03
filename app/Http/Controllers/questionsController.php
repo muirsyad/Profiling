@@ -164,6 +164,8 @@ class questionsController extends Controller
         $record->I = $varI;
         $record->S = $varS;
         $record->C = $varC;
+        $record->plot = "";
+        //dd($record);
         $record->save();
 
         //return redirect('/home')->with('success', 'Your have answer the test');
@@ -373,6 +375,8 @@ class questionsController extends Controller
 
         //dd($record->D,$record->I,$record->S,$record->C,$high,$highV);
         //dd(auth()->user()->id);
+        $splot = join(",",$plot);
+        $update = record::where('user_id',$record->user_id)->update(['plot'=>$splot]);
         $dept = Departments::find(auth()->user()->department_id);
         //dd($dept->department);
 
@@ -391,6 +395,7 @@ class questionsController extends Controller
         $pdf = Pdf::loadView('dom');
 
         return $pdf->stream('invoice.pdf');
+        return $pdf->download('invoice.pdf');
 
         // return view('dom');
     }
@@ -493,8 +498,19 @@ class questionsController extends Controller
         $uderid =20;
         $bt = 'C';
         $bvalue = 2;
+        $auth = auth()->user()->id;
+        //dd($auth);
         //get plot value
-        $ans = DB::table('answer_records')->where('user_id',$uderid)->first();
+
+        $ans = DB::table('answer_records')->where('user_id',$auth)->first();
+        $join = DB::table('users')
+            ->join('departments', 'users.department_id', '=', 'departments.id')
+            ->select('users.*', 'departments.department')
+            ->where('users.id',$auth)
+            ->first();
+
+        // $dept = $join->department;
+        // dd($dept);
         $plot = explode(",",$ans->plot);
 
         //dd($template,$Behaviour_type,$keywords,$Wmotivate,$Wbest,$Wdemotive,$Wworst,$A_improve,$O_better,$O_avoid,$Y_environment);
@@ -791,7 +807,9 @@ class questionsController extends Controller
         $ch = 1;
         $img1 = "https://picsum.photos/200";
         //dd($D_value, $I_value, $S_value, $C_value,$D_hl,$I_hl,$S_hl,$C_hl);
+
         $pdf = pdf::loadView('dom', [
+            'user'  => $join,
             'ch' => $ch,
             'img' => $img,
             'line' => $line,
@@ -828,7 +846,8 @@ class questionsController extends Controller
         );
 
         $pdf->setOption('isRemoteEnabled', true);
-        return $pdf->stream('invoice.pdf');
+        //return $pdf->stream('invoice.pdf');
+        return $pdf->download('invoice.pdf');
     }
 
 
