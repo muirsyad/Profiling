@@ -14,6 +14,9 @@ use SPDF;
 use QuickChart;
 use Illuminate\Support\Facades\DB;
 use App\Models\Answer_records as record;
+use App\Models\templates_report;
+use App\Models\Templates_summary;
+use Termwind\Components\Dd;
 
 class questionsController extends Controller
 {
@@ -391,8 +394,110 @@ class questionsController extends Controller
 
         // return view('dom');
     }
+
+
+    public function com_best($best)
+    {
+        $best = DB::table('templates_reports')->where('Behaviour_type', $best)->pluck('H_temp');
+        return $best;
+    }
+    public function com_D($D_value)
+    {
+        if ($D_value > 0) {
+            $D_value = DB::table('templates_reports')->where('Behaviour_type', 'D')->pluck('H_temp');
+        } else {
+            $D_value = DB::table('templates_reports')->where('Behaviour_type', 'D')->pluck('L_temp');
+        }
+        return $D_value;
+    }
+
+    public function com_I($I_value)
+    {
+        if ($I_value > 0) {
+            $I_value = DB::table('templates_reports')->where('Behaviour_type', 'I')->pluck('H_temp');
+        } else {
+            $I_value = DB::table('templates_reports')->where('Behaviour_type', 'I')->pluck('L_temp');
+        }
+        return $I_value;
+    }
+
+    public function com_S($S_value)
+    {
+        if ($S_value > 0) {
+            $S_value = DB::table('templates_reports')->where('Behaviour_type', 'S')->pluck('H_temp');
+        } else {
+            $S_value = DB::table('templates_reports')->where('Behaviour_type', 'S')->pluck('L_temp');
+        }
+        return $S_value;
+    }
+
+    public function com_C($C_value)
+    {
+        if ($C_value > 0) {
+            $C_value = DB::table('templates_reports')->where('Behaviour_type', 'C')->pluck('H_temp');
+        } else {
+            $C_value = DB::table('templates_reports')->where('Behaviour_type', 'C')->pluck('L_temp');
+        }
+        return $C_value;
+    }
+
+    public function assign_minmax($value){
+
+        if($value >20){
+            $value = 1;
+        }
+        else{
+            $value = 0;
+        }
+        return $value;
+    }
+
+    public function max($plot,$max){
+
+        $b_val="";
+        if($plot[0] >= $max){
+            $b_val = 'D';
+
+        }
+        if($plot[1] >= $max){
+            $b_val = 'I';
+
+        }
+        if($plot[2] >= $max){
+            $b_val = 'S';
+
+        }
+        if($plot[3] >= $max){
+            $b_val = 'C';
+
+        }
+
+        return $b_val;
+
+
+    }
+
+    public function highlow($hl){
+        if($hl >0 ){
+            $hl = 'High';
+        }
+        else{
+            $hl= 'Low';
+        }
+        return $hl;
+    }
+
+
     public function tpdf()
     {
+        $uderid =20;
+        $bt = 'C';
+        $bvalue = 2;
+        //get plot value
+        $ans = DB::table('answer_records')->where('user_id',$uderid)->first();
+        $plot = explode(",",$ans->plot);
+
+        //dd($template,$Behaviour_type,$keywords,$Wmotivate,$Wbest,$Wdemotive,$Wworst,$A_improve,$O_better,$O_avoid,$Y_environment);
         // $pdf = Pdf::loadView('dom');
 
         // return $pdf->stream('invoice.pdf');
@@ -420,42 +525,239 @@ class questionsController extends Controller
 
         // chart
         $qc = new QuickChart(array(
-            'width'=> 500,
-            'height'=> 300,
-            'version'=> '2',
-          ));
+            'width' => 500,
+            'height' => 300,
+            'version' => '2',
+        ));
 
-        $qc->setConfig('{
-            type: "line",
+
+        //Behaviour value with range
+
+        $v_D = $plot[0];
+        $v_I = $plot[1];
+        $v_S = $plot[2];
+        $v_C = $plot[3];
+
+        //dd($v_D, $v_I, $v_S, $v_C);
+
+        $D_value = $this->assign_minmax($plot[0]);
+        $I_value = $this->assign_minmax($plot[1]);
+        $S_value = $this->assign_minmax($plot[2]);
+        $C_value = $this->assign_minmax($plot[3]);
+        //dd($D_value, $I_value, $S_value, $C_value);
+
+        $max =max($plot);
+        //get hight behaviour
+        $b_val = $this->max($plot,$max);
+        //dd($b_val);
+
+        if($b_val == 'D'){
+            $D_value = 2;
+        }
+        if($b_val == 'I'){
+            $I_value = 2;
+        }
+        if($b_val == 'S'){
+            $S_value = 2;
+        }
+        if($b_val == 'C'){
+            $C_value = 2;
+        }
+
+        //dd($D_value,$I_value,$S_value,$C_value);
+        $valbest = 2;
+
+
+        switch ($valbest) {
+            case $D_value;
+
+                $best = 'D';
+                $best = $this->com_best($best);
+                $I_hl = $this->highlow($I_value);
+                $I_value = $this->com_I($I_value);
+                $S_hl = $this->highlow($S_value);
+                $S_value = $this->com_S($S_value);
+                $C_hl = $this->highlow($C_value);
+                $C_value = $this->com_C($C_value);
+                $D_hl = '';
+                //dd($I_value);
+                break;
+            case $I_value;
+                //dd('I');
+                $best = 'I';
+                $best = $this->com_best($best);
+                $D_hl = $this->highlow($D_value);
+                $D_value = $this->com_D($D_value);
+                $S_hl = $this->highlow($S_value);
+                $S_value = $this->com_S($S_value);
+                $C_hl = $this->highlow($C_value);
+                $C_value = $this->com_C($C_value);
+                $I_hl = '';
+                break;
+            case $S_value;
+                //dd('S');
+                $best = 'S';
+                $best = $this->com_best($best);
+                $I_hl = $this->highlow($I_value);
+                $I_value = $this->com_I($I_value);
+                $D_hl = $this->highlow($D_value);
+                $D_value = $this->com_D($D_value);
+                $C_hl = $this->highlow($C_value);
+                $C_value = $this->com_C($C_value);
+                $S_hl = '';
+                break;
+            case $C_value;
+                //dd('C');
+                $best = 'C';
+                $best = $this->com_best($best);
+                $I_hl = $this->highlow($I_value);
+                $I_value = $this->com_I($I_value);
+                $S_hl = $this->highlow($S_value);
+                $S_value = $this->com_S($S_value);
+                $D_hl = $this->highlow($D_value);
+                $D_value = $this->com_D($D_value);
+                $C_hl = '';
+                break;
+
+            default:
+                dd('unknown value');
+        }
+        // if($D_value === $valbest){
+        //     //$D_value = $best;
+
+        //     $best = 'D';
+        //     $vbest = $best;
+        //     dd($D_value,$best);
+        //     //$D_value = DB::table('templates_reports')->where('Behaviour_type',$best)->pluck('H_temp');
+        //     $best = $this->com_best($best);
+        //     $I_value = $this->com_I($I_value);
+        //     $S_value = $this->com_S($S_value);
+        //     $C_value = $this->com_C($C_value);
+
+
+        // }
+        // if($I_value === $valbest){
+        //     //$I_value = $best;
+        //     $best = 'I';
+        //     dd($D_value,$best);
+        //     $vbest = $best;
+        //     $best = $this->com_best($best);
+        //     $D_value = $this->com_D($D_value);
+        //     $S_value = $this->com_S($S_value);
+        //     $C_value = $this->com_C($C_value);
+        // }
+        // if($S_value === $valbest){
+        //     //$S_value = $best;
+        //     $best = 'S';
+        //     $vbest = $best;
+        //     $best = $this->com_best($best);
+        //     $I_value = $this->com_I($I_value);
+        //     $D_value = $this->com_D($D_value);
+        //     $C_value = $this->com_C($C_value);
+        // }
+        // if($C_value > $valbest){
+        //     //$C_value = $best;
+        //     $best = 'C';
+        //     $vbest = $best;
+        //     $best = $this->com_best($best);
+        //     $I_value = $this->com_I($I_value);
+        //     $S_value = $this->com_S($S_value);
+        //     $D_value = $this->com_D($D_value);
+        // }
+        // else {
+        //     $best = $best;
+        // }
+
+
+
+        // $best = DB::table('templates_reports')->where('Behaviour_type','D')->pluck('H_temp');
+        // if($I_value = 1){
+        //     $I_value = DB::table('templates_reports')->where('Behaviour_type','I')->pluck('H_temp');
+        // }
+        // else{
+        //     $I_value = DB::table('templates_reports')->where('Behaviour_type','I')->pluck('L_temp');
+        // }
+
+        // if($S_value = 1){
+        //     $S_value = DB::table('templates_reports')->where('Behaviour_type','S')->pluck('H_temp');
+        // }
+        // else{
+        //     $S_value = DB::table('templates_reports')->where('Behaviour_type','S')->pluck('L_temp');
+        // }
+
+        // if($C_value = 1){
+        //     $C_value = DB::table('templates_reports')->where('Behaviour_type','C')->pluck('H_temp');
+        // }
+        // else{
+        //     $C_value = DB::table('templates_reports')->where('Behaviour_type','C')->pluck('L_temp');
+        // }
+        //explode array
+        $best = explode('.', $best);
+        $D_value = explode('.', $D_value);
+        $I_value = explode('.', $I_value);
+        $S_value = explode('.', $S_value);
+        $C_value = explode('.', $C_value);
+        //dd($best,$D_value,$I_value,$S_value,$C_value);
+
+        $qc->setConfig("{
+            type: 'line',
             data: {
-                labels: ["January", "February", "March", "April", "May", "June", "July"],
+                labels: ['D', 'I', 'S', 'C'],
                 datasets: [
                   {
-                    label: "My First dataset",
-                    backgroundColor: "rgb(255, 99, 132)",
-                    borderColor: "rgb(255, 99, 132)",
-                    data: [93, -29, -17, -8, 73, 98, 40],
+                    label: 'My First dataset',
+                    backgroundColor: 'rgb(255, 99, 132)',
+                    borderColor: 'rgb(255, 99, 132)',
+                    data: [20, 20, 20, 20],
                     fill: false,
                   },
                   {
-                    label: "My Second dataset",
+                    label: 'My Second dataset',
                     fill: false,
-                    backgroundColor: "rgb(54, 162, 235)",
-                    borderColor: "rgb(54, 162, 235)",
-                    data: [20, 85, -79, 93, 27, -81, -22],
+                    backgroundColor: 'rgb(54, 162, 235)',
+                    borderColor: 'rgb(54, 162, 235)',
+                    data: [ $v_D, $v_I, $v_S, $v_C],
                   },
                 ],
               },
               options: {
                 title: {
                   display: true,
-                  text: "Chart.js Line Chart",
+                  text: 'Chart.js Line Chart',
                 },
               },
-        }');
+        }");
 
         //dd($qc->getUrl());
+        $template = DB::table('templates_reports')->where('Behaviour_type', $b_val)->first();
+        //dd($template);
+
+
+        //dd($plot);
+        $keywords = $template->keywords;
+        $Wmotivate = $template->Wmotivate;
+        $Wbest = $template->Wbest;
+        $Wdemotive = $template->Wdemotive;
+        $Wworst = $template->Wworst;
+        $A_improve = $template->A_improve;
+        $O_better = $template->O_better;
+        $O_avoid = $template->O_avoid;
+        $Y_environment = $template->Y_environment;
+        $Behaviour_type = $template->Behaviour_type;
+        //$keywords = $template->keywords;
+
+        $keywords = explode(',', $keywords);
+        $Wmotivate = explode('.', $Wmotivate);
+        $Wbest = explode('.', $Wbest);
+        $Wdemotive = explode('.', $Wdemotive);
+        $Wworst = explode('.', $Wworst);
+        $A_improve = explode('.', $A_improve);
+        $O_better = explode('.', $O_better);
+        $O_avoid = explode('.', $O_avoid);
+        $Y_environment = explode('.', $Y_environment);
+
         $line = $qc->getUrl();
+        //dd($line);
 
         // $ch=$qc->getUrl();
         // //dd($ch);
@@ -486,18 +788,39 @@ class questionsController extends Controller
         //         'charts' => $qc->getUrl(),
         //       ]
         // );
-        $ch = "zz";
+        $ch = 1;
         $img1 = "https://picsum.photos/200";
-        $pdf = pdf::loadView('dom',[
-            'ch'=>$ch,
+        //dd($D_value, $I_value, $S_value, $C_value,$D_hl,$I_hl,$S_hl,$C_hl);
+        $pdf = pdf::loadView('dom', [
+            'ch' => $ch,
             'img' => $img,
-            'line'=>$line,
+            'line' => $line,
+            'b_val' => $b_val,
+            'best' => $best,
+            'D_value' => $D_value,
+            'I_value' => $I_value,
+            'S_value' => $S_value,
+            'C_value' => $C_value,
+            'D_hl' => $D_hl,
+            'I_hl' => $I_hl,
+            'S_hl' => $S_hl,
+            'C_hl' => $C_hl,
+            'keywords' => $keywords,
+            'Wmotivate' => $Wmotivate,
+            'Wbest' => $Wbest,
+            'Wdemotive' => $Wdemotive,
+            'Wworst' => $Wworst,
+            'A_improve' => $A_improve,
+            'O_better' => $O_better,
+            'O_avoid' => $O_avoid,
+            'Y_environment' => $Y_environment,
+            'Behaviour_type' => $Behaviour_type,
 
         ]);
         $pdf->getDomPDF()->setHttpContext(
             stream_context_create([
                 'ssl' => [
-                    'allow_self_signed'=> TRUE,
+                    'allow_self_signed' => TRUE,
                     'verify_peer' => FALSE,
                     'verify_peer_name' => FALSE,
                 ]
@@ -506,5 +829,16 @@ class questionsController extends Controller
 
         $pdf->setOption('isRemoteEnabled', true);
         return $pdf->stream('invoice.pdf');
+    }
+
+
+
+    public function vtpdf()
+    {
+        return view('dom', [
+            'ch' => "ss",
+            'img' => "ss",
+            'line' => "ss",
+        ]);
     }
 }
