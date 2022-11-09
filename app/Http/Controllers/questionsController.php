@@ -491,7 +491,8 @@ class questionsController extends Controller
     }
 
 
-    public function removearr($array,$max){
+    public function removearr($array, $max)
+    {
 
         if (($key = array_search($max, $array)) !== false) {
             unset($array[$key]);
@@ -513,47 +514,44 @@ class questionsController extends Controller
         //     unset($bsort[$key]);
         // }
         $max = max($bsort);
-        $bsort=$this->removearr($bsort,$max);
+        $bsort = $this->removearr($bsort, $max);
         $scnd = max($bsort);
-        $bsort=$this->removearr($bsort,$scnd);
+        $bsort = $this->removearr($bsort, $scnd);
         $third = max($bsort);
-        $bsort=$this->removearr($bsort,$third);
+        $bsort = $this->removearr($bsort, $third);
         $forth = max($bsort);
-        $bsort=$this->removearr($bsort,$scnd);
+        $bsort = $this->removearr($bsort, $scnd);
         //$bsort=$this->removearr($bsort,$scnd);
 
         //$scnd=max($bsort);
 
 
         $arrbsort = array();
-        array_push($arrbsort,$max,$scnd,$third,$forth);
+        array_push($arrbsort, $max, $scnd, $third, $forth);
 
-        $copybs=$arrbsort;
-        for($i=0; $i<count($arrbsort); $i++){
+        $copybs = $arrbsort;
+        for ($i = 0; $i < count($arrbsort); $i++) {
 
-            switch($arrbsort[$i]){
+            switch ($arrbsort[$i]) {
 
                 case $copy[0]:
-                    $arrbsort[$i]= 'D';
-                break;
+                    $arrbsort[$i] = 'D';
+                    break;
                 case $copy[1]:
-                    $arrbsort[$i]= 'I';
-                break;
+                    $arrbsort[$i] = 'I';
+                    break;
                 case $copy[2]:
-                    $arrbsort[$i]= 'S';
-                break;
+                    $arrbsort[$i] = 'S';
+                    break;
                 case $copy[3]:
-                    $arrbsort[$i]= 'C';
-                break;
+                    $arrbsort[$i] = 'C';
+                    break;
                 default:
                     dd("error");
             }
-
-
         }
         //dd($copy,$bsort,$max,$scnd,$third,$forth,$copybs,$arrbsort);
         return $arrbsort;
-
     }
     public function tpdf()
     {
@@ -964,7 +962,8 @@ class questionsController extends Controller
         ]);
     }
 
-    public function Chartquick($name){
+    public function Chartquick($name,$value)
+    {
 
         $qc = new QuickChart(array(
             'width' => 500,
@@ -974,10 +973,10 @@ class questionsController extends Controller
         $qc->setConfig("{
             type: 'pie',
             data: {
-                labels: ['$name', 'I', 'S', 'C'],
+                labels: ['D', 'I', 'S', 'C'],
                 datasets: [
                     {
-                      data: [84, 28, 57, 19, 97],
+                      data: [$value[0], $value[1], $value[2], $value[3]],
                       backgroundColor: [
                         'rgb(255, 99, 132)',
                         'rgb(255, 159, 64)',
@@ -992,45 +991,166 @@ class questionsController extends Controller
               },
 
         }");
-        $url =$qc->getUrl();
+        $url = $qc->getUrl();
         //dd('Genereated url : ',$url);
         return $url;
-
     }
-    public function Gpdf(Clients $clients){
+    public function persent($num, $total)
+    {
+        $num = $num / $total * 100;
+        return $num;
+    }
+    public function chartvalue($cl, $dp)
+    {
+
+        $maxD = 0;
+        $maxI = 0;
+        $maxS = 0;
+        $maxC = 0;
+        $join = DB::table('answer_records')
+            ->join('clients', 'answer_records.client_id', '=', 'clients.id')
+            ->join('users', 'answer_records.user_id', '=', 'users.id')
+            ->select('answer_records.*', 'clients.client', 'users.department_id')
+            ->where('answer_records.client_id', $cl)
+            ->where('users.department_id', $dp)
+            ->get();
+
+            foreach ($join as $join) {
+                $darray = explode(',', $join->plot);
+
+                $integerIDs = array_map('intval', $darray);
+                //sort
+                $sorted = $this->bsort($integerIDs);
+                $maxb = $sorted[0];
+                switch ($maxb) {
+                    case 'D';
+                        $maxD = $maxD + 1;
+                        break;
+                    case 'I';
+                        $maxI = $maxI + 1;
+                        break;
+                    case 'S';
+                        $maxS = $maxS + 1;
+                        break;
+                    case 'C';
+                        $maxC = $maxC + 1;
+                        break;
+                    default:
+                        dd('error`');
+                }
+
+                //dd($participants,$darray,$sorted,$maxb,$integerIDs,$maxI);
+
+
+            }
+
+        $myarray = array();
+        array_push($myarray,$maxD,$maxI,$maxS,$maxC);
+
+
+        return $myarray;
+    }
+    public function Gpdf(Clients $clients)
+    {
 
 
         $participants = DB::table('users')->where('client_id', $clients->id)->count();
         $join = DB::table('answer_records')
             ->join('clients', 'answer_records.client_id', '=', 'clients.id')
-            ->select('answer_records.*', 'clients.client')
-            // ->where('users.id', $auth)
+            ->join('users', 'answer_records.user_id', '=', 'users.id')
+            ->select('answer_records.*', 'clients.client', 'users.department_id')
+            ->where('answer_records.client_id', $clients->id)
+            // ->where('users.department_id', 1)
+
             ->get();
-        //dd($join);
+
         //dd($join->plot);
+        $maxD = 0;
+        $maxI = 0;
+        $maxS = 0;
+        $maxC = 0;
 
-        $darray = explode(',', $join->plot);
+        foreach ($join as $join) {
+            $darray = explode(',', $join->plot);
 
-        $integerIDs = array_map('intval', $darray);
-        //sort
-        $sorted = $this->bsort($integerIDs);
+            $integerIDs = array_map('intval', $darray);
+            //sort
+            $sorted = $this->bsort($integerIDs);
+            $maxb = $sorted[0];
+            switch ($maxb) {
+                case 'D';
+                    $maxD = $maxD + 1;
+                    break;
+                case 'I';
+                    $maxI = $maxI + 1;
+                    break;
+                case 'S';
+                    $maxS = $maxS + 1;
+                    break;
+                case 'C';
+                    $maxC = $maxC + 1;
+                    break;
+                default:
+                    dd('error`');
+            }
 
-        //dd($participants);
-        $url1 = $this->Chartquick('chart1');
-        $url2 = $this->Chartquick('chart2');
-        $url3 = $this->Chartquick('chart3');
-        $url4 = $this->Chartquick('chart4');
-        $total = $this->Chartquick('pei total');
-        $pdf = pdf::loadView('PDF.Gpdf',[
+            //dd($participants,$darray,$sorted,$maxb,$integerIDs,$maxI);
+
+
+        }
+        $perD = $this->persent($maxD, $participants);
+        $perD = ceil($perD);
+        $perI = $this->persent($maxI, $participants);
+        $perI = ceil($perI);
+        $perS = $this->persent($maxS, $participants);
+        $perS = ceil($perS);
+        $perC = $this->persent($maxC, $participants);
+        $perC = ceil($perC);
+
+        //dd($participants,$darray,$sorted,$maxb,$integerIDs,$maxI);
+        // dd($maxD,$maxI,$maxS,$maxC);
+        // dd($participants,$darray,$sorted,$integerIDs);
+
+        //department value
+        $numdepartment = DB::table('departments')->get();
+        $storeV = array();
+        $s = 0;
+
+        $storeUrl = array();
+        foreach ($numdepartment as $dept) {
+
+            $query = $this->chartvalue($clients->id, $dept->id);
+            array_push($storeV, $query);
+
+            ${'url'.$dept->id} = $this->Chartquick('chart'.$dept->id, $query);
+            array_push($storeUrl,${'url'.$dept->id});
+        }
+
+        //dd($storeUrl);
+        //dd($storeV,$url1,$url2);
+        // $url1 = $this->Chartquick('chart1');
+        // $url2 = $this->Chartquick('chart2');
+        // $url3 = $this->Chartquick('chart3');
+        // $url4 = $this->Chartquick('chart4');
+        // $total = $this->Chartquick('pei total');
+        $pdf = pdf::loadView('PDF.Gpdf', [
             'name' => $clients->client,
             'num' => $participants,
             'url1' => $url1,
             'url2' => $url2,
             'url3' => $url3,
-            'url4' => $url4,
-            'total' => $total,
+            'url' => $storeUrl,
+            // 'url' => $storeUrl,
+            // 'total' => $total,
+            'maxD' => $maxD,
+            'maxI' => $maxI,
+            'maxS' => $maxS,
+            'maxC' => $maxC,
+            'perD' => $perD,
+            'perI' => $perI,
+            'perS' => $perS,
+            'perC' => $perC,
         ]);
         return $pdf->stream('invoice.pdf');
-
     }
 }

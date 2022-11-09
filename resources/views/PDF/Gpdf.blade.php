@@ -9,12 +9,15 @@
         <table style="border: 1px solid black;">
             <tbody>
                 <tr>
-                    <td class="table-con text-red text-style">D <br> <b class="percent-b">40% High</b> </td>
-                    <td class="table-con text-yellow text-style">i <br> <b class="percent-b">40% High</b> </td>
+                    <td class="table-con text-red text-style">D <br> <b class="percent-b">{{ $perD }}% High</b> </td>
+                    <td class="table-con text-yellow text-style">i <br> <b class="percent-b">{{ $perI }}% High</b>
+                    </td>
                 </tr>
                 <tr>
-                    <td class="table-con text-grass text-style">S <br> <b class="percent-b">40% High</b> </td>
-                    <td class="table-con text-blue text-style">C <br> <b class="percent-b">40% High</b> </td>
+                    <td class="table-con text-grass text-style">S <br> <b class="percent-b">{{ $perS }}% High</b>
+                    </td>
+                    <td class="table-con text-blue text-style">C <br> <b class="percent-b">{{ $perC }}% High</b>
+                    </td>
                 </tr>
 
             </tbody>
@@ -27,13 +30,56 @@
 
         <h1 class="text-green text-center mb-3">DiSC Behaviour Style by Department</h1>
 
-        <img class="img-chart" src="{{ $url1 }}" alt="image">
-        <img class="img-chart2 mb-3" src="{{ $url2 }}" alt="image">
 
+            <img class="img-chart" src="{{ $url1 }}" alt="image">
+            <img class="img-chart2" src="{{ $url2 }}" alt="image">
 
         {{-- <h1 class="hide">.</h1> --}}
-        <img class="img-chart" src="{{ $url3 }}" alt="image">
-        <img class="img-chart2" src="{{ $url4 }}" alt="image">
+
+            <img class="img-chart" src="{{ $url3 }}" alt="image">
+
+
+
+
+
+
+
+
+
+    </div>
+    <div class="sub-container2 page-break">
+
+        <h1 class="text-green text-center mb-3">DiSC Behaviour Style by Department for each</h1>
+
+
+            @php
+                $num = 0;
+            @endphp
+            @foreach ($url as $url )
+            <h1>Name</h1>
+            @php
+                $num++;
+            @endphp
+                @if ($num == 1 )
+                <img class="img-chart" src="{{ $url }}" alt="image">
+                @elseif ($num > 1)
+                <img class="img-chart2" src="{{ $url }}" alt="image">
+                @endif
+
+
+
+
+
+            @endforeach
+            {{-- <img class="img-chart" src="{{ $url1 }}" alt="image">
+            <img class="img-chart2" src="{{ $url2 }}" alt="image"> --}}
+
+        {{-- <h1 class="hide">.</h1> --}}
+
+            {{-- <img class="img-chart" src="{{ $url3 }}" alt="image"> --}}
+
+
+
 
 
 
@@ -528,10 +574,11 @@
     {{-- start individual data table --}}
     <div class="sub-container2 page-break">
         <h1 class="text-green">DiSC Style</h1>
-        <p class="mb-3">The percentage of your group receiving the highest segment scores in each DiSC@quadrant is shown in the pie chart
+        <p class="mb-3">The percentage of your group receiving the highest segment scores in each DiSC@quadrant is shown
+            in the pie chart
             below. </p>
 
-        <img class="total" src="{{ $total }}" alt="pie total">
+        {{-- <img class="total" src="{{ $total }}" alt="pie total"> --}}
     </div>
     <div class="sub-container2 page-break">
         <h1 class="text-green">Individual Data Table</h1>
@@ -558,6 +605,4 @@
     </div>
 
     {{-- DISC style --}}
-
-
 @endsection

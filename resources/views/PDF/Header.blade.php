@@ -273,6 +273,7 @@
         .img-chart2 {
             width: 50%;
             clear: right;
+            margin-bottom: 50px;
         }
 
         .float-left {
