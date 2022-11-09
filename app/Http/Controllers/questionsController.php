@@ -2,21 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use SPDF;
+use QuickChart;
 use App\Models\Groups;
+use App\Models\Clients;
 use App\Models\Questions;
-use App\Models\Departments;
-use Barryvdh\DomPDF\Facade\Pdf;
-use Illuminate\Http\Request;
 // use Barryvdh\DomPDF\Facade\Pdf;
 // use PDF;
-use SPDF;
+use App\Models\Departments;
 
-use QuickChart;
-use Illuminate\Support\Facades\DB;
-use App\Models\Answer_records as record;
+use Termwind\Components\Dd;
+use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\templates_report;
 use App\Models\Templates_summary;
-use Termwind\Components\Dd;
+use Illuminate\Support\Facades\DB;
+use App\Models\Answer_records as record;
 
 class questionsController extends Controller
 {
@@ -156,10 +157,12 @@ class questionsController extends Controller
         //dd($varD,$varI,$varS,$varC,$str);
 
         //dd(auth()->user()->id);
+        //$clientid = auth()->user()->client_id;
         $record = new record;
         $record->answer_records = $str;
         $record->created_at = date('Y-m-d');
         $record->user_id = auth()->user()->id;
+        $record->client_id = auth()->user()->client_id;
         $record->D = $varD;
         $record->I = $varI;
         $record->S = $varS;
@@ -375,8 +378,8 @@ class questionsController extends Controller
 
         //dd($record->D,$record->I,$record->S,$record->C,$high,$highV);
         //dd(auth()->user()->id);
-        $splot = join(",",$plot);
-        $update = record::where('user_id',$record->user_id)->update(['plot'=>$splot]);
+        $splot = join(",", $plot);
+        $update = record::where('user_id', $record->user_id)->update(['plot' => $splot]);
         $dept = Departments::find(auth()->user()->department_id);
         //dd($dept->department);
 
@@ -403,15 +406,15 @@ class questionsController extends Controller
 
     public function com_best($best)
     {
-        $best = DB::table('templates_reports')->where('Behaviour_type', $best)->pluck('H_temp');
+        $best = DB::table('templates_reports')->where('Behaviour_type', $best)->pluck('H_temp')->first();
         return $best;
     }
     public function com_D($D_value)
     {
         if ($D_value > 0) {
-            $D_value = DB::table('templates_reports')->where('Behaviour_type', 'D')->pluck('H_temp');
+            $D_value = DB::table('templates_reports')->where('Behaviour_type', 'D')->pluck('H_temp')->first();
         } else {
-            $D_value = DB::table('templates_reports')->where('Behaviour_type', 'D')->pluck('L_temp');
+            $D_value = DB::table('templates_reports')->where('Behaviour_type', 'D')->pluck('L_temp')->first();
         }
         return $D_value;
     }
@@ -419,9 +422,9 @@ class questionsController extends Controller
     public function com_I($I_value)
     {
         if ($I_value > 0) {
-            $I_value = DB::table('templates_reports')->where('Behaviour_type', 'I')->pluck('H_temp');
+            $I_value = DB::table('templates_reports')->where('Behaviour_type', 'I')->pluck('H_temp')->first();
         } else {
-            $I_value = DB::table('templates_reports')->where('Behaviour_type', 'I')->pluck('L_temp');
+            $I_value = DB::table('templates_reports')->where('Behaviour_type', 'I')->pluck('L_temp')->first();
         }
         return $I_value;
     }
@@ -429,9 +432,9 @@ class questionsController extends Controller
     public function com_S($S_value)
     {
         if ($S_value > 0) {
-            $S_value = DB::table('templates_reports')->where('Behaviour_type', 'S')->pluck('H_temp');
+            $S_value = DB::table('templates_reports')->where('Behaviour_type', 'S')->pluck('H_temp')->first();
         } else {
-            $S_value = DB::table('templates_reports')->where('Behaviour_type', 'S')->pluck('L_temp');
+            $S_value = DB::table('templates_reports')->where('Behaviour_type', 'S')->pluck('L_temp')->first();
         }
         return $S_value;
     }
@@ -439,79 +442,149 @@ class questionsController extends Controller
     public function com_C($C_value)
     {
         if ($C_value > 0) {
-            $C_value = DB::table('templates_reports')->where('Behaviour_type', 'C')->pluck('H_temp');
+            $C_value = DB::table('templates_reports')->where('Behaviour_type', 'C')->pluck('H_temp')->first();
         } else {
-            $C_value = DB::table('templates_reports')->where('Behaviour_type', 'C')->pluck('L_temp');
+            $C_value = DB::table('templates_reports')->where('Behaviour_type', 'C')->pluck('L_temp')->first();
         }
         return $C_value;
     }
 
-    public function assign_minmax($value){
+    public function assign_minmax($value)
+    {
 
-        if($value >20){
+        if ($value > 20) {
             $value = 1;
-        }
-        else{
+        } else {
             $value = 0;
         }
         return $value;
     }
 
-    public function max($plot,$max){
+    public function max($plot, $max)
+    {
 
-        $b_val="";
-        if($plot[0] >= $max){
+        $b_val = "";
+        if ($plot[0] >= $max) {
             $b_val = 'D';
-
         }
-        if($plot[1] >= $max){
+        if ($plot[1] >= $max) {
             $b_val = 'I';
-
         }
-        if($plot[2] >= $max){
+        if ($plot[2] >= $max) {
             $b_val = 'S';
-
         }
-        if($plot[3] >= $max){
+        if ($plot[3] >= $max) {
             $b_val = 'C';
-
         }
 
         return $b_val;
-
-
     }
 
-    public function highlow($hl){
-        if($hl >0 ){
+    public function highlow($hl)
+    {
+        if ($hl > 0) {
             $hl = 'High';
-        }
-        else{
-            $hl= 'Low';
+        } else {
+            $hl = 'Low';
         }
         return $hl;
     }
 
 
+    public function removearr($array,$max){
+
+        if (($key = array_search($max, $array)) !== false) {
+            unset($array[$key]);
+        }
+        return $array;
+    }
+    public function bsort($bsort)
+    {
+        $max = 0;
+        $scnd = 0;
+        $third = 0;
+        $forth = 0;
+
+        $copy = $bsort;
+
+
+        //delete element in array by value "green"
+        // if (($key = array_search($max, $bsort)) !== false) {
+        //     unset($bsort[$key]);
+        // }
+        $max = max($bsort);
+        $bsort=$this->removearr($bsort,$max);
+        $scnd = max($bsort);
+        $bsort=$this->removearr($bsort,$scnd);
+        $third = max($bsort);
+        $bsort=$this->removearr($bsort,$third);
+        $forth = max($bsort);
+        $bsort=$this->removearr($bsort,$scnd);
+        //$bsort=$this->removearr($bsort,$scnd);
+
+        //$scnd=max($bsort);
+
+
+        $arrbsort = array();
+        array_push($arrbsort,$max,$scnd,$third,$forth);
+
+        $copybs=$arrbsort;
+        for($i=0; $i<count($arrbsort); $i++){
+
+            switch($arrbsort[$i]){
+
+                case $copy[0]:
+                    $arrbsort[$i]= 'D';
+                break;
+                case $copy[1]:
+                    $arrbsort[$i]= 'I';
+                break;
+                case $copy[2]:
+                    $arrbsort[$i]= 'S';
+                break;
+                case $copy[3]:
+                    $arrbsort[$i]= 'C';
+                break;
+                default:
+                    dd("error");
+            }
+
+
+        }
+        //dd($copy,$bsort,$max,$scnd,$third,$forth,$copybs,$arrbsort);
+        return $arrbsort;
+
+    }
     public function tpdf()
     {
-        $uderid =20;
+        $uderid = 20;
         $bt = 'C';
         $bvalue = 2;
         $auth = auth()->user()->id;
         //dd($auth);
         //get plot value
 
-        $ans = DB::table('answer_records')->where('user_id',$auth)->first();
+        $ans = DB::table('answer_records')->where('user_id', $auth)->first();
         $join = DB::table('users')
             ->join('departments', 'users.department_id', '=', 'departments.id')
             ->select('users.*', 'departments.department')
-            ->where('users.id',$auth)
+            ->where('users.id', $auth)
             ->first();
+
+        //$intd = intval($ans->plot);
+        $darray = explode(',', $ans->plot);
+        $integerIDs = array_map('intval', $darray);
+        //sort
+        $sorted = $this->bsort($integerIDs);
+
+        //$type = gettype($integerIDs);
+
+        //dd($ans,$join,$integerIDs,$type);
 
         // $dept = $join->department;
         // dd($dept);
-        $plot = explode(",",$ans->plot);
+        $plot = explode(",", $ans->plot);
+
 
         //dd($template,$Behaviour_type,$keywords,$Wmotivate,$Wbest,$Wdemotive,$Wworst,$A_improve,$O_better,$O_avoid,$Y_environment);
         // $pdf = Pdf::loadView('dom');
@@ -562,21 +635,21 @@ class questionsController extends Controller
         $C_value = $this->assign_minmax($plot[3]);
         //dd($D_value, $I_value, $S_value, $C_value);
 
-        $max =max($plot);
+        $max = max($plot);
         //get hight behaviour
-        $b_val = $this->max($plot,$max);
+        $b_val = $this->max($plot, $max);
         //dd($b_val);
 
-        if($b_val == 'D'){
+        if ($b_val == 'D') {
             $D_value = 2;
         }
-        if($b_val == 'I'){
+        if ($b_val == 'I') {
             $I_value = 2;
         }
-        if($b_val == 'S'){
+        if ($b_val == 'S') {
             $S_value = 2;
         }
-        if($b_val == 'C'){
+        if ($b_val == 'C') {
             $C_value = 2;
         }
 
@@ -708,39 +781,58 @@ class questionsController extends Controller
         //     $C_value = DB::table('templates_reports')->where('Behaviour_type','C')->pluck('L_temp');
         // }
         //explode array
-        $best = explode('.', $best);
-        $D_value = explode('.', $D_value);
-        $I_value = explode('.', $I_value);
-        $S_value = explode('.', $S_value);
-        $C_value = explode('.', $C_value);
+
+        //$best = explode('.', $best);
+        // $best = explode('.', $best);
+        // $D_value = explode('.', $D_value);
+        // $I_value = explode('.', $I_value);
+        // $S_value = explode('.', $S_value);
+        // $C_value = explode('.', $C_value);
+
         //dd($best,$D_value,$I_value,$S_value,$C_value);
 
         $qc->setConfig("{
             type: 'line',
             data: {
-                labels: ['D', 'I', 'S', 'C'],
+                labels: ['','D', 'I', 'S', 'C',''],
                 datasets: [
                   {
                     label: 'My First dataset',
                     backgroundColor: 'rgb(255, 99, 132)',
-                    borderColor: 'rgb(255, 99, 132)',
-                    data: [20, 20, 20, 20],
+                    borderColor: 'rgb(0, 0, 0)',
+                    data: [20,20,20, 20, 20, 20],
                     fill: false,
+                    pointRadius:0,
+                    borderWidth: 1
                   },
                   {
                     label: 'My Second dataset',
                     fill: false,
                     backgroundColor: 'rgb(54, 162, 235)',
                     borderColor: 'rgb(54, 162, 235)',
-                    data: [ $v_D, $v_I, $v_S, $v_C],
+                    data: [null, $v_D, $v_I, $v_S, $v_C,null],
+                    pointRadius:0,
+                    borderWidth: 4
                   },
                 ],
               },
               options: {
+                legend: {
+                    display: false,
+                },
                 title: {
                   display: true,
-                  text: 'Chart.js Line Chart',
+                  text: 'DiSC Profiling grpahs',
                 },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+                            display: false,
+                        }
+                    }]
+                }
+
               },
         }");
 
@@ -762,6 +854,7 @@ class questionsController extends Controller
         $Behaviour_type = $template->Behaviour_type;
         //$keywords = $template->keywords;
 
+        //dd($best, $Wmotivate);
         $keywords = explode(',', $keywords);
         $Wmotivate = explode('.', $Wmotivate);
         $Wbest = explode('.', $Wbest);
@@ -771,6 +864,14 @@ class questionsController extends Controller
         $O_better = explode('.', $O_better);
         $O_avoid = explode('.', $O_avoid);
         $Y_environment = explode('.', $Y_environment);
+
+        $best = explode('.', $best);
+        $D_value = explode('.', $D_value);
+        $I_value = explode('.', $I_value);
+        $S_value = explode('.', $S_value);
+        $C_value = explode('.', $C_value);
+
+
 
         $line = $qc->getUrl();
         //dd($line);
@@ -809,7 +910,9 @@ class questionsController extends Controller
         //dd($D_value, $I_value, $S_value, $C_value,$D_hl,$I_hl,$S_hl,$C_hl);
 
         $pdf = pdf::loadView('dom', [
+            'ansval' => $ans,
             'user'  => $join,
+            'rank' => $sorted,
             'ch' => $ch,
             'img' => $img,
             'line' => $line,
@@ -846,8 +949,8 @@ class questionsController extends Controller
         );
 
         $pdf->setOption('isRemoteEnabled', true);
-        //return $pdf->stream('invoice.pdf');
-        return $pdf->download('invoice.pdf');
+        return $pdf->stream('invoice.pdf');
+        //return $pdf->download('profiling.pdf');
     }
 
 
@@ -859,5 +962,75 @@ class questionsController extends Controller
             'img' => "ss",
             'line' => "ss",
         ]);
+    }
+
+    public function Chartquick($name){
+
+        $qc = new QuickChart(array(
+            'width' => 500,
+            'height' => 300,
+            'version' => '2',
+        ));
+        $qc->setConfig("{
+            type: 'pie',
+            data: {
+                labels: ['$name', 'I', 'S', 'C'],
+                datasets: [
+                    {
+                      data: [84, 28, 57, 19, 97],
+                      backgroundColor: [
+                        'rgb(255, 99, 132)',
+                        'rgb(255, 159, 64)',
+                        'rgb(255, 205, 86)',
+                        'rgb(75, 192, 192)',
+                        'rgb(54, 162, 235)',
+                      ],
+                      label: 'Dataset 1',
+                    },
+                  ],
+
+              },
+
+        }");
+        $url =$qc->getUrl();
+        //dd('Genereated url : ',$url);
+        return $url;
+
+    }
+    public function Gpdf(Clients $clients){
+
+
+        $participants = DB::table('users')->where('client_id', $clients->id)->count();
+        $join = DB::table('answer_records')
+            ->join('clients', 'answer_records.client_id', '=', 'clients.id')
+            ->select('answer_records.*', 'clients.client')
+            // ->where('users.id', $auth)
+            ->get();
+        //dd($join);
+        //dd($join->plot);
+
+        $darray = explode(',', $join->plot);
+
+        $integerIDs = array_map('intval', $darray);
+        //sort
+        $sorted = $this->bsort($integerIDs);
+
+        //dd($participants);
+        $url1 = $this->Chartquick('chart1');
+        $url2 = $this->Chartquick('chart2');
+        $url3 = $this->Chartquick('chart3');
+        $url4 = $this->Chartquick('chart4');
+        $total = $this->Chartquick('pei total');
+        $pdf = pdf::loadView('PDF.Gpdf',[
+            'name' => $clients->client,
+            'num' => $participants,
+            'url1' => $url1,
+            'url2' => $url2,
+            'url3' => $url3,
+            'url4' => $url4,
+            'total' => $total,
+        ]);
+        return $pdf->stream('invoice.pdf');
+
     }
 }

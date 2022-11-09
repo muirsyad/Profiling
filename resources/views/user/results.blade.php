@@ -37,8 +37,8 @@
         }
 
         .chartb {
-            width: 70%;
-            height: 300px;
+            /* width: 20%; */
+            /* height: 300px; */
         }
 
         @media screen and (min-width: 300px) {
@@ -46,14 +46,15 @@
                 width: 100%;
                 height: 400px;
             }
+        }
 
-            @media screen and (min-width: 800px) {
-                .chartb {
-                    width: 70%;
-                    height: 500px;
-                }
-
+        @media screen and (min-width: 800px) {
+            .chartb {
+                width: 50%;
+                height: 650px;
             }
+
+        }
     </style>
 
     <div class="card mt-3">
@@ -130,8 +131,8 @@
 
         </div>
 
-        aswer records
-        {{ $record->answer_records }}
+        {{-- aswer records
+        {{ $record->answer_records }} --}}
 
         <script>
             var D = <?php echo $D; ?>;
@@ -160,20 +161,24 @@
 
             const data = {
 
-                labels: ['D', 'I', 'S', 'C'],
+                labels: ['', 'D', 'I', 'S', 'C', ''],
                 datasets: [{
                         label: 'Behaviour type',
-                        data: [pD, pI, pS, pC],
+                        data: [null, pD, pI, pS, pC, null],
                         fill: false,
                         borderColor: 'rgb(75, 192, 192)',
-                        tension: 0.1
+                        tension: 0.1,
+                        pointRadius: 0,
+                        borderWidth: 4
                     },
                     {
-                        label: 'middle',
-                        data: [20, 20, 20, 20],
+
+                        data: [20, 20, 20, 20, 20, 20],
                         fill: false,
                         borderColor: 'rgb(40, 40, 41)',
-                        tension: 0.1
+                        tension: 0.1,
+                        pointRadius: 0,
+                        borderWidth: 1
                     }
 
 
@@ -187,11 +192,22 @@
                 data: data,
                 options: {
                     // responsive: true,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'DiSC Profiing Graphs'
+                        }
+                    },
                     maintainAspectRatio: false,
-
+                    layout: {
+                        padding: 50
+                    },
                     scales: {
                         y: {
-                            beginAtZero: true
+                            beginAtZero: true,
+                            ticks: {
+                                display: false,
+                            }
                         },
 
                     }

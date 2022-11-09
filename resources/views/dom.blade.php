@@ -172,6 +172,17 @@
             background-color: black;
             border-radius: 23px;
         }
+        .txtbox{
+
+            color: white;
+            background-color: rgb(31, 97, 147);
+            height: 30px;
+            width: 30px;
+            padding: 12px;
+            border-radius: 12px;
+            text-align: center;
+
+        }
     </style>
     {{-- <h1 class="page-break">Test dom pdf</h1>
 <h2 class="page-break">Anotger page1</h2>
@@ -180,11 +191,8 @@
 
     {{-- page 1     --}}
     <div class="page-break">
-        @if ($ch > 0)
-            <h1>test</h1>
-        @else
-            <h2>te</h2>
-        @endif
+
+        <label class="txtbox">Text</label>
 
         <h1 class="title">DiSC Profiling Report</h1>
         <img src="C:\xampp\htdocs\New folder\Profiling\public\assets\img\lhi.png" width="300px" height="300px"
@@ -204,13 +212,15 @@
                 <h1>Your Behaviour Intelligent Graphs</h1>
             </div>
         </div>
+
         <img class="log-center mb-3" src="{{ $line }}" width="500" height="300" alt="img">
         <div class="text-size-md">
             The graphs above portray the DiSC style based on the response to the question. It demonstrates that your
-            strongest DiSC style is influence, which has an x value, followed by C, which also has an x value. We can
-            deduce from these graphs that your primary DiSC style is I. This report will explain the description of your
+            strongest DiSC style is {{ $rank[0] }} , followed by {{ $rank[1] }}, {{ $rank[2] }} and lastly {{ $rank[3] }} We can
+            deduce from these graphs that your primary DiSC style is {{ $rank[0] }}. This report will explain the description of your
             DiSC style.
         </div>
+
 
     </div>
     {{-- @php
@@ -266,7 +276,7 @@
                 <h2 class="subtopic ">Keywords</h2>
                 <table cellpadding="10"
                     style="margin-left: auto;
-                    margin-right: auto; border: 1px solid black;  ">
+                    margin-right: auto;   ">
                     @php
                         $i = -1;
                     @endphp
@@ -279,13 +289,13 @@
                         @if ($i % 4 == 0)
                             <tr>
 
-                                <td width=25%>{{ $key }}</td>
+                                <td width=25% class="txtbox">{{ $key }}</td>
                             @elseif (($i + 1) % 4 == 0)
-                                <td width=25%>{{ $key }}</td>
+                                <td width=25% class="txtbox">{{ $key }}</td>
 
                             </tr>
                         @else
-                            <td>{{ $key }}</td>
+                            <td class="txtbox">{{ $key }}</td>
                         @endif
                     @endforeach
 
@@ -598,17 +608,6 @@
     </div>
     {{-- End S template --}}
 
-    <h2>{{ $ch }}</h2>
-    <h3>{{ $img }}</h3>
-    <div class="page-break">
-        <h1>1 img</h1>
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/640px-Image_created_with_a_mobile_phone.png"
-            width="200px" height="200px" alt="img">
-    </div>
-    <div class="page-break">
-        <img src="{{ $img }}" width="400px" height="200px" alt="img">
-    </div>
-    <img src="{{ $line }}" alt="line chart">
 
 
     {{-- <img src="{{ $img }}" alt="img"> --}}

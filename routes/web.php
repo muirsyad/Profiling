@@ -68,6 +68,11 @@ route::get('/code', function () {
 
 
 //test pdf
+//indivifual report
 Route::get('tpdf', [questionsController::class, 'tpdf'])->name('dlpdf');
+
+//group report
+Route::get('gpdf/{clients}', [questionsController::class, 'Gpdf'])->name('Greport');
+
 Route::get('vtpdf', [questionsController::class, 'vtpdf']);
 

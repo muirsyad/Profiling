@@ -67,7 +67,7 @@
             </a></div>
     </div>
     <div class="d-flex justify-content-end">
-        <a href="#" class="btn btn-success text-decoration-none">Generate</a>
+        <a href="{{ route('Greport',$client->id) }}" class="btn btn-success text-decoration-none">Generate</a>
     </div>
 
 
