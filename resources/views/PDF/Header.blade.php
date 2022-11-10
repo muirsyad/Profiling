@@ -23,6 +23,7 @@
 
         .page-break {
             page-break-after: always;
+            margin-top: 30px
         }
 
         .reportGraph {

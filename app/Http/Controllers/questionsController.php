@@ -175,6 +175,29 @@ class questionsController extends Controller
         return redirect('/results')->with('success', 'Your have answer the test');
     }
 
+    public function maxsort($arrbsort)
+    {
+        for ($i = 0; $i < count($arrbsort); $i++) {
+
+            switch ($arrbsort[$i]) {
+
+                case $copy[0]:
+                    $arrbsort[$i] = 'D';
+                    break;
+                case $copy[1]:
+                    $arrbsort[$i] = 'I';
+                    break;
+                case $copy[2]:
+                    $arrbsort[$i] = 'S';
+                    break;
+                case $copy[3]:
+                    $arrbsort[$i] = 'C';
+                    break;
+                default:
+                    dd("error");
+            }
+        }
+    }
     public function results()
     {
         $record = record::where('user_id', auth()->user()->id)->first();
@@ -378,8 +401,19 @@ class questionsController extends Controller
 
         //dd($record->D,$record->I,$record->S,$record->C,$high,$highV);
         //dd(auth()->user()->id);
+
+        $darray = $plot;
+        // $integerIDs = array_map('intval', $darray);
+        //sort
+        $sorted = $this->vsort($darray);
+        //dd($sorted, "sorted");
+
+        $deptm=auth()->user()->department_id;
         $splot = join(",", $plot);
+        $update = record::where('user_id', $record->user_id)->update(['department_id' => $deptm]);
         $update = record::where('user_id', $record->user_id)->update(['plot' => $splot]);
+        $update = record::where('user_id', $record->user_id)->update(['High' => $sorted[0]]);
+        $update = record::where('user_id', $record->user_id)->update(['Low' => $sorted[1]]);
         $dept = Departments::find(auth()->user()->department_id);
         //dd($dept->department);
 
@@ -527,7 +561,10 @@ class questionsController extends Controller
 
 
         $arrbsort = array();
+
         array_push($arrbsort, $max, $scnd, $third, $forth);
+        $temparr = $arrbsort;
+
 
         $copybs = $arrbsort;
         for ($i = 0; $i < count($arrbsort); $i++) {
@@ -551,7 +588,81 @@ class questionsController extends Controller
             }
         }
         //dd($copy,$bsort,$max,$scnd,$third,$forth,$copybs,$arrbsort);
+        //dd($arrbsort, $temparr);
         return $arrbsort;
+    }
+    function vsort($bsort)
+    {
+
+
+        $max = 0;
+        $scnd = 0;
+        $third = 0;
+        $forth = 0;
+
+        $copy = $bsort;
+
+
+        //delete element in array by value "green"
+        // if (($key = array_search($max, $bsort)) !== false) {
+        //     unset($bsort[$key]);
+        // }
+        $max = max($bsort);
+        $bsort = $this->removearr($bsort, $max);
+        $scnd = max($bsort);
+        $bsort = $this->removearr($bsort, $scnd);
+        $third = max($bsort);
+        $bsort = $this->removearr($bsort, $third);
+        $forth = max($bsort);
+        $bsort = $this->removearr($bsort, $scnd);
+        //$bsort=$this->removearr($bsort,$scnd);
+
+        //$scnd=max($bsort);
+
+
+        $arrbsort = array();
+
+        array_push($arrbsort, $max, $scnd, $third, $forth);
+        $temparr = $arrbsort;
+
+
+        $copybs = $arrbsort;
+
+        //dd($arrbsort[3]);
+        for ($i = 0; $i < count($arrbsort); $i++) {
+
+            switch ($arrbsort[$i]) {
+
+                case $copy[0]:
+                    $arrbsort[$i] = 'D';
+                    break;
+                case $copy[1]:
+                    $arrbsort[$i] = 'I';
+                    break;
+                case $copy[2]:
+                    $arrbsort[$i] = 'S';
+                    break;
+                case $copy[3]:
+                    $arrbsort[$i] = 'C';
+                    break;
+                default:
+                    dd("error");
+            }
+        }
+        //dd($copy,$bsort,$max,$scnd,$third,$forth,$copybs,$arrbsort);
+        //dd($copybs,"bs");
+
+        if ($copybs[3] <= 20) {
+            $lowsort = $arrbsort[3];
+        }
+        else {
+            $lowsort = "NO";
+        }
+        $sortmax = $arrbsort[0];
+        $maxlow = array();
+        array_push($maxlow,$sortmax,$lowsort);
+        //dd($arrbsort, $arrbsort[3],$sortmax,$lowsort,$copybs,$maxlow);
+        return $maxlow;
     }
     public function tpdf()
     {
@@ -962,7 +1073,7 @@ class questionsController extends Controller
         ]);
     }
 
-    public function Chartquick($name,$value)
+    public function Chartquick($name, $value)
     {
 
         $qc = new QuickChart(array(
@@ -989,6 +1100,13 @@ class questionsController extends Controller
                   ],
 
               },
+            options:{
+                title: {
+                    display: true,
+                    text: '$name'
+                }
+            }
+
 
         }");
         $url = $qc->getUrl();
@@ -1000,75 +1118,17 @@ class questionsController extends Controller
         $num = $num / $total * 100;
         return $num;
     }
-    public function chartvalue($cl, $dp)
+    public function chartvalue($join)
     {
 
         $maxD = 0;
         $maxI = 0;
         $maxS = 0;
         $maxC = 0;
-        $join = DB::table('answer_records')
-            ->join('clients', 'answer_records.client_id', '=', 'clients.id')
-            ->join('users', 'answer_records.user_id', '=', 'users.id')
-            ->select('answer_records.*', 'clients.client', 'users.department_id')
-            ->where('answer_records.client_id', $cl)
-            ->where('users.department_id', $dp)
-            ->get();
-
-            foreach ($join as $join) {
-                $darray = explode(',', $join->plot);
-
-                $integerIDs = array_map('intval', $darray);
-                //sort
-                $sorted = $this->bsort($integerIDs);
-                $maxb = $sorted[0];
-                switch ($maxb) {
-                    case 'D';
-                        $maxD = $maxD + 1;
-                        break;
-                    case 'I';
-                        $maxI = $maxI + 1;
-                        break;
-                    case 'S';
-                        $maxS = $maxS + 1;
-                        break;
-                    case 'C';
-                        $maxC = $maxC + 1;
-                        break;
-                    default:
-                        dd('error`');
-                }
-
-                //dd($participants,$darray,$sorted,$maxb,$integerIDs,$maxI);
 
 
-            }
+        $countj = count($join);
 
-        $myarray = array();
-        array_push($myarray,$maxD,$maxI,$maxS,$maxC);
-
-
-        return $myarray;
-    }
-    public function Gpdf(Clients $clients)
-    {
-
-
-        $participants = DB::table('users')->where('client_id', $clients->id)->count();
-        $join = DB::table('answer_records')
-            ->join('clients', 'answer_records.client_id', '=', 'clients.id')
-            ->join('users', 'answer_records.user_id', '=', 'users.id')
-            ->select('answer_records.*', 'clients.client', 'users.department_id')
-            ->where('answer_records.client_id', $clients->id)
-            // ->where('users.department_id', 1)
-
-            ->get();
-
-        //dd($join->plot);
-        $maxD = 0;
-        $maxI = 0;
-        $maxS = 0;
-        $maxC = 0;
 
         foreach ($join as $join) {
             $darray = explode(',', $join->plot);
@@ -1098,6 +1158,86 @@ class questionsController extends Controller
 
 
         }
+
+        $myarray = array();
+        array_push($myarray, $maxD, $maxI, $maxS, $maxC);
+
+
+
+
+
+        return $myarray;
+    }
+    public function valhigh($style){
+        $sql = DB::table('answer_records')
+            ->where('High', $style)
+            ->get();
+        return $sql;
+
+
+    }
+    public function vallow($style){
+        $sql = DB::table('answer_records')
+            ->where('Low', $style)
+            ->get();
+            return $sql;
+
+    }
+    public function Gpdf(Clients $clients)
+    {
+
+
+        $participants = DB::table('users')->where('client_id', $clients->id)->count();
+        $join = DB::table('answer_records')
+            ->join('clients', 'answer_records.client_id', '=', 'clients.id')
+            ->join('users', 'answer_records.user_id', '=', 'users.id')
+            ->select('answer_records.*', 'clients.client', 'users.department_id', 'users.name')
+            ->where('answer_records.client_id', $clients->id)
+            // ->where('users.department_id', 1)
+
+            ->get();
+
+        //dd($join);
+        $maxD = 0;
+        $maxI = 0;
+        $maxS = 0;
+        $maxC = 0;
+
+        // $highD=$highI=$highS=$highC=array();
+
+        foreach ($join as $join) {
+            $darray = explode(',', $join->plot);
+
+            $integerIDs = array_map('intval', $darray);
+            //sort
+            $sorted = $this->bsort($integerIDs);
+            $maxb = $sorted[0];
+            switch ($maxb) {
+                case 'D';
+                    $maxD = $maxD + 1;
+
+                    break;
+                case 'I';
+                    $maxI = $maxI + 1;
+
+                    break;
+                case 'S';
+                    $maxS = $maxS + 1;
+
+                    break;
+                case 'C';
+                    $maxC = $maxC + 1;
+
+                    break;
+                default:
+                    dd('error`');
+            }
+
+            //dd($participants,$darray,$sorted,$maxb,$integerIDs,$maxI);
+
+
+        }
+
         $perD = $this->persent($maxD, $participants);
         $perD = ceil($perD);
         $perI = $this->persent($maxI, $participants);
@@ -1108,7 +1248,9 @@ class questionsController extends Controller
         $perC = ceil($perC);
 
         //dd($participants,$darray,$sorted,$maxb,$integerIDs,$maxI);
-        // dd($maxD,$maxI,$maxS,$maxC);
+        $totalval = array();
+        array_push($totalval, $maxD, $maxI, $maxS, $maxC);
+        //dd($maxD,$maxI,$maxS,$maxC,$totalval);
         // dd($participants,$darray,$sorted,$integerIDs);
 
         //department value
@@ -1119,12 +1261,30 @@ class questionsController extends Controller
         $storeUrl = array();
         foreach ($numdepartment as $dept) {
 
-            $query = $this->chartvalue($clients->id, $dept->id);
-            array_push($storeV, $query);
+            $join = DB::table('answer_records')
+                ->join('clients', 'answer_records.client_id', '=', 'clients.id')
+                ->join('users', 'answer_records.user_id', '=', 'users.id')
+                ->select('answer_records.*', 'clients.client', 'users.department_id')
+                ->where('answer_records.client_id', $clients->id)
+                ->where('users.department_id', $dept->id)
+                ->get();
+            $counj = count($join);
 
-            ${'url'.$dept->id} = $this->Chartquick('chart'.$dept->id, $query);
-            array_push($storeUrl,${'url'.$dept->id});
+
+            if ($counj > 0) {
+                $query = $this->chartvalue($join);
+
+                array_push($storeV, $query);
+
+                ${'url' . $dept->id} = $this->Chartquick($dept->department, $query);
+                array_push($storeUrl, ${'url' . $dept->id});
+            } else {
+                $temp = 0;
+            }
         }
+
+        $count = count($storeUrl);
+        //dd($count);
 
         //dd($storeUrl);
         //dd($storeV,$url1,$url2);
@@ -1132,7 +1292,18 @@ class questionsController extends Controller
         // $url2 = $this->Chartquick('chart2');
         // $url3 = $this->Chartquick('chart3');
         // $url4 = $this->Chartquick('chart4');
-        // $total = $this->Chartquick('pei total');
+        $valHd= $this->valhigh('D');
+        $vallD = $this->vallow('D');
+        $valHi = $this->valhigh('I');
+        $valli = $this->vallow('I');
+        $valHS = $this->valhigh('S');
+        $vallS = $this->vallow('S');
+        $valHC = $this->valhigh('C');
+        $vallC = $this->vallow('C');
+
+        //dd($valHd,$vallD,$valHi,$valli,$valHS,$vallS,$valHC,$vallC);
+
+        $total = $this->Chartquick("Participants Summary", $totalval);
         $pdf = pdf::loadView('PDF.Gpdf', [
             'name' => $clients->client,
             'num' => $participants,
@@ -1141,7 +1312,7 @@ class questionsController extends Controller
             'url3' => $url3,
             'url' => $storeUrl,
             // 'url' => $storeUrl,
-            // 'total' => $total,
+            'total' => $total,
             'maxD' => $maxD,
             'maxI' => $maxI,
             'maxS' => $maxS,
@@ -1150,6 +1321,16 @@ class questionsController extends Controller
             'perI' => $perI,
             'perS' => $perS,
             'perC' => $perC,
+            'dept' => $numdepartment,
+            'clients' => $clients,
+            'HD' => $valHd,
+            'LD' => $vallD,
+            'HI' => $valHi,
+            'LI' => $valli,
+            'HS' => $valHS,
+            'LS' => $vallS,
+            'HC' => $valHC,
+            'LC' => $vallC,
         ]);
         return $pdf->stream('invoice.pdf');
     }

@@ -26,67 +26,45 @@
 
     </div>
 
+
     <div class="sub-container2 page-break">
 
         <h1 class="text-green text-center mb-3">DiSC Behaviour Style by Department</h1>
 
 
-            <img class="img-chart" src="{{ $url1 }}" alt="image">
-            <img class="img-chart2" src="{{ $url2 }}" alt="image">
+        <img class="img-chart" src="{{ $url1 }}" alt="image">
+        <img class="img-chart2" src="{{ $url2 }}" alt="image">
 
         {{-- <h1 class="hide">.</h1> --}}
 
-            <img class="img-chart" src="{{ $url3 }}" alt="image">
-
-
-
-
-
-
-
-
-
+        <img class="img-chart" src="{{ $url3 }}" alt="image">
+        <img class="img-chart2" src="{{ $url1 }}" alt="image">
+        <img class="img-chart" src="{{ $url2 }}" alt="image">
+        {{-- <h1 class="hide">.</h1> --}}
+        <img class="img-chart2" src="{{ $url3 }}" alt="image">
     </div>
     <div class="sub-container2 page-break">
 
-        <h1 class="text-green text-center mb-3">DiSC Behaviour Style by Department for each</h1>
-
-
+        <h1 class="text-green text-center mb-3">DiSC Behaviour Style by Department</h1>
+        @php
+            $inti = 0;
+        @endphp
+        @foreach ($url as $url)
             @php
-                $num = 0;
+                $inti++;
             @endphp
-            @foreach ($url as $url )
-            <h1>Name</h1>
-            @php
-                $num++;
-            @endphp
-                @if ($num == 1 )
-                <img class="img-chart" src="{{ $url }}" alt="image">
-                @elseif ($num > 1)
+            @if ($inti % 2 == 0)
                 <img class="img-chart2" src="{{ $url }}" alt="image">
-                @endif
-
-
-
-
-
-            @endforeach
-            {{-- <img class="img-chart" src="{{ $url1 }}" alt="image">
-            <img class="img-chart2" src="{{ $url2 }}" alt="image"> --}}
-
-        {{-- <h1 class="hide">.</h1> --}}
-
-            {{-- <img class="img-chart" src="{{ $url3 }}" alt="image"> --}}
-
-
-
-
-
-
+            @else
+                <img class="img-chart" src="{{ $url }}" alt="image">
+            @endif
+        @endforeach
 
 
 
     </div>
+
+
 
     <div class="sub-container2 page-break">
         <h1 class="text-green text-center">DISC and group culture by Department</h1>
@@ -170,6 +148,67 @@
                 <li>Weakness</li>
             </ul>
         </div>
+    </div>
+
+    <div class="sub-container2 page-break">
+        <h1 class="text-green">The 'D' style within your department fetch</h1>
+        @foreach ($dept as $dept)
+            @php
+                $join = DB::table('answer_records')
+                    ->join('clients', 'answer_records.client_id', '=', 'clients.id')
+                    ->join('users', 'answer_records.user_id', '=', 'users.id')
+                    ->select('answer_records.*', 'clients.client', 'users.department_id', 'users.name')
+                    ->where('answer_records.client_id', $clients->id)
+                    ->where('users.department_id', $dept->id)
+                    // ->where('answer_records.High','D')
+                    ->count();
+                $sql = DB::table('answer_records')
+                    ->where('High', 'D')
+                    ->where('department_id', $dept->id)
+                    ->count();
+
+                $sql1 = DB::table('answer_records')
+                    ->where('Low', 'D')
+                    ->where('department_id', $dept->id)
+                    ->get();
+                //dd($sql,$sql1);
+            @endphp
+            @if ($join > 0)
+                <h3>Departments {{ $dept->department }}</h3>
+                <div class="float-left">
+                    <h4>HighD:</h4>
+                    @if ($sql > 0)
+
+                        <ul>
+                            <li>Independence</li>
+                            <li>Decisiviness</li>
+                            <li>Directness</li>
+                            <li>Victory</li>
+                            <li>Results</li>
+                        </ul>
+                    @else
+
+                    <ul>
+                        <li>no records</li>
+                    </ul>
+                    @endif
+
+                </div>
+                <div class="clear-left">
+                    <h4>LoW D:</h4>
+                    <ul>
+                        <li>Hesitation</li>
+                        <li>Overanalyzes</li>
+                        <li>Foot-dragging</li>
+                        <li>Over-sensitivity</li>
+                        <li>Weakness</li>
+                    </ul>
+                </div>
+                <br>
+            @endif
+        @endforeach
+
+
     </div>
 
     <div class=" sub-container2 page-break">
@@ -578,7 +617,7 @@
             in the pie chart
             below. </p>
 
-        {{-- <img class="total" src="{{ $total }}" alt="pie total"> --}}
+        <img class="total" src="{{ $total }}" alt="pie total">
     </div>
     <div class="sub-container2 page-break">
         <h1 class="text-green">Individual Data Table</h1>
@@ -594,6 +633,30 @@
                     <th>Departments</th>
                     <th>Primary Style</th>
                 </tr>
+                <tr>
+                    <td>1</td>
+                    <td>Kamaruddin</td>
+                    <td>Information Technology</td>
+                    <td>D</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="sub-container2 page-break">
+        <h1 class="text-green">Individual Data Table fetch</h1>
+
+        <p>The table below shows the primary behavior style of each group member, organized by department and their DISC
+            style. Based on Pie chart that has been shown</p>
+
+        <table style="width: 100%" class="text-center">
+            <tbody>
+                <tr>
+                    <th>No</th>
+                    <th>Name</th>
+                    <th>Departments</th>
+                    <th>Primary Style</th>
+                </tr>
+
                 <tr>
                     <td>1</td>
                     <td>Kamaruddin</td>
