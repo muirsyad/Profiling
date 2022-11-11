@@ -152,61 +152,79 @@
 
     <div class="sub-container2 page-break">
         <h1 class="text-green">The 'D' style within your department fetch</h1>
-        @foreach ($dept as $dept)
+        <h4 class=" mb-3" style="color: red;">*This list is group by department</h4>
+        {{-- high d --}}
+        <div>
             @php
-                $join = DB::table('answer_records')
-                    ->join('clients', 'answer_records.client_id', '=', 'clients.id')
-                    ->join('users', 'answer_records.user_id', '=', 'users.id')
-                    ->select('answer_records.*', 'clients.client', 'users.department_id', 'users.name')
-                    ->where('answer_records.client_id', $clients->id)
-                    ->where('users.department_id', $dept->id)
-                    // ->where('answer_records.High','D')
-                    ->count();
-                $sql = DB::table('answer_records')
-                    ->where('High', 'D')
-                    ->where('department_id', $dept->id)
-                    ->count();
-
-                $sql1 = DB::table('answer_records')
-                    ->where('Low', 'D')
-                    ->where('department_id', $dept->id)
-                    ->get();
-                //dd($sql,$sql1);
+                $i = 0;
+                $cound = count($djoin);
+                $counl = count($djoinlow);
             @endphp
-            @if ($join > 0)
-                <h3>Departments {{ $dept->department }}</h3>
-                <div class="float-left">
-                    <h4>HighD:</h4>
-                    @if ($sql > 0)
+            <h3>High D style</h3>
+            @if ($cound > 0)
+                <table style="width: 100%;" class="text-center">
 
-                        <ul>
-                            <li>Independence</li>
-                            <li>Decisiviness</li>
-                            <li>Directness</li>
-                            <li>Victory</li>
-                            <li>Results</li>
-                        </ul>
-                    @else
+                    <tr>
+                        <th style="width: 5%;">No</th>
+                        <th>Name</th>
+                        {{-- <th>Low behavior</th> --}}
+                        <th style="width: 20%;">Department</th>
+                    </tr>
 
-                    <ul>
-                        <li>no records</li>
-                    </ul>
-                    @endif
 
-                </div>
-                <div class="clear-left">
-                    <h4>LoW D:</h4>
-                    <ul>
-                        <li>Hesitation</li>
-                        <li>Overanalyzes</li>
-                        <li>Foot-dragging</li>
-                        <li>Over-sensitivity</li>
-                        <li>Weakness</li>
-                    </ul>
-                </div>
-                <br>
+                    @foreach ($djoin as $djoin)
+                        @php
+                            $i++;
+                        @endphp
+                        <tr>
+                            <td>{{ $i }}</td>
+                            <td>{{ $djoin->name }}</td>
+                            {{-- <td>{{ $djoin->High }}</td> --}}
+
+                            <td>{{ $djoin->department }}</td>
+                        </tr>
+                    @endforeach
+                </table>
+            @else
+                <h3>no records</h3>
             @endif
-        @endforeach
+        </div>
+        {{-- low d --}}
+        <div>
+            <h3>Low D style</h3>
+            @if ($counl > 0)
+                <table style="width: 100%;" class="text-center">
+
+                    <tr>
+                        <th style="width: 5%;">No</th>
+                        <th>Name</th>
+                        {{-- <th>Low behavior</th> --}}
+                        <th style="width: 20%;">Department</th>
+                    </tr>
+                    @php
+                        $i = 0;
+                    @endphp
+                    @foreach ($djoinlow as $djoinl)
+                        @php
+                            $i++;
+                        @endphp
+                        <tr>
+                            <td>{{ $i }}</td>
+                            <td>{{ $djoinl->name }}</td>
+                            {{-- <td>{{ $djoinl->Low }}</td> --}}
+
+                            <td>{{ $djoinl->department }}</td>
+                        </tr>
+                    @endforeach
+
+                </table>
+            @else
+                <h3>no records</h3>
+            @endif
+
+
+        </div>
+
 
 
     </div>
@@ -282,48 +300,77 @@
     </div>
     <div class="sub-container2 page-break">
         <h1 class="text-green">The 'i' style within your department</h1>
-        <h3>Departments A</h3>
-        <div class="float-left">
-            <h4>High I:</h4>
-            <ul>
-                <li>Independence</li>
-                <li>Decisiviness</li>
-                <li>Directness</li>
-                <li>Victory</li>
-                <li>Results</li>
-            </ul>
+        <h4 class=" mb-3" style="color: red;">*This list is group by department</h4>
+        {{-- high i --}}
+        <div>
+            <h3>High i style</h3>
+            @php
+                $i = 0;
+                $cound = count($ijoin);
+                $counl = count($ijoinlow);
+            @endphp
+            @if ($cound > 0)
+                <table style="width: 100%;" class="text-center">
+
+                    <tr>
+                        <th style="width: 5%;">No</th>
+                        <th>Name</th>
+                        {{-- <th>Low behavior</th> --}}
+                        <th style="width: 20%;">Department</th>
+                    </tr>
+
+                    @foreach ($ijoin as $ijoin)
+                        @php
+                            $i++;
+                        @endphp
+                        <tr>
+                            <td>{{ $i }}</td>
+                            <td>{{ $ijoin->name }}</td>
+                            {{-- <td>{{ $djoin->High }}</td> --}}
+
+                            <td>{{ $ijoin->department }}</td>
+                        </tr>
+                    @endforeach
+
+                </table>
+            @else
+                <h3>No records</h3>
+            @endif
+
         </div>
-        <div class="clear-left">
-            <h4>LoW I:</h4>
-            <ul>
-                <li>Hesitation</li>
-                <li>Overanalyzes</li>
-                <li>Foot-dragging</li>
-                <li>Over-sensitivity</li>
-                <li>Weakness</li>
-            </ul>
-        </div>
-        <br>
-        <h3>Departments B</h3>
-        <div class="float-left">
-            <h4>High I:</h4>
-            <ul>
-                <li>Independence</li>
-                <li>Decisiviness</li>
-                <li>Directness</li>
-                <li>Victory</li>
-                <li>Results</li>
-            </ul>
-        </div>
-        <div class="clear-left">
-            <h4>LoW I:</h4>
-            <ul>
-                <li>Hesitation</li>
-                <li>Overanalyzes</li>
-                <li>Foot-dragging</li>
-                <li>Over-sensitivity</li>
-                <li>Weakness</li>
-            </ul>
+        {{-- low i --}}
+        <div>
+            <h3>Low i style</h3>
+            @if ($counl > 0)
+                <table style="width: 100%;" class="text-center">
+
+                    <tr>
+                        <th style="width: 5%;">No</th>
+                        <th>Name</th>
+                        {{-- <th>Low behavior</th> --}}
+                        <th style="width: 20%;">Department</th>
+                    </tr>
+                    @php
+                        $i = 0;
+                    @endphp
+                    @foreach ($ijoinlow as $ijoinl)
+                        @php
+                            $i++;
+                        @endphp
+                        <tr>
+                            <td>{{ $i }}</td>
+                            <td>{{ $ijoinl->name }}</td>
+                            {{-- <td>{{ $djoinl->Low }}</td> --}}
+
+                            <td>{{ $ijoinl->department }}</td>
+                        </tr>
+                    @endforeach
+
+                </table>
+            @else
+                <h3>No records</h3>
+            @endif
+
         </div>
     </div>
     <div class="sub-container2 page-break">
@@ -403,48 +450,77 @@
 
     <div class="sub-container2 page-break">
         <h1 class="text-green">The 'S' style within your department</h1>
-        <h3>Departments A</h3>
-        <div class="float-left">
-            <h4>High S:</h4>
-            <ul>
-                <li>Independence</li>
-                <li>Decisiviness</li>
-                <li>Directness</li>
-                <li>Victory</li>
-                <li>Results</li>
-            </ul>
+        <h4 class=" mb-3" style="color: red;">*This list is group by department</h4>
+        {{-- high S --}}
+        <div>
+            <h3>High S style</h3>
+            @php
+                $i = 0;
+                $cound = count($sjoin);
+                $counl = count($sjoinlow);
+            @endphp
+            @if ($cound > 0)
+                <table style="width: 100%;" class="text-center">
+
+                    <tr>
+                        <th style="width: 5%;">No</th>
+                        <th>Name</th>
+                        {{-- <th>Low behavior</th> --}}
+                        <th style="width: 20%;">Department</th>
+                    </tr>
+
+                    @foreach ($sjoin as $sjoin)
+                        @php
+                            $i++;
+                        @endphp
+                        <tr>
+                            <td>{{ $i }}</td>
+                            <td>{{ $sjoin->name }}</td>
+                            {{-- <td>{{ $djoin->High }}</td> --}}
+
+                            <td>{{ $sjoin->department }}</td>
+                        </tr>
+                    @endforeach
+
+                </table>
+            @else
+                <h3>No records</h3>
+            @endif
+
         </div>
-        <div class="clear-left">
-            <h4>LoW S:</h4>
-            <ul>
-                <li>Hesitation</li>
-                <li>Overanalyzes</li>
-                <li>Foot-dragging</li>
-                <li>Over-sensitivity</li>
-                <li>Weakness</li>
-            </ul>
-        </div>
-        <br>
-        <h3>Departments B</h3>
-        <div class="float-left">
-            <h4>High S:</h4>
-            <ul>
-                <li>Independence</li>
-                <li>Decisiviness</li>
-                <li>Directness</li>
-                <li>Victory</li>
-                <li>Results</li>
-            </ul>
-        </div>
-        <div class="clear-left">
-            <h4>LoW S:</h4>
-            <ul>
-                <li>Hesitation</li>
-                <li>Overanalyzes</li>
-                <li>Foot-dragging</li>
-                <li>Over-sensitivity</li>
-                <li>Weakness</li>
-            </ul>
+        {{-- low i --}}
+        <div>
+            <h3>Low S style</h3>
+            @if ($counl > 0)
+                <table style="width: 100%;" class="text-center">
+
+                    <tr>
+                        <th style="width: 5%;">No</th>
+                        <th>Name</th>
+                        {{-- <th>Low behavior</th> --}}
+                        <th style="width: 20%;">Department</th>
+                    </tr>
+                    @php
+                        $i = 0;
+                    @endphp
+                    @foreach ($sjoinlow as $sjoinl)
+                        @php
+                            $i++;
+                        @endphp
+                        <tr>
+                            <td>{{ $i }}</td>
+                            <td>{{ $sjoinl->name }}</td>
+                            {{-- <td>{{ $djoinl->Low }}</td> --}}
+
+                            <td>{{ $sjoinl->department }}</td>
+                        </tr>
+                    @endforeach
+
+                </table>
+            @else
+                <h3>No records</h3>
+            @endif
+
         </div>
     </div>
 
@@ -525,48 +601,77 @@
 
     <div class="sub-container2 page-break">
         <h1 class="text-green">The 'C' style within your department</h1>
-        <h3>Departments A</h3>
-        <div class="float-left">
-            <h4>High C:</h4>
-            <ul>
-                <li>Independence</li>
-                <li>Decisiviness</li>
-                <li>Directness</li>
-                <li>Victory</li>
-                <li>Results</li>
-            </ul>
+        <h4 class=" mb-3" style="color: red;">*This list is group by department</h4>
+        {{-- high i --}}
+        <div>
+            <h3>High C style</h3>
+            @php
+                $i = 0;
+                $cound = count($cjoin);
+                $counl = count($cjoinlow);
+            @endphp
+            @if ($cound > 0)
+                <table style="width: 100%;" class="text-center">
+
+                    <tr>
+                        <th style="width: 5%;">No</th>
+                        <th>Name</th>
+                        {{-- <th>Low behavior</th> --}}
+                        <th style="width: 20%;">Department</th>
+                    </tr>
+
+                    @foreach ($cjoin as $cjoin)
+                        @php
+                            $i++;
+                        @endphp
+                        <tr>
+                            <td>{{ $i }}</td>
+                            <td>{{ $cjoin->name }}</td>
+                            {{-- <td>{{ $djoin->High }}</td> --}}
+
+                            <td>{{ $cjoin->department }}</td>
+                        </tr>
+                    @endforeach
+
+                </table>
+            @else
+                <h3>No records</h3>
+            @endif
+
         </div>
-        <div class="clear-left">
-            <h4>LoW C:</h4>
-            <ul>
-                <li>Hesitation</li>
-                <li>Overanalyzes</li>
-                <li>Foot-dragging</li>
-                <li>Over-sensitivity</li>
-                <li>Weakness</li>
-            </ul>
-        </div>
-        <br>
-        <h3>Departments B</h3>
-        <div class="float-left">
-            <h4>High C:</h4>
-            <ul>
-                <li>Independence</li>
-                <li>Decisiviness</li>
-                <li>Directness</li>
-                <li>Victory</li>
-                <li>Results</li>
-            </ul>
-        </div>
-        <div class="clear-left">
-            <h4>LoW C:</h4>
-            <ul>
-                <li>Hesitation</li>
-                <li>Overanalyzes</li>
-                <li>Foot-dragging</li>
-                <li>Over-sensitivity</li>
-                <li>Weakness</li>
-            </ul>
+        {{-- low i --}}
+        <div>
+            <h3>Low C style</h3>
+            @if ($counl > 0)
+                <table style="width: 100%;" class="text-center">
+
+                    <tr>
+                        <th style="width: 5%;">No</th>
+                        <th>Name</th>
+                        {{-- <th>Low behavior</th> --}}
+                        <th style="width: 20%;">Department</th>
+                    </tr>
+                    @php
+                        $i = 0;
+                    @endphp
+                    @foreach ($cjoinlow as $cjoinl)
+                        @php
+                            $i++;
+                        @endphp
+                        <tr>
+                            <td>{{ $i }}</td>
+                            <td>{{ $cjoinl->name }}</td>
+                            {{-- <td>{{ $djoinl->Low }}</td> --}}
+
+                            <td>{{ $cjoinl->department }}</td>
+                        </tr>
+                    @endforeach
+
+                </table>
+            @else
+                <h3>No records</h3>
+            @endif
+
         </div>
     </div>
 
@@ -618,54 +723,84 @@
             below. </p>
 
         <img class="total" src="{{ $total }}" alt="pie total">
-    </div>
-    <div class="sub-container2 page-break">
-        <h1 class="text-green">Individual Data Table</h1>
-
-        <p>The table below shows the primary behavior style of each group member, organized by department and their DISC
-            style. Based on Pie chart that has been shown</p>
-
-        <table style="width: 100%" class="text-center">
-            <tbody>
+        <h3>Chart Summary</h3>
+        <table class="text-center">
+            <tr>
+                <th>No.</th>
+                <th>DiSC Style</th>
+                <th>Total Participants</th>
+            </tr>
+            @php
+                $i = 0;
+            @endphp
+                @foreach ($sum as $sum)
                 <tr>
-                    <th>No</th>
-                    <th>Name</th>
-                    <th>Departments</th>
-                    <th>Primary Style</th>
-                </tr>
+                    @php
+                        $i++;
+                    @endphp
+                    <td>{{ $i }}</td>
+                    @switch($i)
+                        @case(1)
+                            <td>D</td>
+                            @break
+
+                        @case(2)
+                            <td>i</td>
+                         @break
+
+                        @case(3)
+                            <td>S</td>
+                        @break
+
+                        @case(4)
+                            <td>C</td>
+                        @break
+
+
+                    @break
+
+                    @default
+                @endswitch
+                    <td>{{ $sum }}</td>
+            </tr>
+            @endforeach
+
+    </table>
+</div>
+
+<div class="sub-container2">
+    <h1 class="text-green">Individual Data Table</h1>
+
+    <p>The table below shows the primary behavior style of each group member, organized by department and their DISC
+        style. Based on Pie chart that has been shown</p>
+    @php
+        $i = 0;
+    @endphp
+    <table style="width: 100%" class="text-center">
+        <tbody>
+            <tr>
+                <th>No</th>
+                <th>Name</th>
+                <th>Departments</th>
+                <th>Primary Style</th>
+            </tr>
+            @foreach ($joinall as $all)
+                @php
+                    $i++;
+                @endphp
                 <tr>
-                    <td>1</td>
-                    <td>Kamaruddin</td>
-                    <td>Information Technology</td>
-                    <td>D</td>
+                    <td>{{ $i }}</td>
+                    <td>{{ $all->name }}</td>
+                    <td>{{ $all->department }}</td>
+                    <td>{{ $all->High }}</td>
                 </tr>
-            </tbody>
-        </table>
-    </div>
-    <div class="sub-container2 page-break">
-        <h1 class="text-green">Individual Data Table fetch</h1>
+            @endforeach
 
-        <p>The table below shows the primary behavior style of each group member, organized by department and their DISC
-            style. Based on Pie chart that has been shown</p>
+        </tbody>
+    </table>
+</div>
 
-        <table style="width: 100%" class="text-center">
-            <tbody>
-                <tr>
-                    <th>No</th>
-                    <th>Name</th>
-                    <th>Departments</th>
-                    <th>Primary Style</th>
-                </tr>
 
-                <tr>
-                    <td>1</td>
-                    <td>Kamaruddin</td>
-                    <td>Information Technology</td>
-                    <td>D</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
 
-    {{-- DISC style --}}
+{{-- DISC style --}}
 @endsection

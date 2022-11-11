@@ -192,7 +192,7 @@
     {{-- page 1     --}}
     <div class="page-break">
 
-        <label class="txtbox">Text</label>
+
 
         <h1 class="title">DiSC Profiling Report</h1>
         <img src="C:\xampp\htdocs\New folder\Profiling\public\assets\img\lhi.png" width="300px" height="300px"

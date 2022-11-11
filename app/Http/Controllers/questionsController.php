@@ -408,7 +408,7 @@ class questionsController extends Controller
         $sorted = $this->vsort($darray);
         //dd($sorted, "sorted");
 
-        $deptm=auth()->user()->department_id;
+        $deptm = auth()->user()->department_id;
         $splot = join(",", $plot);
         $update = record::where('user_id', $record->user_id)->update(['department_id' => $deptm]);
         $update = record::where('user_id', $record->user_id)->update(['plot' => $splot]);
@@ -654,13 +654,12 @@ class questionsController extends Controller
 
         if ($copybs[3] <= 20) {
             $lowsort = $arrbsort[3];
-        }
-        else {
+        } else {
             $lowsort = "NO";
         }
         $sortmax = $arrbsort[0];
         $maxlow = array();
-        array_push($maxlow,$sortmax,$lowsort);
+        array_push($maxlow, $sortmax, $lowsort);
         //dd($arrbsort, $arrbsort[3],$sortmax,$lowsort,$copybs,$maxlow);
         return $maxlow;
     }
@@ -1168,19 +1167,50 @@ class questionsController extends Controller
 
         return $myarray;
     }
-    public function valhigh($style){
+    public function valhigh($style)
+    {
         $sql = DB::table('answer_records')
             ->where('High', $style)
             ->get();
         return $sql;
-
-
     }
-    public function vallow($style){
+    public function vallow($style)
+    {
         $sql = DB::table('answer_records')
             ->where('Low', $style)
             ->get();
-            return $sql;
+        return $sql;
+    }
+    public function qurjoin($style,$client){
+        $style =DB::table('answer_records')
+        ->join('clients', 'answer_records.client_id', '=', 'clients.id')
+        ->join('users', 'answer_records.user_id', '=', 'users.id')
+        ->join('departments','answer_records.department_id', '=', 'departments.id')
+        ->select('answer_records.*', 'clients.client', 'users.department_id', 'users.name','departments.department')
+        ->orderBy('answer_records.department_id', 'asc')
+        ->where('answer_records.client_id', $client)
+        ->where('High', $style)
+
+        // ->where('users.department_id', 1)
+        ->get();
+
+        return $style;
+
+    }
+    public function qurjoinlow($style,$client){
+        $style =DB::table('answer_records')
+        ->join('clients', 'answer_records.client_id', '=', 'clients.id')
+        ->join('users', 'answer_records.user_id', '=', 'users.id')
+        ->join('departments','answer_records.department_id', '=', 'departments.id')
+        ->select('answer_records.*', 'clients.client', 'users.department_id', 'users.name','departments.department')
+        ->orderBy('answer_records.department_id', 'asc')
+        ->where('answer_records.client_id', $client)
+        ->where('Low', $style)
+
+        // ->where('users.department_id', 1)
+        ->get();
+
+        return $style;
 
     }
     public function Gpdf(Clients $clients)
@@ -1194,10 +1224,30 @@ class questionsController extends Controller
             ->select('answer_records.*', 'clients.client', 'users.department_id', 'users.name')
             ->where('answer_records.client_id', $clients->id)
             // ->where('users.department_id', 1)
-
             ->get();
+        $joinall = DB::table('answer_records')
+        ->join('clients', 'answer_records.client_id', '=', 'clients.id')
+        ->join('users', 'answer_records.user_id', '=', 'users.id')
+        ->join('departments','answer_records.department_id', '=', 'departments.id')
+        ->select('answer_records.*', 'clients.client', 'users.department_id', 'users.name','departments.department')
+        ->orderBy('answer_records.department_id', 'asc')
+        ->where('answer_records.client_id', $clients->id)
+            // ->where('users.department_id', 1)
+        ->get();
+        //dd($joinall);
 
-        //dd($join);
+        $djoin = $this->qurjoin('D',$clients->id);
+        $djoinlow=$this->qurjoinlow('D',$clients->id);
+
+        $ijoin = $this->qurjoin('I',$clients->id);
+        $ijoinlow=$this->qurjoinlow('I',$clients->id);
+        $sjoin = $this->qurjoin('S',$clients->id);
+        $sjoinlow=$this->qurjoinlow('S',$clients->id);
+        $cjoin = $this->qurjoin('C',$clients->id);
+        $cjoinlow=$this->qurjoinlow('C',$clients->id);
+        //dd($djoin,$ijoin,$sjoin,$cjoin);
+
+        //dd($djoin,$djoinlow);
         $maxD = 0;
         $maxI = 0;
         $maxS = 0;
@@ -1250,6 +1300,7 @@ class questionsController extends Controller
         //dd($participants,$darray,$sorted,$maxb,$integerIDs,$maxI);
         $totalval = array();
         array_push($totalval, $maxD, $maxI, $maxS, $maxC);
+
         //dd($maxD,$maxI,$maxS,$maxC,$totalval);
         // dd($participants,$darray,$sorted,$integerIDs);
 
@@ -1268,6 +1319,7 @@ class questionsController extends Controller
                 ->where('answer_records.client_id', $clients->id)
                 ->where('users.department_id', $dept->id)
                 ->get();
+
             $counj = count($join);
 
 
@@ -1292,7 +1344,7 @@ class questionsController extends Controller
         // $url2 = $this->Chartquick('chart2');
         // $url3 = $this->Chartquick('chart3');
         // $url4 = $this->Chartquick('chart4');
-        $valHd= $this->valhigh('D');
+        $valHd = $this->valhigh('D');
         $vallD = $this->vallow('D');
         $valHi = $this->valhigh('I');
         $valli = $this->vallow('I');
@@ -1303,7 +1355,9 @@ class questionsController extends Controller
 
         //dd($valHd,$vallD,$valHi,$valli,$valHS,$vallS,$valHC,$vallC);
 
+
         $total = $this->Chartquick("Participants Summary", $totalval);
+        //dd($totalval);
         $pdf = pdf::loadView('PDF.Gpdf', [
             'name' => $clients->client,
             'num' => $participants,
@@ -1331,7 +1385,17 @@ class questionsController extends Controller
             'LS' => $vallS,
             'HC' => $valHC,
             'LC' => $vallC,
+            'djoin' => $djoin,
+            'ijoin' => $ijoin,
+            'sjoin' => $sjoin,
+            'cjoin' => $cjoin,
+            'djoinlow' => $djoinlow,
+            'ijoinlow' => $ijoinlow,
+            'sjoinlow' => $sjoinlow,
+            'cjoinlow' => $cjoinlow,
+            'joinall' =>$joinall,
+            'sum' => $totalval,
         ]);
-        return $pdf->stream('invoice.pdf');
+        return $pdf->stream('DiSC Report.pdf');
     }
 }
