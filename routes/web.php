@@ -49,6 +49,7 @@ Route::get('/Squiz', [questionsController::class, 'Squiz'])->name('Squiz');
 Route::get('/quizzz', [questionsController::class, 'quiz2'])->name('qz');
 Route::post('/storeQuiz', [questionsController::class, 'storQ'])->name('StoreQuiz');
 Route::get('/results', [questionsController::class, 'results'])->name('results');
+Route::get('/results2', [questionsController::class, 'results2'])->name('results2');
 route::get('/dd',[questionsController::class,'pdf'])->name('pdf');
 
 Route::post('/Cuser', [userController::class, 'Ustore'])->name('userR');

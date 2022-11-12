@@ -23,13 +23,14 @@
     <title>Document</title>
 </head>
 <style>
-    body{
+    body {
         background-image: url("{{ URL::asset('assets/img/back.png') }}");
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
     }
 </style>
+
 <body>
     <header>
         <nav class="navbar navbar-expand-lg bg-light">
@@ -39,21 +40,26 @@
                         alt="">
 
                 </a>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                {{-- <div class="collapse navbar-collapse" id="navbarSupportedContent"> --}}
+                    {{-- <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
 
                     </ul>
-                    <form class="d-flex" method="POST" action="/logout">
+                    <form class="d-flex" method="POST" action="/logout"> --}}
                         {{-- <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                  <button class="btn btn-outline-success" type="submit">Search</button> --}}
-
-                        @csrf
-
+                            <button class="btn btn-outline-success" type="submit">Search</button> --}}
+                        {{-- @csrf
                         {{-- <span>logout</span> --}}
-                        <button class="btn btn-outline-success">Logout</button>
-                    </form>
-                </div>
+                        {{-- <button class="btn btn-outline-success">Logout</button>  --}}
+                    {{-- </form> --}}
+                {{-- </div> --}}
+                <form class="d-flex" method="POST" action="/logout">
+
+                    @csrf
+
+                    <button class="btn btn-outline-success">Logout</button>
+                 </form>
+
             </div>
         </nav>
     </header>
@@ -75,14 +81,14 @@
         @endif
 
         @if (session()->has('error'))
-        <script>
-            Swal.fire({
-                title: 'Not Allowed',
-                text: '{{ session()->get('error') }}',
-                icon: 'error',
-                confirmButtonText: 'Cool'
-            })
-        </script>
+            <script>
+                Swal.fire({
+                    title: 'Not Allowed',
+                    text: '{{ session()->get('error') }}',
+                    icon: 'error',
+                    confirmButtonText: 'Cool'
+                })
+            </script>
         @endif
 
     </div>

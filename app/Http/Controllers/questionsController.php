@@ -426,6 +426,234 @@ class questionsController extends Controller
             'plot' => $plot,
         ]);
     }
+    public function results2()
+    {
+        $record = record::where('user_id', auth()->user()->id)->first();
+        //dd($record);
+        $high = 0;
+        $highV = "";
+
+        if ($record->D > $high) {
+            $high = $record->D;
+            $highV = 'D';
+        }
+        if ($record->I > $high) {
+            $high = $record->I;
+            $highV = 'I';
+        }
+        if ($record->S > $high) {
+            $high = $record->S;
+            $highV = 'S';
+        }
+        if ($record->C > $high) {
+            $high = $record->C;
+            $highV = 'C';
+        }
+        $plot = array();
+
+        switch ($record->D) {
+            case 0;
+                array_push($plot, 2);
+                break;
+            case 1;
+                array_push($plot, 5);
+                break;
+            case 2;
+                array_push($plot, 9);
+                break;
+            case 3;
+                array_push($plot, 12);
+                break;
+            case 4;
+                array_push($plot, 14);
+                break;
+            case 5;
+                array_push($plot, 17);
+                break;
+            case 6;
+                array_push($plot, 19);
+                break;
+            case 7;
+                array_push($plot, 21);
+                break;
+            case 8;
+                array_push($plot, 24);
+                break;
+            case 9;
+                array_push($plot, 27);
+                break;
+            case 10;
+                array_push($plot, 32);
+                break;
+            case 11;
+                array_push($plot, 33);
+                break;
+            case 12;
+                array_push($plot, 34);
+                break;
+            case 13;
+                array_push($plot, 36);
+                break;
+            case 14;
+                array_push($plot, 38);
+                break;
+            case 15;
+                array_push($plot, 44);
+                break;
+            case 16;
+                array_push($plot, 45);
+                break;
+            default:
+                array_push($plot, 46);
+        }
+
+        switch ($record->I) {
+            case 0;
+                array_push($plot, 3);
+                break;
+            case 1;
+                array_push($plot, 6);
+                break;
+            case 2;
+                array_push($plot, 13);
+                break;
+            case 3;
+                array_push($plot, 16);
+                break;
+            case 4;
+                array_push($plot, 23);
+                break;
+            case 5;
+                array_push($plot, 28);
+                break;
+            case 6;
+                array_push($plot, 31);
+                break;
+            case 7;
+                array_push($plot, 37);
+                break;
+            case 8;
+                array_push($plot, 40);
+                break;
+            case 9;
+                array_push($plot, 43);
+                break;
+            case 10;
+                array_push($plot, 45);
+                break;
+            default:
+                array_push($plot, 46);
+        }
+
+        switch ($record->S) {
+            case 0;
+                array_push($plot, 4);
+                break;
+            case 1;
+                array_push($plot, 8);
+                break;
+            case 2;
+                array_push($plot, 10);
+                break;
+            case 3;
+                array_push($plot, 14);
+                break;
+            case 4;
+                array_push($plot, 18);
+                break;
+            case 5;
+                array_push($plot, 22);
+                break;
+            case 6;
+                array_push($plot, 25);
+                break;
+            case 7;
+                array_push($plot, 29);
+                break;
+            case 8;
+                array_push($plot, 31);
+                break;
+            case 9;
+                array_push($plot, 35);
+                break;
+            case 10;
+                array_push($plot, 39);
+                break;
+            case 11;
+                array_push($plot, 42);
+                break;
+            case 12;
+                array_push($plot, 45);
+                break;
+            default:
+                array_push($plot, 46);
+        }
+
+        switch ($record->C) {
+            case 0;
+                array_push($plot, 1);
+                break;
+            case 1;
+                array_push($plot, 7);
+                break;
+            case 2;
+                array_push($plot, 11);
+                break;
+            case 3;
+                array_push($plot, 15);
+                break;
+            case 4;
+                array_push($plot, 23);
+                break;
+            case 5;
+                array_push($plot, 26);
+                break;
+            case 6;
+                array_push($plot, 30);
+                break;
+            case 7;
+                array_push($plot, 37);
+                break;
+            case 8;
+                array_push($plot, 41);
+                break;
+            case 9;
+                array_push($plot, 45);
+                break;
+            default:
+                array_push($plot, 46);
+        }
+
+
+        //dd($plot, $record->D,$record->I, $record->S,$record->C);
+
+        //dd($record->D,$record->I,$record->S,$record->C,$high,$highV);
+        //dd(auth()->user()->id);
+
+        $darray = $plot;
+        // $integerIDs = array_map('intval', $darray);
+        //sort
+        $sorted = $this->vsort($darray);
+        //dd($sorted, "sorted");
+
+        $deptm = auth()->user()->department_id;
+        $splot = join(",", $plot);
+        $update = record::where('user_id', $record->user_id)->update(['department_id' => $deptm]);
+        $update = record::where('user_id', $record->user_id)->update(['plot' => $splot]);
+        $update = record::where('user_id', $record->user_id)->update(['High' => $sorted[0]]);
+        $update = record::where('user_id', $record->user_id)->update(['Low' => $sorted[1]]);
+        $dept = Departments::find(auth()->user()->department_id);
+        //dd($dept->department);
+
+
+
+        return view('user.results2', [
+            'record' => $record,
+            'high' => $highV,
+            'department' => $dept->department,
+            'plot' => $plot,
+        ]);
+    }
 
     public function pdf()
     {
