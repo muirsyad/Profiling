@@ -20,7 +20,24 @@ class adminController extends Controller
     {
         $count = Clients::count();
         $mcount = Clients::whereMonth('created_at', date('m'))->count();
+        //dd($mcount);
         $recent = DB::table('clients')->orderBy('id', 'desc')->first();
+        $participants = DB::table('users')->where('role_id',2)->count();
+        $mothly = $this->monthly();
+        $now = date('m');
+        $ans = DB::table('answer_records')->whereYear('created_at','2022')
+        ->whereMonth('created_at',date('m'))
+        ->get();
+
+
+
+        $yearn = $this->yearly();
+
+
+
+        //dd(date('Y'),$yearn);
+
+
 
         //$mcount = Clients::whereMonth('created_at', Carbon::parse('01'));
 
@@ -31,7 +48,10 @@ class adminController extends Controller
             [
                 'count' => $count,
                 'mcount' => $mcount,
-                'recent' => $recent
+                'recent' => $recent,
+                'monthly' => $mothly,
+                'participants' => $participants,
+                'year' => $yearn,
 
             ]
         );
@@ -79,6 +99,15 @@ class adminController extends Controller
             'clients' => Clients::all(),
         ]);
     }
+
+    public function indTemplate()
+    {
+        return view('admin.inv-template');
+    }
+    public function grpTemplate()
+    {
+        return view('admin.grp-template');
+    }
     public function store(Request $request)
     {
 
@@ -102,11 +131,17 @@ class adminController extends Controller
         $clients = DB::table('clients')->where('id', $clients->id)->first();
         $participants = DB::table('users')->where('client_id', $clients->id)->get();
         $department = DB::table('departments')->get();
+        $countre = DB::table('answer_records')->where('client_id', $clients->id)->count();
+        $countall = DB::table('users')->where('client_id', $clients->id)->count();
+
+
         //dd($clients,$participants,$department);
         return view('admin.details', [
             'client' => $clients,
             'participants' => $participants,
             'department' => $department,
+            'countre' => $countre,
+            'countall' => $countall,
         ]);
     }
     public function invite(Clients $clients)
@@ -155,9 +190,50 @@ class adminController extends Controller
 
 
     }
-
+    public function uptemplate(Request $request){
+        dd($request);
+    }
     public function profile()
     {
         return view('admin.profile');
+    }
+
+    //template report
+    public function templates()
+    {
+        return view('admin.stemplate');
+    }
+    //small function
+
+    //function to calculate participants montly
+    public function monthly()
+    {
+        $now = Carbon::now();
+        $month = $now->format('m');
+        // $month='10';
+
+        $monthly = DB::table('clients')
+                ->select('id','name','created_at')
+                ->whereMonth('created_at',$month)
+                // ->where('role_id',2)
+                ->count();
+        //dd($monthly,$currmon,$nextmon,$month);
+        //dd($monthly);
+        return $monthly;
+    }
+    public function countmonthly($count){
+
+        $count = DB::table('answer_records')->whereYear('created_at','2022')
+        ->whereMonth('created_at',$count)
+        ->count();
+        return $count;
+    }
+    public function yearly(){
+        $year = array();
+        for($i=1;$i<=12;$i++){
+            $count = $this->countmonthly($i);
+            array_push($year,$count);
+        }
+        return $year;
     }
 }

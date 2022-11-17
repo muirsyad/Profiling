@@ -24,39 +24,46 @@ Route::post('/logout', [userController::class, 'logout'])->name('logout');
 Route::get('/register', [userController::class, 'create'])->name('register');
 //register by client
 Route::get('/register/{name}', [userController::class, 'createcode'])->name('link');
-Route::post('/Cadmin', [userController::class, 'Rstore'])->name('adminR');
+Route::post('/Cadmin', [userController::class, 'Rstore'])->name('adminR')->middleware('auth');
 
 //admin routes
-Route::get('/admin/index', [adminController::class, 'index'])->name('ad_index');
-Route::get('/admin/clients', [adminController::class, 'Chome'])->name('cHome');
-Route::get('/admin/clients/create', [adminController::class, 'create'])->name('Ccreate');
-Route::post('/admin/clients/create/store', [adminController::class, 'store'])->name('Cstore');
-Route::get('/admin/clients/view', [adminController::class, 'view'])->name('Cview');
-Route::get('/admin/clients/details/{clients}', [adminController::class, 'details'])->name('details');
-Route::get('/admin/clients/details/{clients}/invite', [adminController::class, 'invite'])->name('invite');
-Route::get('/admin/clients/delete/{clients}', [adminController::class, 'Cdelete'])->name('delete');
-Route::get('/admin/clients/update/{clients}', [adminController::class, 'update'])->name('update');
-Route::post('/admin/clients/change/{clients}', [adminController::class, 'change'])->name('update');
-Route::get('/admin/questions', [adminController::class, 'vquest'])->name('vquest');
-Route::get('/admin/profile', [adminController::class, 'profile'])->name('profile');
+Route::get('/admin/index', [adminController::class, 'index'])->name('ad_index')->middleware('auth');
+Route::get('/admin/clients', [adminController::class, 'Chome'])->name('cHome')->middleware('auth');
+Route::get('/admin/clients/create', [adminController::class, 'create'])->name('Ccreate')->middleware('auth');
+Route::post('/admin/clients/create/store', [adminController::class, 'store'])->name('Cstore')->middleware('auth');
+Route::get('/admin/clients/view', [adminController::class, 'view'])->name('Cview')->middleware('auth');
+Route::get('/admin/clients/details/{clients}', [adminController::class, 'details'])->name('details')->middleware('auth');
+Route::get('/admin/clients/details/{clients}/invite', [adminController::class, 'invite'])->name('invite')->middleware('auth');
+Route::get('/admin/clients/delete/{clients}', [adminController::class, 'Cdelete'])->name('delete')->middleware('auth');
+Route::get('/admin/clients/update/{clients}', [adminController::class, 'update'])->name('update')->middleware('auth');
+Route::post('/admin/clients/change/{clients}', [adminController::class, 'change'])->name('update')->middleware('auth');
+Route::get('/admin/questions', [adminController::class, 'vquest'])->name('vquest')->middleware('auth');
+Route::get('/admin/profile', [adminController::class, 'profile'])->name('profile')->middleware('auth');
+route::get('/admin/templates', [adminController::class, 'templates'])->name('template');
+route::get('/admin/templates/individual', [adminController::class, 'indTemplate'])->name('indTemp');
+Route::post('/admin/templates/individual/update', [adminController::class, 'uptemplate'])->name('tempstore')->middleware('auth');
+
+route::get('/admin/templates/group', [adminController::class, 'grpTemplate'])->name('grpTemp');
+
+
 
 
 //cliet routes
 Route::get('/registerC', [userController::class, 'create2'])->name('register2');
-Route::get('/home', [questionsController::class, 'index'])->name('Qhome');
-Route::get('/quiz', [questionsController::class, 'quiz'])->name('quiz');
-Route::get('/Squiz', [questionsController::class, 'Squiz'])->name('Squiz');
-Route::get('/quizzz', [questionsController::class, 'quiz2'])->name('qz');
-Route::post('/storeQuiz', [questionsController::class, 'storQ'])->name('StoreQuiz');
-Route::get('/results', [questionsController::class, 'results'])->name('results');
-Route::get('/results2', [questionsController::class, 'results2'])->name('results2');
-route::get('/dd',[questionsController::class,'pdf'])->name('pdf');
+Route::get('/home', [questionsController::class, 'index'])->name('Qhome')->middleware('auth');
+Route::get('/quiz', [questionsController::class, 'quiz'])->name('quiz')->middleware('auth');
+Route::get('/Squiz', [questionsController::class, 'Squiz'])->name('Squiz')->middleware('auth');
+Route::get('/quizzz', [questionsController::class, 'quiz2'])->name('qz')->middleware('auth');
+Route::post('/storeQuiz', [questionsController::class, 'storQ'])->name('StoreQuiz')->middleware('auth');
+Route::get('/results', [questionsController::class, 'results'])->name('results')->middleware('auth');
+Route::get('/results2', [questionsController::class, 'results2'])->name('results2')->middleware('auth');
+route::get('/dd',[questionsController::class,'pdf'])->name('pdf')->middleware('auth');
 
-Route::post('/Cuser', [userController::class, 'Ustore'])->name('userR');
+Route::post('/Cuser', [userController::class, 'Ustore'])->name('userR')->middleware('auth');
 
 //email test
-Route::get('/sendmail/{name}', [userController::class, 'sendMail'])->name('mail');
-Route::post('/sentmail/{code}', [userController::class, 'sentMail'])->name('smail');
+Route::get('/sendmail/{name}', [userController::class, 'sendMail'])->name('mail')->middleware('auth');
+Route::post('/sentmail/{code}', [userController::class, 'sentMail'])->name('smail')->middleware('auth');
 //random string
 route::get('/code', function () {
 
@@ -70,10 +77,10 @@ route::get('/code', function () {
 
 //test pdf
 //indivifual report
-Route::get('tpdf', [questionsController::class, 'tpdf'])->name('dlpdf');
+Route::get('tpdf', [questionsController::class, 'tpdf'])->name('dlpdf')->middleware('auth');
 
 //group report
-Route::get('gpdf/{clients}', [questionsController::class, 'Gpdf'])->name('Greport');
+Route::get('gpdf/{clients}', [questionsController::class, 'Gpdf'])->name('Greport')->middleware('auth');
 
-Route::get('vtpdf', [questionsController::class, 'vtpdf']);
+Route::get('vtpdf', [questionsController::class, 'vtpdf'])->middleware('auth');
 

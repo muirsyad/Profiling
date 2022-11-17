@@ -66,8 +66,14 @@
         <div class="mb-3"><a href="{{ route('invite', $client->id) }}" class="btn btn-primary text-decoration-none ">Invite
             </a></div>
     </div>
+    <h4 style="color: red; font-size:15px;">*Report can be genereted <strong>ONLY</strong> if all participants has answered</h4>
+
     <div class="d-flex justify-content-end">
-        <a href="{{ route('Greport',$client->id) }}" class="btn btn-success text-decoration-none">Generate</a>
+        @if ($countre == $countall)
+            <a href="{{ route('Greport', $client->id) }}" class="btn btn-success text-decoration-none">Generate</a>
+        @else
+        <a href="{{ route('Greport', $client->id) }}" class="btn btn-success text-decoration-none disabled" >Generate</a>
+        @endif
     </div>
 
 
