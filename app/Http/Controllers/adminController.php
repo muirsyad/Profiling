@@ -102,7 +102,17 @@ class adminController extends Controller
 
     public function indTemplate()
     {
-        return view('admin.inv-template');
+        $highlow = $this->selBehaviour('D');
+
+        $Dhigh = explode(".",$highlow->H_temp);
+        $Dcount = count($Dhigh);
+        $DLow = explode(".",$highlow->L_temp);
+
+        return view('admin.inv-template',[
+            'Dhigh' => $Dhigh,
+            'DLow' => $DLow,
+            'Dcount' => $Dcount,
+        ]);
     }
     public function grpTemplate()
     {
@@ -228,6 +238,15 @@ class adminController extends Controller
         ->count();
         return $count;
     }
+
+    public function selBehaviour($style){
+        $array = DB::table('templates_reports')
+        ->select('L_temp','H_temp')
+        ->where('Behaviour_type', $style)
+        ->first();
+
+        return $array;
+    }
     public function yearly(){
         $year = array();
         for($i=1;$i<=12;$i++){
@@ -236,4 +255,8 @@ class adminController extends Controller
         }
         return $year;
     }
+
+
+
+
 }

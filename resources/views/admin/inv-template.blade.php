@@ -29,6 +29,13 @@
                                 <input type="text" class="form-control" id="exampleFormControlInput1"
                                     placeholder="soalan" name="High1">
                             </div>
+                            <span>{{ $Dcount }}</span>
+                            @foreach ($Dhigh as $i=>$Dhigh )
+                            <div class="mb-3">
+                                <input type="text" value="{{ $Dhigh }}" class="form-control" id="exampleFormControlInput1"
+                                    placeholder="soalan" name="DHIgh{{ $i+1 }}">
+                            </div>
+                            @endforeach
 
 
 
@@ -225,96 +232,8 @@
     </form>
 
 
-    {{-- jqury try --}}
-    <p id="div1" style="display: none">If you click on the "Hide" button, I will disappear.1111</p>
-    <p id="div3" style="display: none">If you click on the "Hide" button, I will disappear.3333</p>
-    <p id="div2">If you click on the "Hide" button, I will disappear.2222</p>
+{{-- <x-t_function/> --}}
 
-    <button id="hide">Hide</button>
-    <button id="show">Show</button>
-
-    <button id="tshow">Showt</button>
-    <button id="sh">dynamic</button>
-    <button id="sh2">dynamic2</button>
-
-    <script>
-        $(document).ready(function() {
-            $("#hide").click(function() {
-                $("p").hide();
-            });
-            $("#show").click(function() {
-                $("p").show();
-            });
-            $("#tshow").click(function(){
-                $("#div1").fadeOut("slow");
-            });
-            $("#sh").click(function(){
-                if($("#div1").is(":hidden")){
-                    $("#div1").fadeIn();
-                    $("#div3").fadeOut();
-                    $("#div3").hide();
-                }
-                //  else {
-                //     $("#div1").fadeOut();
-                //     $("#div1").hide();
-                // }
-            });
-            $("#sh2").click(function(){
-                if($("#div3").is(":hidden")){
-                    $("#div3").fadeIn();
-                    $("#div1").fadeOut();
-                    $("#div1").hide();
-                }
-            });
-
-            $("#btn-D").click(function(){
-                if($("#tab-D").is(":hidden")){
-                    $("#tab-D").fadeIn();
-                    $("#tab-i").fadeOut();
-                    $("#tab-i").hide();
-                    $("#tab-S").fadeOut();
-                    $("#tab-S").hide();
-                    $("#tab-C").fadeOut();
-                    $("#tab-C").hide();
-                }
-            });
-            $("#btn-i").click(function(){
-                if($("#tab-i").is(":hidden")){
-                    $("#tab-i").fadeIn();
-                    $("#tab-D").fadeOut();
-                    $("#tab-D").hide();
-                    $("#tab-S").fadeOut();
-                    $("#tab-S").hide();
-                    $("#tab-C").fadeOut();
-                    $("#tab-C").hide();
-                }
-            });
-
-            $("#btn-S").click(function(){
-                if($("#tab-S").is(":hidden")){
-                    $("#tab-S").fadeIn();
-                    $("#tab-D").fadeOut();
-                    $("#tab-D").hide();
-                    $("#tab-i").fadeOut();
-                    $("#tab-i").hide();
-                    $("#tab-C").fadeOut();
-                    $("#tab-C").hide();
-                }
-            });
-            $("#btn-C").click(function(){
-                if($("#tab-C").is(":hidden")){
-                    $("#tab-C").fadeIn();
-                    $("#tab-D").fadeOut();
-                    $("#tab-D").hide();
-                    $("#tab-S").fadeOut();
-                    $("#tab-S").hide();
-                    $("#tab-i").fadeOut();
-                    $("#tab-i").hide();
-                }
-            });
-
-
-        });
-    </script>
     <script src="{{ URL::asset('assets/js/functionjs.js') }}"></script>
+
 @endsection
