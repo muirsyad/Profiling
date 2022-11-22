@@ -13,7 +13,7 @@
         </div>
     <form action="{{ route('tempstore') }}" method="post" id="form_template">
         @csrf
-        <div style="display: none" id="tab-D" class="card title2 col-10 mx-auto mb-3">
+        <div id="tab-D" class="card title2 col-10 mx-auto mb-3">
             <div class="card-header">
                 <h3 class="text-primary">Behaviour Template</h3>
             </div>
@@ -25,15 +25,16 @@
                     <div class="col">
                         <p>High</p>
                         <div id="inputcon" class="exampleD">
-                            <div class="mb-3">
+                            {{-- <div class="mb-3">
                                 <input type="text" class="form-control" id="exampleFormControlInput1"
                                     placeholder="soalan" name="High1">
-                            </div>
-                            <span>{{ $Dcount }}</span>
+                            </div> --}}
+                            <span id="ch">{{ $Dcount }}</span>
+                            {{-- <input type="text" value="{{ $Dcount }}"> --}}
                             @foreach ($Dhigh as $i=>$Dhigh )
                             <div class="mb-3">
-                                <input type="text" value="{{ $Dhigh }}" class="form-control" id="exampleFormControlInput1"
-                                    placeholder="soalan" name="DHIgh{{ $i+1 }}">
+                                <input type="text" value="{{ $Dhigh }}" class="form-control" id="D_HIgh{{ $i+1 }}"
+                                    placeholder="soalan" name="D_HIgh{{ $i+1 }}">
                             </div>
                             @endforeach
 
@@ -46,10 +47,14 @@
                     <div class="col">
                         <p>Low</p>
                         <div id="inputcon" class="example2D">
+                            <span id="cl">{{ $Dlcount }}</span>
+                            {{-- <input type="text" value="{{ $Dcount }}"> --}}
+                            @foreach ($DLow as $i=>$DLow )
                             <div class="mb-3">
-                                <input type="text" class="form-control" id="exampleFormControlInput1"
-                                    placeholder="soalan" name="Low1">
+                                <input type="text" value="{{ $DLow }}" class="form-control" id="D_low{{ $i+1 }}"
+                                    placeholder="soalan" name="D_low{{ $i+1 }}">
                             </div>
+                            @endforeach
 
 
 
@@ -63,7 +68,7 @@
 
                     </div>
                     <div class="p-4">
-                        <button type="submit" class="btn btn-primary">Save template</button>
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
                     </div>
                 </div>
 
@@ -232,8 +237,9 @@
     </form>
 
 
-{{-- <x-t_function/> --}}
+<x-t_function/>
 
     <script src="{{ URL::asset('assets/js/functionjs.js') }}"></script>
+
 
 @endsection

@@ -9,3 +9,13 @@
 <button id="tshow">Showt</button>
 <button id="sh">dynamic</button>
 <button id="sh2">dynamic2</button>
+
+
+<h2>Test 2</h2>
+
+<button id="hidep">hide P</button>
+<button id="showp">show P</button>
+<p>If you click on me, I will disappear.</p>
+<p>Click me away!</p>
+<p>Click me too!</p>
+

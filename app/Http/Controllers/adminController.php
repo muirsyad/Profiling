@@ -107,11 +107,13 @@ class adminController extends Controller
         $Dhigh = explode(".",$highlow->H_temp);
         $Dcount = count($Dhigh);
         $DLow = explode(".",$highlow->L_temp);
+        $Dlcount = count($DLow);
 
         return view('admin.inv-template',[
             'Dhigh' => $Dhigh,
             'DLow' => $DLow,
             'Dcount' => $Dcount,
+            'Dlcount' => $Dlcount,
         ]);
     }
     public function grpTemplate()
@@ -202,6 +204,7 @@ class adminController extends Controller
     }
     public function uptemplate(Request $request){
         dd($request);
+
     }
     public function profile()
     {
