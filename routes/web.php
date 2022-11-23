@@ -58,6 +58,8 @@ Route::post('/storeQuiz', [questionsController::class, 'storQ'])->name('StoreQui
 Route::get('/results', [questionsController::class, 'results'])->name('results')->middleware('auth');
 Route::get('/results2', [questionsController::class, 'results2'])->name('results2')->middleware('auth');
 route::get('/dd',[questionsController::class,'pdf'])->name('pdf')->middleware('auth');
+//ver 2 pdf
+route::get('/pdf2',[questionsController::class,'inv2'])->name('inv2')->middleware('auth');
 
 Route::post('/Cuser', [userController::class, 'Ustore'])->name('userR')->middleware('auth');
 

@@ -195,8 +195,8 @@
 
 
         <h1 class="title">DiSC Profiling Report</h1>
-        <img src="C:\xampp\htdocs\New folder\Profiling\public\assets\img\lhi.png" width="300px" height="300px"
-            class="log-center" alt="t">
+        <img src="C:\laragon\www\LHI\Profiling\public\assets\img\lhi.png" width="300px" height="300px" class="log-center" alt="t">
+
         <hr class="green mb-3">
         <div class="namebox mb-3">
             <h4>Name :{{ $user->name }}</h4>
