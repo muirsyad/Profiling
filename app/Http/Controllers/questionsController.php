@@ -682,6 +682,12 @@ class questionsController extends Controller
             ->where('users.id', $auth)
             ->first();
 
+        //qury get value depat
+        $teamChart = $this->bydepart($join->department_id,'department_id');
+        $companyChart = $this->bydepart($join->client_id,'client_id');
+
+        //dd($qury);
+
         //$intd = intval($ans->plot);
         $darray = explode(',', $ans->plot);
         $integerIDs = array_map('intval', $darray);
@@ -725,8 +731,8 @@ class questionsController extends Controller
 
         // chart
         $qc = new QuickChart(array(
-            'width' => 500,
-            'height' => 300,
+            'width' => 150,
+            'height' => 200,
             'version' => '2',
         ));
 
@@ -963,6 +969,8 @@ class questionsController extends Controller
         $O_avoid = $template->O_avoid;
         $Y_environment = $template->Y_environment;
         $Behaviour_type = $template->Behaviour_type;
+        $stg = $template->Strength;
+
         //$keywords = $template->keywords;
 
         //dd($best, $Wmotivate);
@@ -975,6 +983,7 @@ class questionsController extends Controller
         $O_better = explode('.', $O_better);
         $O_avoid = explode('.', $O_avoid);
         $Y_environment = explode('.', $Y_environment);
+        $stg = explode('.', $stg);
 
         $best = explode('.', $best);
         $D_value = explode('.', $D_value);
@@ -1020,6 +1029,7 @@ class questionsController extends Controller
         $img1 = "https://picsum.photos/200";
         //dd($D_value, $I_value, $S_value, $C_value,$D_hl,$I_hl,$S_hl,$C_hl);
 
+
         $pdf = pdf::loadView('PDF.individual', [
             'ansval' => $ans,
             'user'  => $join,
@@ -1047,6 +1057,9 @@ class questionsController extends Controller
             'O_avoid' => $O_avoid,
             'Y_environment' => $Y_environment,
             'Behaviour_type' => $Behaviour_type,
+            'stg' => $stg,
+            'teamChart' => $teamChart,
+            'companyChart' => $companyChart,
 
         ]);
         $pdf->getDomPDF()->setHttpContext(
@@ -1740,11 +1753,87 @@ class questionsController extends Controller
         //dd('Genereated url : ',$url);
         return $url;
     }
+    public function Linequick($name,$value,$width,$height)
+    {
+
+        $qc = new QuickChart(array(
+            'width' => $width,
+            'height' => $height,
+            'version' => '2',
+        ));
+        $qc->setConfig('{
+            type: "line",
+            data: {
+              labels: ["Hello world", "Test"],
+              datasets: [{
+                label: "Foo",
+                data: [1, 2]
+              }]
+            }
+          }');
+          $qc->setConfig("{
+            type: 'line',
+            data: {
+                labels: ['','D', 'I', 'S', 'C',''],
+                datasets: [
+                  {
+                    label: 'My First dataset',
+                    backgroundColor: 'rgb(255, 99, 132)',
+                    borderColor: 'rgb(0, 0, 0)',
+                    data: [20,20,20, 20, 20, 20],
+                    fill: false,
+                    pointRadius:0,
+                    borderWidth: 1
+                  },
+                  {
+                    label: 'My Second dataset',
+                    fill: false,
+                    backgroundColor: 'rgb(54, 162, 235)',
+                    borderColor: 'rgb(54, 162, 235)',
+                    data: [null, $value[0], $value[1], $value[2], $value[3],null],
+                    pointRadius:0,
+                    borderWidth: 4
+                  },
+                ],
+              },
+              options: {
+                legend: {
+                    display: false,
+                },
+                title: {
+                  display: true,
+                  text: 'DiSC Profiling grpahs',
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+                            display: false,
+                        }
+                    }]
+                }
+
+              },
+        }");
+
+        // Print the chart URL
+
+        //dd($qc->getUrl());
+        $img = $qc->getUrl();
+
+
+        // chart
+
+        $url = $qc->getUrl();
+        //dd('Genereated url : ',$url);
+        return $url;
+    }
     public function persent($num, $total)
     {
         $num = $num / $total * 100;
         return $num;
     }
+
     public function chartvalue($join)
     {
 
@@ -2025,5 +2114,231 @@ class questionsController extends Controller
             'sum' => $totalval,
         ]);
         return $pdf->stream('DiSC Report.pdf');
+    }
+    public function bydepart($d_id,$qury){
+
+        $sumD=0;
+        $sumi=0;
+        $sumS=0;
+        $sumC=0;
+
+        $qdept = DB::table('answer_records')
+        ->where($qury,$d_id)
+        ->get();
+
+        $count= count($qdept);
+        foreach($qdept as $dept){
+            $user = DB::table('answer_records')
+            ->where('user_id',$dept->user_id)
+            ->first();
+
+            $sumD = $sumD+$user->D;
+            $sumi = $sumi+$user->I;
+            $sumS = $sumS+$user->S;
+            $sumC = $sumC+$user->C;
+
+
+        $query = $this->chartvalue($qdept);
+
+        //dd($query);
+        }
+        //average
+        $sumD = round($sumD/$count);
+        $sumi = round($sumi/$count);
+        $sumS = round($sumS/$count);
+        $sumC = round($sumC/$count);
+
+        //dd($sumD,$sumi,$sumS,$sumC);
+
+        $plot = $this->splot($sumD,$sumi,$sumS,$sumC);
+        //dd($plot);
+        $teamUrl = $this->Linequick("team" ,$plot,150,200);
+        return $teamUrl;
+
+
+    }
+    public function bycompany($c_id){
+
+    }
+
+    public function splot($sumD,$sumi,$sumS,$sumC){
+
+        $plot = array();
+
+        switch ($sumD) {
+            case 0;
+                array_push($plot, 2);
+                break;
+            case 1;
+                array_push($plot, 5);
+                break;
+            case 2;
+                array_push($plot, 9);
+                break;
+            case 3;
+                array_push($plot, 12);
+                break;
+            case 4;
+                array_push($plot, 14);
+                break;
+            case 5;
+                array_push($plot, 17);
+                break;
+            case 6;
+                array_push($plot, 19);
+                break;
+            case 7;
+                array_push($plot, 21);
+                break;
+            case 8;
+                array_push($plot, 24);
+                break;
+            case 9;
+                array_push($plot, 27);
+                break;
+            case 10;
+                array_push($plot, 32);
+                break;
+            case 11;
+                array_push($plot, 33);
+                break;
+            case 12;
+                array_push($plot, 34);
+                break;
+            case 13;
+                array_push($plot, 36);
+                break;
+            case 14;
+                array_push($plot, 38);
+                break;
+            case 15;
+                array_push($plot, 44);
+                break;
+            case 16;
+                array_push($plot, 45);
+                break;
+            default:
+                array_push($plot, 46);
+        }
+
+        switch ($sumi) {
+            case 0;
+                array_push($plot, 3);
+                break;
+            case 1;
+                array_push($plot, 6);
+                break;
+            case 2;
+                array_push($plot, 13);
+                break;
+            case 3;
+                array_push($plot, 16);
+                break;
+            case 4;
+                array_push($plot, 23);
+                break;
+            case 5;
+                array_push($plot, 28);
+                break;
+            case 6;
+                array_push($plot, 31);
+                break;
+            case 7;
+                array_push($plot, 37);
+                break;
+            case 8;
+                array_push($plot, 40);
+                break;
+            case 9;
+                array_push($plot, 43);
+                break;
+            case 10;
+                array_push($plot, 45);
+                break;
+            default:
+                array_push($plot, 46);
+        }
+
+        switch ($sumS) {
+            case 0;
+                array_push($plot, 4);
+                break;
+            case 1;
+                array_push($plot, 8);
+                break;
+            case 2;
+                array_push($plot, 10);
+                break;
+            case 3;
+                array_push($plot, 14);
+                break;
+            case 4;
+                array_push($plot, 18);
+                break;
+            case 5;
+                array_push($plot, 22);
+                break;
+            case 6;
+                array_push($plot, 25);
+                break;
+            case 7;
+                array_push($plot, 29);
+                break;
+            case 8;
+                array_push($plot, 31);
+                break;
+            case 9;
+                array_push($plot, 35);
+                break;
+            case 10;
+                array_push($plot, 39);
+                break;
+            case 11;
+                array_push($plot, 42);
+                break;
+            case 12;
+                array_push($plot, 45);
+                break;
+            default:
+                array_push($plot, 46);
+        }
+
+        switch ($sumC) {
+            case 0;
+                array_push($plot, 1);
+                break;
+            case 1;
+                array_push($plot, 7);
+                break;
+            case 2;
+                array_push($plot, 11);
+                break;
+            case 3;
+                array_push($plot, 15);
+                break;
+            case 4;
+                array_push($plot, 23);
+                break;
+            case 5;
+                array_push($plot, 26);
+                break;
+            case 6;
+                array_push($plot, 30);
+                break;
+            case 7;
+                array_push($plot, 37);
+                break;
+            case 8;
+                array_push($plot, 41);
+                break;
+            case 9;
+                array_push($plot, 45);
+                break;
+            default:
+                array_push($plot, 46);
+        }
+
+
+        return $plot;
     }
 }

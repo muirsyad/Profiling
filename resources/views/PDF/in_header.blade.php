@@ -169,7 +169,7 @@
         .center {
             margin-left: auto;
             margin-right: auto;
-            border: 1px solid black;
+            /* border: 1px solid black; */
         }
 
         .point {
@@ -187,7 +187,8 @@
             text-align: center;
 
         }
-        .inline{
+
+        .inline {
             display: inline;
         }
 
@@ -223,22 +224,105 @@
             margin-left: 200px;
             border: 1px solid #000000;
         }
-        .img-small{
-            width: 300px;
-            margin-left: 40px;
+
+        .img-small {
+
+            /* margin-left: 40px; */
             border: 1px solid #000000;
 
         }
-        .divt{
+
+        .img-three {
+
+            border: 1px solid #000000;
+        }
+
+        .divt {
             width: 390px;
             border: 1px solid #000000;
             margin-left: 1px;
 
         }
-        .lcen{
+
+        .lcen {
             margin-left: 200px;
         }
 
+        /* table,
+        th,
+        td {
+            border: 1px solid #000000;
+            border-collapse: collapse;
+        } */
+
+        .p-10 {
+            padding: 10px;
+        }
+
+        .textbox-l {
+            border: 1px solid #000000;
+            width: 750px;
+        }
+
+        .textbox2-l {
+            border: 1px solid #000000;
+            width: 370px;
+        }
+
+        .textbox2-r {
+            position: relative;
+            width: 370px;
+            left: 400px;
+            top: -163px;
+            border: 1px solid #000000;
+        }
+
+        .textbox3-r {
+            position: relative;
+            width: 370px;
+            left: 400px;
+            top: -150px;
+            border: 1px solid #000000;
+        }
+
+        .m-boxl {
+            margin-left: 20px;
+        }
+
+        table.sum {
+            /* border-collapse: separate;
+            border-spacing: 50px 0; */
+            background: rgb(212, 244, 215);
+            border: 1px solid #000000;
+            margin: 12px;
+            width: 97%;
+            text-align: center;
+
+        }
+
+        td.sum {
+            padding: 10px;
+            background: rgb(255, 255, 255);
+            width: 48.5%;
+            border: 1px solid #000000;
+            /* Remove this line to disable grey background color */
+        }
+
+        table.flot-r {
+            float: right;
+            margin-top: -10px;
+        }
+
+        .font-sm {
+            font-size: 12px;
+        }
+        table.footnote{
+            margin-top: 315px;
+            border: 1px solid #000000;
+        }
+        tr.footnote{
+            color: red;
+        }
 
     </style>
     {{-- page 1     --}}
@@ -257,9 +341,6 @@
     </div>
 
     @yield('content')
-
-
-
 
 </body>
 
