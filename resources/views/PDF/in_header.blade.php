@@ -321,7 +321,7 @@
             border: 1px solid #000000;
         }
         tr.footnote{
-            color: red;
+            color: rgb(0, 0, 0);
         }
 
     </style>

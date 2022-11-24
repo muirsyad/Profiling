@@ -99,7 +99,15 @@
     <tr class="footnote">
         <td><span> x % of person in organization has the same profile as you</span></td>
         <td><span>You higest type is x and x that describe you as </span></td>
-        <td><span>Your main keywords that describe you is x x and x</span></td>
+        <td><span>Your main keywords that describe you
+            @foreach ($keywords as $i => $key )
+                @if ($i > 3)
+                    @break
+                @endif
+                <strong style="color: red;">{{ $key }}</strong>
+
+            @endforeach
+            </span></td>
     </tr>
     <tr>
         <span>This page only summary of the report. For details of the report you</span>

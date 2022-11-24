@@ -683,8 +683,10 @@ class questionsController extends Controller
             ->first();
 
         //qury get value depat
+
         $teamChart = $this->bydepart($join->department_id,'department_id');
         $companyChart = $this->bydepart($join->client_id,'client_id');
+        $u_among = $this->comteam($join->id);
 
         //dd($qury);
 
@@ -828,6 +830,7 @@ class questionsController extends Controller
             default:
                 dd('unknown value');
         }
+
         // if($D_value === $valbest){
         //     //$D_value = $best;
 
@@ -990,6 +993,7 @@ class questionsController extends Controller
         $I_value = explode('.', $I_value);
         $S_value = explode('.', $S_value);
         $C_value = explode('.', $C_value);
+
 
 
 
@@ -2157,8 +2161,50 @@ class questionsController extends Controller
 
 
     }
-    public function bycompany($c_id){
+    public function comteam($uid){
+        $sumD=0;
+        $sumi=0;
+        $sumS=0;
+        $sumC=0;
 
+        $query = DB::table('answer_records')
+        ->where('user_id',$uid)
+        ->first();
+        $high = $query->High;
+
+        $dept = $this->seldept($query->department_id);
+
+        $count = count($dept);
+        foreach($dept as $dept){
+            $High = $dept->High;
+            switch($High){
+                case 'D':
+                    $sumD=$sumD+1;
+                    break;
+                case 'I':
+                    $sumi=$sumi+1;
+                    break;
+                case 'S':
+                    $sumS=$sumS+1;
+                    break;
+                case 'C':
+                    $sumC=$sumC+1;
+                    break;
+                default:
+                    dd("some error occured");
+            }
+
+        }
+        dd($sumD,$sumi,$sumS,$sumC);
+
+
+
+    }
+    public function seldept($did){
+        $dept = DB::table('answer_records')
+        ->where('department_id',$did)
+        ->get();
+        return $dept;
     }
 
     public function splot($sumD,$sumi,$sumS,$sumC){
