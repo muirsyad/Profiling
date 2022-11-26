@@ -685,8 +685,16 @@ class questionsController extends Controller
         //qury get value depat
 
         $teamChart = $this->bydepart($join->department_id,'department_id');
+        $teamvalue = $teamChart;
+        $teamChart = $this->getURLchart($teamChart);
+
         $companyChart = $this->bydepart($join->client_id,'client_id');
+        $companyvalue = $companyChart;
+        $companyChart = $this->getURLchart($companyChart);
+
         $u_among = $this->comteam($join->id);
+        $u_among = $this->percentageamong($u_among);
+
 
         //dd($qury);
 
@@ -695,6 +703,10 @@ class questionsController extends Controller
         $integerIDs = array_map('intval', $darray);
         //sort
         $sorted = $this->bsort($integerIDs);
+        //your disc
+        $ystyle = array();
+        array_push($ystyle,$ans->D,$ans->I,$ans->S,$ans->C);
+
 
         //$type = gettype($integerIDs);
 
@@ -745,6 +757,7 @@ class questionsController extends Controller
         $v_I = $plot[1];
         $v_S = $plot[2];
         $v_C = $plot[3];
+
 
         //dd($v_D, $v_I, $v_S, $v_C);
 
@@ -1064,6 +1077,9 @@ class questionsController extends Controller
             'stg' => $stg,
             'teamChart' => $teamChart,
             'companyChart' => $companyChart,
+            'teamvalue' => $teamvalue,
+            'companyvalue' => $companyvalue,
+            'ystyle' => $ystyle,
 
         ]);
         $pdf->getDomPDF()->setHttpContext(
@@ -1075,6 +1091,320 @@ class questionsController extends Controller
                 ]
             ])
         );
+
+        $pdf->setOption('isRemoteEnabled', true);
+        return $pdf->stream('invoice.pdf');
+        //return $pdf->download('profiling.pdf');
+    }
+    //end
+
+    //version 3 start
+    public function inv3()
+    {
+        $uderid = 20;
+        $bt = 'C';
+        $bvalue = 2;
+        $auth = auth()->user()->id;
+
+        //get plot value
+
+        $ans = DB::table('answer_records')->where('user_id', $auth)->first();
+        $join = DB::table('users')
+            ->join('departments', 'users.department_id', '=', 'departments.id')
+            ->select('users.*', 'departments.department')
+            ->where('users.id', $auth)
+            ->first();
+
+        //qury get value depat
+
+        $teamChart = $this->bydepart($join->department_id,'department_id');
+        $teamvalue = $teamChart;
+        $teamChart = $this->getURLchart($teamChart);
+
+        $companyChart = $this->bydepart($join->client_id,'client_id');
+        $companyvalue = $companyChart;
+        $companyChart = $this->getURLchart($companyChart);
+
+        $u_among = $this->comteam($join->id);
+        $u_among = $this->percentageamong($u_among);
+
+
+
+        $darray = explode(',', $ans->plot);
+        $integerIDs = array_map('intval', $darray);
+        //sort
+        $sorted = $this->bsort($integerIDs);
+        //your disc
+        $ystyle = array();
+        array_push($ystyle,$ans->D,$ans->I,$ans->S,$ans->C);
+
+
+
+        $plot = explode(",", $ans->plot);
+
+
+
+        $qc = new QuickChart(array(
+            'width' => 600,
+            'height' => 300,
+        ));
+
+        $qc->setConfig('{
+            type: "line",
+            data: {
+              labels: ["Hello world", "Test"],
+              datasets: [{
+                label: "Foo",
+                data: [1, 2]
+              }]
+            }
+          }');
+
+
+        $img = $qc->getUrl();
+
+
+        // chart
+        $qc = new QuickChart(array(
+            'width' => 150,
+            'height' => 200,
+            'version' => '2',
+        ));
+
+
+        //Behaviour value with range
+
+        $v_D = $plot[0];
+        $v_I = $plot[1];
+        $v_S = $plot[2];
+        $v_C = $plot[3];
+
+
+        //dd($v_D, $v_I, $v_S, $v_C);
+
+        $D_value = $this->assign_minmax($plot[0]);
+        $I_value = $this->assign_minmax($plot[1]);
+        $S_value = $this->assign_minmax($plot[2]);
+        $C_value = $this->assign_minmax($plot[3]);
+
+
+        $max = max($plot);
+        //get hight behaviour
+        $b_val = $this->max($plot, $max);
+        //dd($b_val);
+
+        if ($b_val == 'D') {
+            $D_value = 2;
+        }
+        if ($b_val == 'I') {
+            $I_value = 2;
+        }
+        if ($b_val == 'S') {
+            $S_value = 2;
+        }
+        if ($b_val == 'C') {
+            $C_value = 2;
+        }
+
+
+        $valbest = 2;
+
+
+        switch ($valbest) {
+            case $D_value;
+
+                $best = 'D';
+                $best = $this->com_best($best);
+                $I_hl = $this->highlow($I_value);
+                $I_value = $this->com_I($I_value);
+                $S_hl = $this->highlow($S_value);
+                $S_value = $this->com_S($S_value);
+                $C_hl = $this->highlow($C_value);
+                $C_value = $this->com_C($C_value);
+                $D_hl = '';
+                //dd($I_value);
+                break;
+            case $I_value;
+                //dd('I');
+                $best = 'I';
+                $best = $this->com_best($best);
+                $D_hl = $this->highlow($D_value);
+                $D_value = $this->com_D($D_value);
+                $S_hl = $this->highlow($S_value);
+                $S_value = $this->com_S($S_value);
+                $C_hl = $this->highlow($C_value);
+                $C_value = $this->com_C($C_value);
+                $I_hl = '';
+                break;
+            case $S_value;
+                //dd('S');
+                $best = 'S';
+                $best = $this->com_best($best);
+                $I_hl = $this->highlow($I_value);
+                $I_value = $this->com_I($I_value);
+                $D_hl = $this->highlow($D_value);
+                $D_value = $this->com_D($D_value);
+                $C_hl = $this->highlow($C_value);
+                $C_value = $this->com_C($C_value);
+                $S_hl = '';
+                break;
+            case $C_value;
+                //dd('C');
+                $best = 'C';
+                $best = $this->com_best($best);
+                $I_hl = $this->highlow($I_value);
+                $I_value = $this->com_I($I_value);
+                $S_hl = $this->highlow($S_value);
+                $S_value = $this->com_S($S_value);
+                $D_hl = $this->highlow($D_value);
+                $D_value = $this->com_D($D_value);
+                $C_hl = '';
+                break;
+
+            default:
+                dd('unknown value');
+        }
+
+
+
+        $qc->setConfig("{
+            type: 'line',
+            data: {
+                labels: ['','D', 'I', 'S', 'C',''],
+                datasets: [
+                  {
+                    label: 'My First dataset',
+                    backgroundColor: 'rgb(255, 99, 132)',
+                    borderColor: 'rgb(0, 0, 0)',
+                    data: [20,20,20, 20, 20, 20],
+                    fill: false,
+                    pointRadius:0,
+                    borderWidth: 1
+                  },
+                  {
+                    label: 'My Second dataset',
+                    fill: false,
+                    backgroundColor: 'rgb(54, 162, 235)',
+                    borderColor: 'rgb(54, 162, 235)',
+                    data: [null, $v_D, $v_I, $v_S, $v_C,null],
+                    pointRadius:0,
+                    borderWidth: 4
+                  },
+                ],
+              },
+              options: {
+                legend: {
+                    display: false,
+                },
+                title: {
+                  display: true,
+                  text: 'DiSC Profiling grpahs',
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+                            display: false,
+                        }
+                    }]
+                }
+
+              },
+        }");
+
+        //dd($qc->getUrl());
+        $template = DB::table('templates_reports')->where('Behaviour_type', $b_val)->first();
+        //dd($template);
+
+
+        //dd($plot);
+        $keywords = $template->keywords;
+        $Wmotivate = $template->Wmotivate;
+        $Wbest = $template->Wbest;
+        $Wdemotive = $template->Wdemotive;
+        $Wworst = $template->Wworst;
+        $A_improve = $template->A_improve;
+        $O_better = $template->O_better;
+        $O_avoid = $template->O_avoid;
+        $Y_environment = $template->Y_environment;
+        $Behaviour_type = $template->Behaviour_type;
+        $stg = $template->Strength;
+
+        //$keywords = $template->keywords;
+
+        //dd($best, $Wmotivate);
+        $keywords = explode(',', $keywords);
+        $Wmotivate = explode('.', $Wmotivate);
+        $Wbest = explode('.', $Wbest);
+        $Wdemotive = explode('.', $Wdemotive);
+        $Wworst = explode('.', $Wworst);
+        $A_improve = explode('.', $A_improve);
+        $O_better = explode('.', $O_better);
+        $O_avoid = explode('.', $O_avoid);
+        $Y_environment = explode('.', $Y_environment);
+        $stg = explode('.', $stg);
+
+        $best = explode('.', $best);
+        $D_value = explode('.', $D_value);
+        $I_value = explode('.', $I_value);
+        $S_value = explode('.', $S_value);
+        $C_value = explode('.', $C_value);
+
+
+
+
+        $line = $qc->getUrl();
+
+        $ch = 1;
+        $img1 = "https://picsum.photos/200";
+
+
+
+        $pdf = pdf::loadView('PDF.individual3', [
+            'ansval' => $ans,
+            'user'  => $join,
+            'rank' => $sorted,
+            'ch' => $ch,
+            'img' => $img,
+            'line' => $line,
+            'b_val' => $b_val,
+            'best' => $best,
+            'D_value' => $D_value,
+            'I_value' => $I_value,
+            'S_value' => $S_value,
+            'C_value' => $C_value,
+            'D_hl' => $D_hl,
+            'I_hl' => $I_hl,
+            'S_hl' => $S_hl,
+            'C_hl' => $C_hl,
+            'keywords' => $keywords,
+            'Wmotivate' => $Wmotivate,
+            'Wbest' => $Wbest,
+            'Wdemotive' => $Wdemotive,
+            'Wworst' => $Wworst,
+            'A_improve' => $A_improve,
+            'O_better' => $O_better,
+            'O_avoid' => $O_avoid,
+            'Y_environment' => $Y_environment,
+            'Behaviour_type' => $Behaviour_type,
+            'stg' => $stg,
+            'teamChart' => $teamChart,
+            'companyChart' => $companyChart,
+            'teamvalue' => $teamvalue,
+            'companyvalue' => $companyvalue,
+            'ystyle' => $ystyle,
+
+        ]);
+        $pdf->getDomPDF()->setHttpContext(
+            stream_context_create([
+                'ssl' => [
+                    'allow_self_signed' => TRUE,
+                    'verify_peer' => FALSE,
+                    'verify_peer_name' => FALSE,
+                ]
+            ])
+        );
+        // $pdf->setPaper('A4', 'potrait');
 
         $pdf->setOption('isRemoteEnabled', true);
         return $pdf->stream('invoice.pdf');
@@ -1813,6 +2143,8 @@ class questionsController extends Controller
                         ticks: {
                             beginAtZero: true,
                             display: false,
+                            min: 0,
+                            max: 40,
                         }
                     }]
                 }
@@ -2119,6 +2451,8 @@ class questionsController extends Controller
         ]);
         return $pdf->stream('DiSC Report.pdf');
     }
+
+    //To get averange value from style
     public function bydepart($d_id,$qury){
 
         $sumD=0;
@@ -2147,19 +2481,27 @@ class questionsController extends Controller
         //dd($query);
         }
         //average
-        $sumD = round($sumD/$count);
-        $sumi = round($sumi/$count);
-        $sumS = round($sumS/$count);
-        $sumC = round($sumC/$count);
+        $sumD = intval(round($sumD/$count));
+        $sumi = intval(round($sumi/$count));
+        $sumS = intval(round($sumS/$count));
+        $sumC = intval(round($sumC/$count));
 
         //dd($sumD,$sumi,$sumS,$sumC);
+        $teamvalue=array();
+        array_push($teamvalue,$sumD,$sumi,$sumS,$sumC);
 
-        $plot = $this->splot($sumD,$sumi,$sumS,$sumC);
-        //dd($plot);
-        $teamUrl = $this->Linequick("team" ,$plot,150,200);
-        return $teamUrl;
+        // $plot = $this->splot($sumD,$sumi,$sumS,$sumC);
+        // //dd($plot);
+        // $teamUrl = $this->Linequick("team" ,$plot,150,200);
+        return $teamvalue;
 
 
+    }
+    //get URL For Chart
+    public function getURLchart($plot){
+        $url = $this->splot($plot);
+        $url = $this->Linequick("team" ,$url,150,200);
+        return $url;
     }
     public function comteam($uid){
         $sumD=0;
@@ -2193,11 +2535,18 @@ class questionsController extends Controller
                 default:
                     dd("some error occured");
             }
+            $value = array();
+            array_push($value,$sumD,$sumi,$sumS,$sumC);
+
+
 
         }
-        dd($sumD,$sumi,$sumS,$sumC);
 
 
+        return $value;
+
+    }
+    public function percentageamong($value){
 
     }
     public function seldept($did){
@@ -2207,11 +2556,11 @@ class questionsController extends Controller
         return $dept;
     }
 
-    public function splot($sumD,$sumi,$sumS,$sumC){
+    public function splot($value){
 
         $plot = array();
 
-        switch ($sumD) {
+        switch ($value[0]) {
             case 0;
                 array_push($plot, 2);
                 break;
@@ -2267,7 +2616,7 @@ class questionsController extends Controller
                 array_push($plot, 46);
         }
 
-        switch ($sumi) {
+        switch ($value[1]) {
             case 0;
                 array_push($plot, 3);
                 break;
@@ -2305,7 +2654,7 @@ class questionsController extends Controller
                 array_push($plot, 46);
         }
 
-        switch ($sumS) {
+        switch ($value[2]) {
             case 0;
                 array_push($plot, 4);
                 break;
@@ -2349,7 +2698,7 @@ class questionsController extends Controller
                 array_push($plot, 46);
         }
 
-        switch ($sumC) {
+        switch ($value[3]) {
             case 0;
                 array_push($plot, 1);
                 break;
@@ -2386,5 +2735,18 @@ class questionsController extends Controller
 
 
         return $plot;
+    }
+
+    // SQL FUNCTION
+    // SELECT DEPARTMENT
+    public function sel_dep($did){
+        $query= DB::table('answer_records')
+        ->where('department_id',$did)
+        ->get();
+    }
+    public function sel_cel($cid){
+        $query= DB::table('answer_records')
+        ->where('client_id',$cid)
+        ->get();
     }
 }

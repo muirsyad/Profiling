@@ -60,6 +60,7 @@ Route::get('/results2', [questionsController::class, 'results2'])->name('results
 route::get('/dd',[questionsController::class,'pdf'])->name('pdf')->middleware('auth');
 //ver 2 pdf
 route::get('/pdf2',[questionsController::class,'inv2'])->name('inv2')->middleware('auth');
+route::get('/pdf/version3',[questionsController::class,'inv3'])->name('inv3')->middleware('auth');
 
 Route::post('/Cuser', [userController::class, 'Ustore'])->name('userR')->middleware('auth');
 

@@ -17,8 +17,8 @@
     <style>
         @page {
             size: a4 potrait;
-            margin: 0.9;
-            padding: 0.9; // you can set margin and padding 0
+            margin: 0;
+            padding: 0; // you can set margin and padding 0
         }
 
         .page-break {
@@ -88,7 +88,7 @@
 
         .header-scnd-green {
             font-family: Arial, Helvetica, sans-serif;
-            width: 70%;
+            width: 793px;
             height: 7%;
             padding: 12px;
             border: 1px solid #000000;
@@ -98,7 +98,7 @@
 
         .header-sub {
             background-color: #05572f;
-            width: 73.3%;
+            width: 793px;
             height: 3%;
         }
 
@@ -309,20 +309,40 @@
         }
 
         table.flot-r {
-            float: right;
+            float: left;
             margin-top: -10px;
         }
 
         .font-sm {
             font-size: 12px;
         }
-        table.footnote{
-            margin-top: 315px;
+
+        table.footnote {
+            margin-top: 35px;
             border: 1px solid #000000;
         }
-        tr.footnote{
+
+        tr.footnote {
             color: rgb(0, 0, 0);
         }
+
+        table.remarks {
+
+            margin-left: 410px;
+            border: 1px solid #000000;
+            width: 370px;
+
+        }
+
+        span.remarks {
+            margin-left: 30px;
+
+        }
+
+        hr {
+            margin: 30px;
+        }
+
 
     </style>
     {{-- page 1     --}}

@@ -126,6 +126,8 @@
                     <a href="{{ route('dlpdf') }}" class="btn btn-primary">Download</a>
                     <a href="#" class="btn btn-primary">Home</a>
                     <a href="{{ route('inv2') }}" class="btn btn-primary">Download ver 2</a>
+                    <a href="{{ route('inv3') }}" class="btn btn-primary">Download ver 3</a>
+
                 </div>
             </div>
 
