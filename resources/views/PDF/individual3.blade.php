@@ -71,17 +71,17 @@
         }
     </style>
     <div class="page-break">
-        <h1 class="title mb-8">Key Report Summary</h1>
+        <h1 class="title">Key Report Summary</h1>
 
 
-        <table class="center mb-2">
+        <table class="center">
             <tr>
                 <th>Personal Graphs</th>
                 <th>Team Graphs</th>
                 <th>OrganizationGraphs</th>
             </tr>
             <tr>
-                <td><img src="{{ $line }}" alt=""></td>
+                <td><img src="{{ $personalchart }}" alt=""></td>
                 <td><img src="{{ $teamChart }}" alt=""></td>
                 <td><img src="{{ $companyChart }}" alt=""></td>
             </tr>
@@ -116,7 +116,7 @@
 
                 <ul class="text-size-md2">
 
-                    @foreach ($Wmotivate as $i => $motivate)
+                    @foreach ($Wmotivates as $i => $motivate)
                         @if ($i > 1)
                         @break
                     @endif
@@ -126,7 +126,7 @@
             </ul>
             <h4>You are at your best</h4>
             <ul>
-                @foreach ($Wbest as $i => $mbest)
+                @foreach ($Wbests as $i => $mbest)
                     @if ($i > 1)
                     @break
                 @endif
@@ -144,7 +144,7 @@
     <h4>Your Personal Improvement</h4>
     <ul>
 
-        @foreach ($A_improve as $i => $improve)
+        @foreach ($A_improves as $i => $improve)
             @if ($i > 1)
             @break
         @endif
@@ -153,7 +153,7 @@
 </ul>
 <h4>How Others Can Work Better With You</h4>
 <ul>
-    @foreach ($O_better as $i => $better)
+    @foreach ($O_betters as $i => $better)
         @if ($i > 1)
         @break
     @endif
@@ -178,8 +178,8 @@ test
 <table class="footnote">
 <span>Notes;</span>
 <tr class="footnote">
-<td><span> x % of person in organization has the same profile as you</span></td>
-<td><span>You higest type is x and x that describe you as </span></td>
+<td><span>  {{ $same }}% of person in organization has the same profile as you</span></td>
+<td><span>You higest type is {{ $b_val }} </span></td>
 <td><span>Your main keywords that describe you
     @foreach ($keywords as $i => $key)
         @if ($i > 3)
@@ -188,9 +188,6 @@ test
     <strong style="color: red;">{{ $key }}</strong>
 @endforeach
 </span></td>
-</tr>
-<tr>
-<span>This page only summary of the report. For details of the report you</span>
 </tr>
 </table>
 
@@ -203,41 +200,48 @@ test
 </div>
 <div class="sub-container">
     <div class="box-up-left">
-        <h3 class="text-center">Dominance</h3>
+        <h3 class="text-center">{{ $stylebest }} - {{ $highlowbest }}</h3>
         <ul>
-            <li>TestAliquip anim sit magna fugiat ex. Proident proident irure occaecat ea dolore aliqua pariatur cupidatat laborum. </li>
-            <li>TestAliquip anim sit magna fugiat ex. Proident proident irure occaecat </li>
-            <li>TestAliquip anim sit magna fugiat ex. Proident proident irure occaecat ea dolore aliqua pariatur cupidatat laborum. Est eiusmod mollit ex esse amet officia veniam aliqua.</li>
-            <li>TestAliquip anim sit magna fugiat ex. Proident proident irure o</li>
+            @foreach ($best as $i =>$best)
+                @if ($i >4)
+                    @break
+                @endif
+            <li>{{ $best }}</li>
+            @endforeach
         </ul>
 
     </div>
     <div class="box-up-right">
-        <h3 class="text-center">Influance</h3>
+        <h3 class="text-center">{{ $style1 }} - {{ $highlow1 }}</h3>
         <ul>
-            <li>TestAliquip anim sit magna fugiat ex. Proident proident irure occaecat ea dolore aliqua pariatur cupidatat laborum. </li>
-            <li>TestAliquip anim sit magna fugiat ex. Proident proident irure occaecat </li>
-            <li>TestAliquip anim sit magna fugiat ex. Proident proident irure occaecat ea dolore aliqua pariatur cupidatat laborum. Est eiusmod mollit ex esse amet officia veniam aliqua.</li>
-            <li>TestAliquip anim sit magna fugiat ex. Proident proident irure o</li>
-        </ul>
+            @foreach ($values1 as $i =>$value1)
+                @if ($i >4)
+                    @break
+                @endif
+            <li>{{ $value1 }}</li>
+            @endforeach
     </div>
     <div class="box-down-left">
-        <h3 class="text-center">Steadiness</h3>
+        <h3 class="text-center">{{ $style2 }} - {{ $highlow2 }}</h3>
         <ul>
-            <li>TestAliquip anim sit magna fugiat ex. Proident proident irure occaecat ea dolore aliqua pariatur cupidatat laborum. </li>
-            <li>TestAliquip anim sit magna fugiat ex. Proident proident irure occaecat </li>
-            <li>TestAliquip anim sit magna fugiat ex. Proident proident irure occaecat ea dolore aliqua pariatur cupidatat laborum. Est eiusmod mollit ex esse amet officia veniam aliqua.</li>
-            <li>TestAliquip anim sit magna fugiat ex. Proident proident irure o</li>
+            @foreach ($values2 as $i =>$value2)
+                @if ($i >4)
+                    @break
+                @endif
+            <li>{{ $value2 }}</li>
+            @endforeach
         </ul>
 
     </div>
     <div class="box-down-right">
-        <h3 class="text-center">Dominance</h3>
+        <h3 class="text-center">{{ $style3 }} - {{ $highlow3 }}</h3>
         <ul>
-            <li>TestAliquip anim sit magna fugiat ex. Proident proident irure occaecat ea dolore aliqua pariatur cupidatat laborum. </li>
-            <li>TestAliquip anim sit magna fugiat ex. Proident proident irure occaecat </li>
-            <li>TestAliquip anim sit magna fugiat ex. Proident proident irure occaecat ea dolore aliqua pariatur cupidatat laborum. Est eiusmod mollit ex esse amet officia veniam aliqua.</li>
-            <li>TestAliquip anim sit magna fugiat ex. Proident proident irure o</li>
+            @foreach ($values3 as $i =>$value3)
+                @if ($i >4)
+                    @break
+                @endif
+            <li>{{ $value3 }}</li>
+            @endforeach
         </ul>
 
     </div>
@@ -255,89 +259,47 @@ test
     <div class="box-up-left">
         <h3 class="text-center">What Motivates You</h3>
         <ul>
-            <li>TestAliquip anim sit magna fugiat ex. Proident proident irure occaecat ea dolore aliqua pariatur cupidatat laborum. </li>
-            <li>TestAliquip anim sit magna fugiat ex. Proident proident irure occaecat </li>
-            <li>TestAliquip anim sit magna fugiat ex. Proident proident irure occaecat ea dolore aliqua pariatur cupidatat laborum. Est eiusmod mollit ex esse amet officia veniam aliqua.</li>
-            <li>TestAliquip anim sit magna fugiat ex. Proident proident irure o</li>
+            @foreach ($Wmotivates as $i => $Wmotivate)
+                @if ($i > 4)
+                    @break
+                @endif
+                <li>{{ $Wmotivate }}</li>
+            @endforeach
         </ul>
 
     </div>
     <div class="box-up-right">
         <h3 class="text-center">What You are at your Best</h3>
         <ul>
-            <li>TestAliquip anim sit magna fugiat ex. Proident proident irure occaecat ea dolore aliqua pariatur cupidatat laborum. </li>
-            <li>TestAliquip anim sit magna fugiat ex. Proident proident irure occaecat </li>
-            <li>TestAliquip anim sit magna fugiat ex. Proident proident irure occaecat ea dolore aliqua pariatur cupidatat laborum. Est eiusmod mollit ex esse amet officia veniam aliqua.</li>
-            <li>TestAliquip anim sit magna fugiat ex. Proident proident irure o</li>
+            @foreach ($Wbests as $i => $Wbest)
+                @if ($i > 4)
+                    @break
+                @endif
+                <li>{{ $Wbest }}</li>
+            @endforeach
         </ul>
     </div>
     <div class="box-down-left">
         <h3 class="text-center">What Demotivates you</h3>
         <ul>
-            <li>TestAliquip anim sit magna fugiat ex. Proident proident irure occaecat ea dolore aliqua pariatur cupidatat laborum. </li>
-            <li>TestAliquip anim sit magna fugiat ex. Proident proident irure occaecat </li>
-            <li>TestAliquip anim sit magna fugiat ex. Proident proident irure occaecat ea dolore aliqua pariatur cupidatat laborum. Est eiusmod mollit ex esse amet officia veniam aliqua.</li>
-            <li>TestAliquip anim sit magna fugiat ex. Proident proident irure o</li>
+            @foreach ($Wdemotives as $i => $Wdemotive)
+                @if ($i > 4)
+                    @break
+                @endif
+                <li>{{ $Wdemotive }}</li>
+            @endforeach
         </ul>
 
     </div>
     <div class="box-down-right">
         <h3 class="text-center">What you are at your worst</h3>
         <ul>
-            <li>TestAliquip anim sit magna fugiat ex. Proident proident irure occaecat ea dolore aliqua pariatur cupidatat laborum. </li>
-            <li>TestAliquip anim sit magna fugiat ex. Proident proident irure occaecat </li>
-            <li>TestAliquip anim sit magna fugiat ex. Proident proident irure occaecat ea dolore aliqua pariatur cupidatat laborum. Est eiusmod mollit ex esse amet officia veniam aliqua.</li>
-            <li>TestAliquip anim sit magna fugiat ex. Proident proident irure o</li>
-        </ul>
-
-    </div>
-
-</div>
-
-</div>
-<div class="page-break">
-<div class="header-scnd-green">
-<h2 class="text-white">PERFORMANCE MANAGEMENT</h2>
-</div>
-<div class="header-sub">
-</div>
-<div class="sub-container">
-    <div class="box-up-left">
-        <h3 class="text-center">Your Area For Personal Improvement</h3>
-        <ul>
-            <li>TestAliquip anim sit magna fugiat ex. Proident proident irure occaecat ea dolore aliqua pariatur cupidatat laborum. </li>
-            <li>TestAliquip anim sit magna fugiat ex. Proident proident irure occaecat </li>
-            <li>TestAliquip anim sit magna fugiat ex. Proident proident irure occaecat ea dolore aliqua pariatur cupidatat laborum. Est eiusmod mollit ex esse amet officia veniam aliqua.</li>
-            <li>TestAliquip anim sit magna fugiat ex. Proident proident irure o</li>
-        </ul>
-
-    </div>
-    <div class="box-up-right">
-        <h3 class="text-center">How Others Can Work Better With You</h3>
-        <ul>
-            <li>TestAliquip anim sit magna fugiat ex. Proident proident irure occaecat ea dolore aliqua pariatur cupidatat laborum. </li>
-            <li>TestAliquip anim sit magna fugiat ex. Proident proident irure occaecat </li>
-            <li>TestAliquip anim sit magna fugiat ex. Proident proident irure occaecat ea dolore aliqua pariatur cupidatat laborum. Est eiusmod mollit ex esse amet officia veniam aliqua.</li>
-            <li>TestAliquip anim sit magna fugiat ex. Proident proident irure o</li>
-        </ul>
-    </div>
-    <div class="box-down-left">
-        <h3 class="text-center">Things Others Should Avoid</h3>
-        <ul>
-            <li>TestAliquip anim sit magna fugiat ex. Proident proident irure occaecat ea dolore aliqua pariatur cupidatat laborum. </li>
-            <li>TestAliquip anim sit magna fugiat ex. Proident proident irure occaecat </li>
-            <li>TestAliquip anim sit magna fugiat ex. Proident proident irure occaecat ea dolore aliqua pariatur cupidatat laborum. Est eiusmod mollit ex esse amet officia veniam aliqua.</li>
-            <li>TestAliquip anim sit magna fugiat ex. Proident proident irure o</li>
-        </ul>
-
-    </div>
-    <div class="box-down-right">
-        <h3 class="text-center">Your Preferred Working Environment</h3>
-        <ul>
-            <li>TestAliquip anim sit magna fugiat ex. Proident proident irure occaecat ea dolore aliqua pariatur cupidatat laborum. </li>
-            <li>TestAliquip anim sit magna fugiat ex. Proident proident irure occaecat </li>
-            <li>TestAliquip anim sit magna fugiat ex. Proident proident irure occaecat ea dolore aliqua pariatur cupidatat laborum. Est eiusmod mollit ex esse amet officia veniam aliqua.</li>
-            <li>TestAliquip anim sit magna fugiat ex. Proident proident irure o</li>
+            @foreach ($Wworsts as $i => $Wworst)
+                @if ($i > 4)
+                    @break
+                @endif
+                <li>{{ $Wworst }}</li>
+            @endforeach
         </ul>
 
     </div>
@@ -347,15 +309,95 @@ test
 </div>
 <div class="LAST">
 <div class="header-scnd-green">
+<h2 class="text-white">PERFORMANCE MANAGEMENT</h2>
+</div>
+<div class="header-sub">
+</div>
+<div class="sub-container">
+    <div class="box-up-left">
+        <h3 class="text-center">Your Area For Personal Improvement</h3>
+        <ul>
+            @foreach ($A_improves as $i => $improve)
+                @if ($i > 4)
+                    @break
+                @endif
+                <li>{{ $improve }}</li>
+            @endforeach
+        </ul>
+
+    </div>
+    <div class="box-up-right">
+        <h3 class="text-center">How Others Can Work Better With You</h3>
+        <ul>
+            @foreach ($O_betters as $i => $better)
+            @if ($i > 4)
+                @break
+            @endif
+            <li>{{ $better }}</li>
+        @endforeach
+        </ul>
+    </div>
+    <div class="box-down-left">
+        <h3 class="text-center">Things Others Should Avoid</h3>
+        <ul>
+            @foreach ($O_avoids as $i => $avoid)
+                @if ($i > 4)
+                    @break
+                @endif
+                <li>{{ $avoid }}</li>
+            @endforeach
+        </ul>
+
+    </div>
+    <div class="box-down-right">
+        <h3 class="text-center">Your Preferred Working Environment</h3>
+        <ul>
+            @foreach ($Y_environments as $i => $env)
+                @if ($i > 4)
+                    @break
+                @endif
+                <li>{{ $env }}</li>
+            @endforeach
+        </ul>
+
+    </div>
+
+</div>
+
+</div>
+
+{{-- <div class="LAST">
+<div class="header-scnd-green">
 <h2 class="text-white">TECHNICAL REPORT</h2>
 </div>
 <div class="header-sub">
 </div>
 <div class="sub-container">
-test
+
+    <h3>Personal Behaviour style</h3>
+    <ul>
+        <li>D:{{ $style_personal[0] }}</li>
+        <li>i:{{ $style_personal[1] }}</li>
+        <li>S:{{ $style_personal[2] }}</li>
+        <li>C:{{ $style_personal[3] }}</li>
+    </ul>
+    <h3>Team Behaviour style</h3>
+    <ul>
+        <li>D:{{ $teamvalue[0] }}</li>
+        <li>i:{{ $teamvalue[1] }}</li>
+        <li>S:{{ $teamvalue[2] }}</li>
+        <li>C:{{ $teamvalue[3] }}</li>
+    </ul>
+    <h3>Organization Behaviour style</h3>
+    <ul>
+        <li>D:{{ $companyvalue[0] }}</li>
+        <li>i:{{ $companyvalue[1] }}</li>
+        <li>S:{{ $companyvalue[2] }}</li>
+        <li>C:{{ $companyvalue[3] }}</li>
+    </ul>
 </div>
 
-</div>
+</div> --}}
 
 
 

@@ -137,12 +137,23 @@
 
             }
             else{
-                cL += 1;
-                num = cL;
-                qury = '.example2'+style;
-                style = stylevar(style);
-                nv = style+type+cL;
-                console.log(nv);
+                if(cL === 4){
+                    document.getElementById("btn-dL").disabled = true;
+                    cL += 1;
+                    num = cL;
+                    qury = '.example2'+style;
+                    style = stylevar(style);
+                    nv = style+type+cL;
+                    console.log(nv);
+                }else{
+                    cL += 1;
+                    num = cL;
+                    qury = '.example2'+style;
+                    style = stylevar(style);
+                    nv = style+type+cL;
+                    console.log(nv);
+                    }
+
             }
 
 
@@ -157,11 +168,20 @@
 
             newrow.appendChild(newdiv);
             newdiv.appendChild(newinput);
+            console.log(cL);
 
 
 
         }
 
+        function removero(type,style,count){
+            const con = document.getElementById(ch+style);
+            console.log(con);
+            console.log(style+"_"+type+count);
+            const element = document.getElementById(style+"_"+type+count);
+            console.log(element);
+            element.remove();
+        }
         function stylevar(style){
             switch(style){
                 case 'D':

@@ -87,6 +87,10 @@
 
 
     </select>
+    <div class="progress" style="margin-bottom: 20px; margin-top: 20px;" >
+        <div id="progress" class="progress-bar" role="progressbar" aria-label="Example with label" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{ $var }}</div>
+      </div>
+
 
     <table class="styled-table">
         <thead>
@@ -145,7 +149,12 @@
             });
         });
     </script>
+    <script>
+        $(document).ready(function(){
+            $("#progress").css('width', "<?php echo $var;?>");
 
+        });
+        </script>
     <script src="https://code.jquery.com/jquery-3.6.1.min.js"
         integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
 @endsection

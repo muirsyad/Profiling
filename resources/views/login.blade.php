@@ -37,12 +37,7 @@
             <p class="text-danger">{{ $message }}</p>
             @enderror
         </div>
-        <div class="mb-3">
-    <span>Dont have an account? </span><a href="/register">Create now</a>
-        </div>
-        <div class="mb-3">
-            <span>Dont have an account client? </span><a href="{{ route('register2') }}">Create now</a>
-                </div>
+
           <div class="mb-3">
             <button type="submit" class="btn btn-primary">Login</button>
             </div>

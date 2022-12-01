@@ -163,6 +163,7 @@ class questionsController extends Controller
         $record->created_at = date('Y-m-d');
         $record->user_id = auth()->user()->id;
         $record->client_id = auth()->user()->client_id;
+        $record->client_id = auth()->user()->department;
         $record->D = $varD;
         $record->I = $varI;
         $record->S = $varS;
@@ -415,7 +416,16 @@ class questionsController extends Controller
         $update = record::where('user_id', $record->user_id)->update(['High' => $sorted[0]]);
         $update = record::where('user_id', $record->user_id)->update(['Low' => $sorted[1]]);
         $dept = Departments::find(auth()->user()->department_id);
-        //dd($dept->department);
+       $cid = auth()->user()->client_id;
+
+       $all = DB::table('users')->where('client_id', $cid)->count();
+
+       $allanswer = DB::table('answer_records')->where('client_id', $cid)->count();
+        // $allanswer = 4;
+       $percentage = $allanswer/$all*100;
+    //    $percentage = 100;
+       $percentage = intval($percentage);
+
 
 
 
@@ -424,6 +434,7 @@ class questionsController extends Controller
             'high' => $highV,
             'department' => $dept->department,
             'plot' => $plot,
+            'percentage' => $percentage,
         ]);
     }
     public function results2()
@@ -686,6 +697,7 @@ class questionsController extends Controller
 
         $teamChart = $this->bydepart($join->department_id,'department_id');
         $teamvalue = $teamChart;
+
         $teamChart = $this->getURLchart($teamChart);
 
         $companyChart = $this->bydepart($join->client_id,'client_id');
@@ -844,86 +856,6 @@ class questionsController extends Controller
                 dd('unknown value');
         }
 
-        // if($D_value === $valbest){
-        //     //$D_value = $best;
-
-        //     $best = 'D';
-        //     $vbest = $best;
-        //     dd($D_value,$best);
-        //     //$D_value = DB::table('templates_reports')->where('Behaviour_type',$best)->pluck('H_temp');
-        //     $best = $this->com_best($best);
-        //     $I_value = $this->com_I($I_value);
-        //     $S_value = $this->com_S($S_value);
-        //     $C_value = $this->com_C($C_value);
-
-
-        // }
-        // if($I_value === $valbest){
-        //     //$I_value = $best;
-        //     $best = 'I';
-        //     dd($D_value,$best);
-        //     $vbest = $best;
-        //     $best = $this->com_best($best);
-        //     $D_value = $this->com_D($D_value);
-        //     $S_value = $this->com_S($S_value);
-        //     $C_value = $this->com_C($C_value);
-        // }
-        // if($S_value === $valbest){
-        //     //$S_value = $best;
-        //     $best = 'S';
-        //     $vbest = $best;
-        //     $best = $this->com_best($best);
-        //     $I_value = $this->com_I($I_value);
-        //     $D_value = $this->com_D($D_value);
-        //     $C_value = $this->com_C($C_value);
-        // }
-        // if($C_value > $valbest){
-        //     //$C_value = $best;
-        //     $best = 'C';
-        //     $vbest = $best;
-        //     $best = $this->com_best($best);
-        //     $I_value = $this->com_I($I_value);
-        //     $S_value = $this->com_S($S_value);
-        //     $D_value = $this->com_D($D_value);
-        // }
-        // else {
-        //     $best = $best;
-        // }
-
-
-
-        // $best = DB::table('templates_reports')->where('Behaviour_type','D')->pluck('H_temp');
-        // if($I_value = 1){
-        //     $I_value = DB::table('templates_reports')->where('Behaviour_type','I')->pluck('H_temp');
-        // }
-        // else{
-        //     $I_value = DB::table('templates_reports')->where('Behaviour_type','I')->pluck('L_temp');
-        // }
-
-        // if($S_value = 1){
-        //     $S_value = DB::table('templates_reports')->where('Behaviour_type','S')->pluck('H_temp');
-        // }
-        // else{
-        //     $S_value = DB::table('templates_reports')->where('Behaviour_type','S')->pluck('L_temp');
-        // }
-
-        // if($C_value = 1){
-        //     $C_value = DB::table('templates_reports')->where('Behaviour_type','C')->pluck('H_temp');
-        // }
-        // else{
-        //     $C_value = DB::table('templates_reports')->where('Behaviour_type','C')->pluck('L_temp');
-        // }
-        //explode array
-
-        //$best = explode('.', $best);
-        // $best = explode('.', $best);
-        // $D_value = explode('.', $D_value);
-        // $I_value = explode('.', $I_value);
-        // $S_value = explode('.', $S_value);
-        // $C_value = explode('.', $C_value);
-
-        //dd($best,$D_value,$I_value,$S_value,$C_value);
-
         $qc->setConfig("{
             type: 'line',
             data: {
@@ -1011,37 +943,7 @@ class questionsController extends Controller
 
 
         $line = $qc->getUrl();
-        //dd($line);
 
-        // $ch=$qc->getUrl();
-        // //dd($ch);
-
-        // $path = "https://picsum.photos/200";
-        // $type = pathinfo($path, PATHINFO_EXTENSION);
-        // $data = file_get_contents($path);
-        // $pic = 'data:image/'.';base64' . base64_encode($data);
-        // $pdf = Pdf::loadView('dom',[
-        //     'charts' => $ch,
-        // ]);
-        // $pdf->set_option('isRemoteEnabled',true);
-        // $pdf->setPaper('A4', 'landscape');
-
-        // $content = view('dom');
-        // $view = \View::make('dom',[
-        //     'img' => $ch,
-        // ]);
-        // $html_content = $view->render();
-        // PDF::SetTitle('Hello World');
-        // PDF::AddPage();
-        // // PDF::Write(0, $html_content);
-        // PDF::writeHTML($html_content, true, false, true, false, '');
-        // PDF::Output('hello_world.pdf');
-        // return $pdf->stream('invoice.pdf');
-        //     return view('dom',
-        //       [
-        //         'charts' => $qc->getUrl(),
-        //       ]
-        // );
         $ch = 1;
         $img1 = "https://picsum.photos/200";
         //dd($D_value, $I_value, $S_value, $C_value,$D_hl,$I_hl,$S_hl,$C_hl);
@@ -1117,8 +1019,10 @@ class questionsController extends Controller
 
         //qury get value depat
 
+        // $personchart = $this->getURLchart();
         $teamChart = $this->bydepart($join->department_id,'department_id');
         $teamvalue = $teamChart;
+
         $teamChart = $this->getURLchart($teamChart);
 
         $companyChart = $this->bydepart($join->client_id,'client_id');
@@ -1167,7 +1071,7 @@ class questionsController extends Controller
         // chart
         $qc = new QuickChart(array(
             'width' => 150,
-            'height' => 200,
+            'height' => 400,
             'version' => '2',
         ));
 
@@ -1214,51 +1118,67 @@ class questionsController extends Controller
             case $D_value;
 
                 $best = 'D';
+                $stylebest = 'Dominance';
                 $best = $this->com_best($best);
-                $I_hl = $this->highlow($I_value);
-                $I_value = $this->com_I($I_value);
-                $S_hl = $this->highlow($S_value);
-                $S_value = $this->com_S($S_value);
-                $C_hl = $this->highlow($C_value);
-                $C_value = $this->com_C($C_value);
-                $D_hl = '';
+                $highlow1 = $this->highlow($I_value);
+                $values1 = $this->com_I($I_value);
+                $style1 = 'Influance';
+                $highlow2 = $this->highlow($S_value);
+                $values2 = $this->com_S($S_value);
+                $style2 = 'Steadiness';
+                $highlow3 = $this->highlow($C_value);
+                $values3 = $this->com_C($C_value);
+                $style3 = 'Compliance';
+                $highlowbest = 'Highest';
                 //dd($I_value);
                 break;
             case $I_value;
                 //dd('I');
                 $best = 'I';
+                $stylebest = 'Influance';
                 $best = $this->com_best($best);
-                $D_hl = $this->highlow($D_value);
-                $D_value = $this->com_D($D_value);
-                $S_hl = $this->highlow($S_value);
-                $S_value = $this->com_S($S_value);
-                $C_hl = $this->highlow($C_value);
-                $C_value = $this->com_C($C_value);
-                $I_hl = '';
+                $highlow1 = $this->highlow($D_value);
+                $values1 = $this->com_D($D_value);
+                $style1 = 'Dominance';
+                $highlow2 = $this->highlow($S_value);
+                $values2 = $this->com_S($S_value);
+                $style2 = 'Steadiness';
+                $highlow3 = $this->highlow($C_value);
+                $values3 = $this->com_C($C_value);
+                $style3 = 'Compliance';
+                $highlowbest = 'Highest';
                 break;
             case $S_value;
                 //dd('S');
                 $best = 'S';
+                $stylebest = 'Steadiness';
                 $best = $this->com_best($best);
-                $I_hl = $this->highlow($I_value);
-                $I_value = $this->com_I($I_value);
-                $D_hl = $this->highlow($D_value);
-                $D_value = $this->com_D($D_value);
-                $C_hl = $this->highlow($C_value);
-                $C_value = $this->com_C($C_value);
-                $S_hl = '';
+                $highlow1 = $this->highlow($I_value);
+                $values1 = $this->com_I($I_value);
+                $style1  = 'Influance';
+                $highlow2 = $this->highlow($D_value);
+                $values2 = $this->com_D($D_value);
+                $style2 = 'Dominance';
+                $highlow3 = $this->highlow($C_value);
+                $values3 = $this->com_C($C_value);
+                $style3 = 'Compliance';
+                $highlowbest = 'Highest';
                 break;
             case $C_value;
                 //dd('C');
                 $best = 'C';
+                $stylebest = "Compliance";
                 $best = $this->com_best($best);
-                $I_hl = $this->highlow($I_value);
-                $I_value = $this->com_I($I_value);
-                $S_hl = $this->highlow($S_value);
-                $S_value = $this->com_S($S_value);
-                $D_hl = $this->highlow($D_value);
-                $D_value = $this->com_D($D_value);
-                $C_hl = '';
+                $highlow1 = $this->highlow($I_value);
+                $values1 = $this->com_I($I_value);
+                $style1 = "Influance";
+                $highlow2 = $this->highlow($S_value);
+                $values2 = $this->com_S($S_value);
+                $style2 = "Steadiness";
+                $highlow3 = $this->highlow($D_value);
+                $values3 = $this->com_D($D_value);
+                $style3 = "Dominance";
+                $highlowbest = 'Highest';
                 break;
 
             default:
@@ -1345,19 +1265,34 @@ class questionsController extends Controller
         $stg = explode('.', $stg);
 
         $best = explode('.', $best);
-        $D_value = explode('.', $D_value);
-        $I_value = explode('.', $I_value);
-        $S_value = explode('.', $S_value);
-        $C_value = explode('.', $C_value);
+        $values1 = explode('.', $values1);
+        $values2 = explode('.', $values2);
+        $values3 = explode('.', $values3);
 
 
 
+
+        $bar = $this->barchart(0,0);
 
         $line = $qc->getUrl();
 
         $ch = 1;
         $img1 = "https://picsum.photos/200";
 
+
+        // $values1 = $D_value;
+        // $values2 = $I_value;
+        // $values3 = $S_value;
+        // $valueBest = $best;
+        //technical report value
+        //presonal style
+        $style_personal = array();
+        array_push($style_personal,$ans->D,$ans->I,$ans->S,$ans->C);
+        $personalchart = $this->getURLchart($style_personal);
+
+        $dept = auth()->user()->department_id;
+        $same = $this->same($dept,$b_val);
+        $same = intval($same);
 
 
         $pdf = pdf::loadView('PDF.individual3', [
@@ -1369,30 +1304,46 @@ class questionsController extends Controller
             'line' => $line,
             'b_val' => $b_val,
             'best' => $best,
-            'D_value' => $D_value,
-            'I_value' => $I_value,
-            'S_value' => $S_value,
-            'C_value' => $C_value,
-            'D_hl' => $D_hl,
-            'I_hl' => $I_hl,
-            'S_hl' => $S_hl,
-            'C_hl' => $C_hl,
+            'same' => $same,
+            // 'D_values' => $D_value,
+            // 'I_values' => $I_value,
+            // 'S_values' => $S_value,
+            // 'C_values' => $C_value,
+            'values1' => $values1,
+            'values2' => $values2,
+            'values3' => $values3,
+            'style1' => $style1,
+            'style2' => $style2,
+            'style3' => $style3,
+            'stylebest' => $stylebest,
+            // 'D_hl' => $D_hl,
+            // 'I_hl' => $I_hl,
+            // 'S_hl' => $S_hl,
+            // 'C_hl' => $C_hl,
+            'highlow1' => $highlow1,
+            'highlow2' => $highlow2,
+            'highlow3' => $highlow3,
+            'highlowbest' => $highlowbest,
             'keywords' => $keywords,
-            'Wmotivate' => $Wmotivate,
-            'Wbest' => $Wbest,
-            'Wdemotive' => $Wdemotive,
-            'Wworst' => $Wworst,
-            'A_improve' => $A_improve,
-            'O_better' => $O_better,
-            'O_avoid' => $O_avoid,
-            'Y_environment' => $Y_environment,
+            'Wmotivates' => $Wmotivate,
+            'Wbests' => $Wbest,
+            'Wdemotives' => $Wdemotive,
+            'Wworsts' => $Wworst,
+            'A_improves' => $A_improve,
+            'O_betters' => $O_better,
+            'O_avoids' => $O_avoid,
+            'Y_environments' => $Y_environment,
             'Behaviour_type' => $Behaviour_type,
             'stg' => $stg,
+            'personalchart' => $personalchart,
             'teamChart' => $teamChart,
             'companyChart' => $companyChart,
             'teamvalue' => $teamvalue,
             'companyvalue' => $companyvalue,
+            'style_personal' => $style_personal,
             'ystyle' => $ystyle,
+            'bar' => $bar,
+
 
         ]);
         $pdf->getDomPDF()->setHttpContext(
@@ -1498,7 +1449,22 @@ class questionsController extends Controller
         }
         return $hl;
     }
-
+    public function same($dept,$value){
+        $qdept = DB::table('answer_records')
+        ->where('department_id',$dept)
+        ->get();
+        $count = DB::table('answer_records')
+        ->where('department_id',$dept)
+        ->count();
+        $sum=0;
+        foreach ( $qdept as $dept){
+            if($dept->High === $value){
+                $sum = $sum+1;
+            }
+        }
+        $all = $sum/$count*100;
+        return $all;
+    }
 
     public function removearr($array, $max)
     {
@@ -2164,6 +2130,354 @@ class questionsController extends Controller
         //dd('Genereated url : ',$url);
         return $url;
     }
+    public function barchart($width, $height){
+
+        $qc = new QuickChart(array(
+            'width'=> 500,
+            'height'=> 300,
+            'version'> '2',
+          ));
+
+          $config = <<<EOD
+          {
+            "type": "horizontalBar",
+            "data": {
+              "labels": [
+                "D",
+                "I",
+                "S",
+                "C",
+
+              ],
+              "datasets": [
+                {
+                  "label": "Dataset 1",
+                  "backgroundColor": "rgb(0,128,0) ",
+                  "borderColor": "rgb(255, 99, 132)",
+                  "borderWidth": 1,
+                  "data": [
+                  32,
+                    62,
+                    64,
+                    41,
+
+                  ]
+                },
+
+              ]
+            },
+            "options": {
+              "elements": {
+                "rectangle": {
+                  "borderWidth": 2
+                }
+              },
+              "responsive": true,
+              "legend": {
+                "position": "right"
+              },
+              "title": {
+                "display": true,
+                "text": "Chart.js Horizontal Bar Chart"
+              }
+            }
+          }
+          EOD;
+
+          // Chart config can be set as a string or as a nested array
+          $qc->setConfig($config);
+
+          // Print the chart URL
+          $link = $qc->getUrl();
+          return $link;
+    }
+    public function barchart2($width, $height){
+        $qc = new QuickChart(array(
+            'width'=> $width,
+            'height'=> $height,
+            'version'=> '2',
+          ));
+
+          $config = <<<EOD
+          {
+            "type": "horizontalBar",
+            "data": {
+              "datasets": [
+                {
+                  "label": "Dataset 1",
+                  "backgroundColor": "rgba(255, 99, 132, 0.5)",
+                  "borderColor": "rgb(255, 99, 132)",
+                  "borderWidth": 1,
+                  "data": [
+                    33,
+                    24,
+                    54,
+                    23
+                  ],
+                  "fill": false,
+                  "spanGaps": false,
+                  "lineTension": 0.4,
+                  "pointRadius": 3,
+                  "pointHoverRadius": 3,
+                  "pointStyle": "circle",
+                  "borderDash": [
+                    0,
+                    0
+                  ],
+                  "barPercentage": 0.9,
+                  "categoryPercentage": 0.8,
+                  "type": "horizontalBar",
+                  "hidden": false
+                }
+              ],
+              "labels": [
+                "D",
+                "I",
+                "S",
+                "C"
+              ]
+            },
+            "options": {
+              "title": {
+                "display": true,
+                "text": "Personal Graphs",
+                "position": "top",
+                "fontSize": 12,
+                "fontFamily": "sans-serif",
+                "fontColor": "#666666",
+                "fontStyle": "bold",
+                "padding": 10,
+                "lineHeight": 1.2
+              },
+              "layout": {
+                "padding": {
+                  "left": 0,
+                  "right": 0,
+                  "top": 0,
+                  "bottom": 0
+                }
+              },
+              "legend": {
+                "position": "right",
+                "display": false,
+                "align": "center",
+                "fullWidth": true,
+                "reverse": false,
+                "labels": {
+                  "fontSize": 12,
+                  "fontFamily": "sans-serif",
+                  "fontColor": "#666666",
+                  "fontStyle": "normal",
+                  "padding": 10
+                }
+              },
+              "scales": {
+                "xAxes": [
+                  {
+                    "id": "X1",
+                    "display": true,
+                    "position": "bottom",
+                    "type": "linear",
+                    "stacked": false,
+                    "time": {
+                      "unit": false,
+                      "stepSize": 1,
+                      "displayFormats": {
+                        "millisecond": "h:mm:ss.SSS a",
+                        "second": "h:mm:ss a",
+                        "minute": "h:mm a",
+                        "hour": "hA",
+                        "day": "MMM D",
+                        "week": "ll",
+                        "month": "MMM YYYY",
+                        "quarter": "[Q]Q - YYYY",
+                        "year": "YYYY"
+                      }
+                    },
+                    "distribution": "linear",
+                    "gridLines": {
+                      "display": false,
+                      "color": "rgba(0, 0, 0, 0.1)",
+                      "borderDash": [
+                        0,
+                        0
+                      ],
+                      "lineWidth": 1,
+                      "drawBorder": true,
+                      "drawOnChartArea": true,
+                      "drawTicks": true,
+                      "tickMarkLength": 10,
+                      "zeroLineWidth": 1,
+                      "zeroLineColor": "rgba(0, 0, 0, 0.25)",
+                      "zeroLineBorderDash": [
+                        0,
+                        0
+                      ]
+                    },
+                    "angleLines": {
+                      "display": true,
+                      "color": "rgba(0, 0, 0, 0.1)",
+                      "borderDash": [
+                        0,
+                        0
+                      ],
+                      "lineWidth": 1
+                    },
+                    "pointLabels": {
+                      "display": true,
+                      "fontColor": "#666",
+                      "fontSize": 10,
+                      "fontStyle": "normal"
+                    },
+                    "ticks": {
+                      "display": true,
+                      "fontSize": 12,
+                      "fontFamily": "sans-serif",
+                      "fontColor": "#666666",
+                      "fontStyle": "normal",
+                      "padding": 0,
+                      "stepSize": null,
+                      "minRotation": 0,
+                      "maxRotation": 50,
+                      "mirror": false,
+                      "reverse": false
+                    },
+                    "scaleLabel": {
+                      "display": false,
+                      "labelString": "Axis label",
+                      "lineHeight": 1.2,
+                      "fontColor": "#666666",
+                      "fontFamily": "sans-serif",
+                      "fontSize": 12,
+                      "fontStyle": "normal",
+                      "padding": 4
+                    }
+                  }
+                ],
+                "yAxes": [
+                  {
+                    "id": "Y1",
+                    "display": true,
+                    "position": "left",
+                    "type": "category",
+                    "stacked": false,
+                    "time": {
+                      "unit": false,
+                      "stepSize": 1,
+                      "displayFormats": {
+                        "millisecond": "h:mm:ss.SSS a",
+                        "second": "h:mm:ss a",
+                        "minute": "h:mm a",
+                        "hour": "hA",
+                        "day": "MMM D",
+                        "week": "ll",
+                        "month": "MMM YYYY",
+                        "quarter": "[Q]Q - YYYY",
+                        "year": "YYYY"
+                      }
+                    },
+                    "distribution": "linear",
+                    "gridLines": {
+                      "display": true,
+                      "color": "rgba(0, 0, 0, 0.1)",
+                      "borderDash": [
+                        0,
+                        0
+                      ],
+                      "lineWidth": 1,
+                      "drawBorder": true,
+                      "drawOnChartArea": true,
+                      "drawTicks": true,
+                      "tickMarkLength": 10,
+                      "zeroLineWidth": 1,
+                      "zeroLineColor": "rgba(0, 0, 0, 0.25)",
+                      "zeroLineBorderDash": [
+                        0,
+                        0
+                      ]
+                    },
+                    "angleLines": {
+                      "display": true,
+                      "color": "rgba(0, 0, 0, 0.1)",
+                      "borderDash": [
+                        0,
+                        0
+                      ],
+                      "lineWidth": 1
+                    },
+                    "pointLabels": {
+                      "display": true,
+                      "fontColor": "#666",
+                      "fontSize": 10,
+                      "fontStyle": "normal"
+                    },
+                    "ticks": {
+                      "display": true,
+                      "fontSize": 12,
+                      "fontFamily": "sans-serif",
+                      "fontColor": "#666666",
+                      "fontStyle": "normal",
+                      "padding": 0,
+                      "stepSize": null,
+                      "minRotation": 0,
+                      "maxRotation": 50,
+                      "mirror": false,
+                      "reverse": false
+                    },
+                    "scaleLabel": {
+                      "display": false,
+                      "labelString": "Axis label",
+                      "lineHeight": 1.2,
+                      "fontColor": "#666666",
+                      "fontFamily": "sans-serif",
+                      "fontSize": 12,
+                      "fontStyle": "normal",
+                      "padding": 4
+                    }
+                  }
+                ]
+              },
+              "plugins": {
+                "datalabels": {
+                  "display": true,
+                  "align": "right",
+                  "anchor": "end",
+                  "backgroundColor": "#eee",
+                  "borderColor": "#ddd",
+                  "borderRadius": 0,
+                  "borderWidth": 1,
+                  "padding": 4,
+                  "color": "#666666",
+                  "font": {
+                    "family": "sans-serif",
+                    "size": 14,
+                    "style": "bold"
+                  }
+                },
+                "googleSheets": {},
+                "airtable": {},
+                "tickFormat": ""
+              },
+              "elements": {
+                "rectangle": {
+                  "borderWidth": 2
+                }
+              },
+              "responsive": true,
+              "cutoutPercentage": 50,
+              "rotation": -1.5707963267948966,
+              "circumference": 6.283185307179586,
+              "startAngle": -1.5707963267948966
+            }
+          }
+          EOD;
+
+          // Chart config can be set as a string or as a nested array
+          $qc->setConfig($config);
+
+          // Print the chart URL
+          return $qc->getUrl();
+    }
     public function persent($num, $total)
     {
         $num = $num / $total * 100;
@@ -2493,14 +2807,16 @@ class questionsController extends Controller
         // $plot = $this->splot($sumD,$sumi,$sumS,$sumC);
         // //dd($plot);
         // $teamUrl = $this->Linequick("team" ,$plot,150,200);
+
         return $teamvalue;
 
 
     }
+
     //get URL For Chart
     public function getURLchart($plot){
         $url = $this->splot($plot);
-        $url = $this->Linequick("team" ,$url,150,200);
+        $url = $this->Linequick("team" ,$url,150,300);
         return $url;
     }
     public function comteam($uid){

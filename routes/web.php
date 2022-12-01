@@ -39,9 +39,15 @@ Route::get('/admin/clients/update/{clients}', [adminController::class, 'update']
 Route::post('/admin/clients/change/{clients}', [adminController::class, 'change'])->name('update')->middleware('auth');
 Route::get('/admin/questions', [adminController::class, 'vquest'])->name('vquest')->middleware('auth');
 Route::get('/admin/profile', [adminController::class, 'profile'])->name('profile')->middleware('auth');
+Route::get('/admin/profile/update', [adminController::class, 'profilemodify'])->name('profilemodify')->middleware('auth');
 route::get('/admin/templates', [adminController::class, 'templates'])->name('template');
 route::get('/admin/templates/individual', [adminController::class, 'indTemplate'])->name('indTemp');
+route::get('/admin/templates/individual2', [adminController::class, 'indTemplate2'])->name('indTemp2');
+route::get('/admin/templates/keywords', [adminController::class, 'Template_key'])->name('key');
+
 Route::post('/admin/templates/individual/update', [adminController::class, 'uptemplate'])->name('tempstore')->middleware('auth');
+Route::post('/admin/templates/keywords/update', [adminController::class, 'Update_keywords'])->name('keywordsstore')->middleware('auth');
+
 
 route::get('/admin/templates/group', [adminController::class, 'grpTemplate'])->name('grpTemp');
 

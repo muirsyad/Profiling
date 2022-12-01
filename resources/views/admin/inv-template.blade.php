@@ -29,7 +29,7 @@
                                 <input type="text" class="form-control" id="exampleFormControlInput1"
                                     placeholder="soalan" name="High1">
                             </div> --}}
-                            <span id="ch">{{ $Dcount }}</span>
+                            <span id="chD">{{ $Dcount }}</span>
                             {{-- <input type="text" value="{{ $Dcount }}"> --}}
                             @foreach ($Dhigh as $i=>$Dhigh )
                             <div class="mb-3">
@@ -63,6 +63,7 @@
                     <div class="d-flex justify-content-between">
 
                         <button type="button" class="btn btn-primary" onclick="addro('High','D')">Add row H </button>
+                        <button type="button" class="btn btn-primary" onclick="removero('HIgh','D',{{ $Dcount }})">Add row H </button>
 
                         <button type="button" class="btn btn-primary" onclick="addro('Low','D')">Add row L</button>
 

@@ -55,6 +55,41 @@
             }
 
         }
+        .progress-bar__container {
+            width: 80%;
+            height: 2rem;
+            border-radius: 2rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s;
+            will-change: transform;
+            box-shadow: 0 0 5px #033e13;
+            margin-left: auto;
+            margin-right: auto;
+            }
+
+            .progress-bar {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            content: "";
+            background-color: #17c93a;
+            top:0;
+            bottom: 0;
+            left: -4%;
+            border-radius: inherit;
+            display: flex;
+            justify-content: center;
+            /* align-items:center; */
+            color: rgb(11, 0, 0);
+            font-family: sans-serif;
+            }
+            span.pro-text{
+                text-align: right;
+                color: #ffffff;
+                margin-right: 77px;
+            }
+
     </style>
 
     <div class="card mt-3">
@@ -121,14 +156,30 @@
                 </div>
 
 
-
-                <div class="col text center">
-                    <a href="{{ route('dlpdf') }}" class="btn btn-primary">Download</a>
-                    <a href="#" class="btn btn-primary">Home</a>
-                    <a href="{{ route('inv2') }}" class="btn btn-primary">Download ver 2</a>
-                    <a href="{{ route('inv3') }}" class="btn btn-primary">Download ver 3</a>
-
+                <div class="col-12 mb-3">
+                    <span class="h-6 text-danger">* Please wait for 100% to download your PDF report</span>
+                    <div class="progress-bar__container mt-3">
+                        <div id="progress" class="progress-bar"><span class="pro-text">{{ $percentage }}%</span></div>
+                    </div>
                 </div>
+                @if ($percentage >= 100)
+                    <div class="col text center">
+                        {{-- <a href="{{ route('dlpdf') }}" class="btn btn-primary">Download</a> --}}
+                        <a href="#" class="btn btn-primary">Home</a>
+                        {{-- <a href="{{ route('inv2') }}" class="btn btn-primary">Download ver 2</a> --}}
+                        <a href="{{ route('inv3') }}" class="btn btn-primary">Download ver 3</a>
+
+                    </div>
+                    @else
+                    <div class="col text center">
+
+                        <a href="#" class="btn btn-primary">Home</a>
+
+                        <a href="{{ route('inv3') }}" class="btn btn-primary disabled">Download ver 3</a>
+
+                    </div>
+                @endif
+
             </div>
 
 
@@ -136,7 +187,21 @@
 
         {{-- aswer records
         {{ $record->answer_records }} --}}
+        <script src="https://code.jquery.com/jquery-3.6.1.min.js"
+        integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+       @php
+            $var = 50;
+        @endphp
+        <script>
+            var value = 100- {{ $percentage }}
+            value = "-"+value+"%";
+            console.log("Progress "+value);
+            $(document).ready(function(){
+            $("#progress").css('left', value);
 
+
+        });
+        </script>
         <script>
             var D = <?php echo $D; ?>;
             var I = <?php echo $I; ?>;
