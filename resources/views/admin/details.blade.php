@@ -124,8 +124,8 @@
                     <td>{{ $dp }}</td>
                     <td>
                         <div class="row">
-                            <div class="col"><a href="/admin/clients/details/{{ $participants->id }}"><i
-                                        class="far fa-eye igreen"></i></a></div>
+                            {{-- <div class="col"><a href="/admin/clients/details/{{ $participants->id }}"><i
+                                        class="far fa-eye igreen"></i></a></div> --}}
                             <div class="col"><a href="{{ route('details',$participants->id)}}"><i
                                             class="far fa-eye igreen"></i></a></div>
                             <div class="col"><a href="/admin/clients/update/{{ $participants->id }}"><i
