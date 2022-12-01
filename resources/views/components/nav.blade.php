@@ -28,6 +28,8 @@
                                 class="fas fa-external-link-alt"></i>Logout</button>
                     </form>
                 </li>
+                <li class="nav-item"><a class="nav-link" href="{{ route('logout') }}"><i
+                    class="far fa-user"></i><span>Logout</span></a></li>
                 {{-- <a class="nav-link" href="{{ route('vquest') }}"><i
                             class="fas fa-question"></i><span>Logout</span></a></li> --}}
 

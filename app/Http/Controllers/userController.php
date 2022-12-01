@@ -130,12 +130,12 @@ class userController extends Controller
         return back()->withErrors(['email' => 'Invalid Cerendentials'])->onlyInput();
     }
 
-    public function logout(Request $request)
+    public function logout()
     {
         auth()->logout();
 
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+        // $request->session()->invalidate();
+        // $request->session()->regenerateToken();
 
         return redirect('/')->with('message', 'You have beem logout');
     }
