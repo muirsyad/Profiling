@@ -110,7 +110,7 @@
                     <td>{{ $clients->address }}</td>
                     <td>
                         <div class="row">
-                            <div class="col"><a href="{{ URL::to('details')}}/{{ $clients->id }}"><i
+                            <div class="col"><a href="{{ URL::to('admin/clients/details')}}/{{ $clients->id }}"><i
                                 class="far fa-eye igreen"></i></a></div>
                             <div class="col"><a href="/admin/clients/update/{{ $clients->id }}"><i
                                         class="fas fa-pencil-alt igreen"></i></a></div>
