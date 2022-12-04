@@ -1,4 +1,5 @@
 @extends('admin_template')
+{{-- @extends('adtemp') --}}
 @section('content')
     {{ date('m') }}
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
