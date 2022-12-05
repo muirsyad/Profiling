@@ -53,12 +53,14 @@
                         {{-- <button class="btn btn-outline-success">Logout</button>  --}}
                     {{-- </form> --}}
                 {{-- </div> --}}
-                <form class="d-flex" method="POST" action="/logout">
+                {{-- <form class="d-flex" method="POST" action="/logout">
 
                     @csrf
 
-                    <button class="btn btn-outline-success">Logout</button>
-                 </form>
+
+                 </form> --}}
+                 <a href="{{ route('logout') }}" class="btn btn-outline-success">Logout</a>
+                 {{-- <button class="btn btn-outline-success">Logout</button> --}}
 
             </div>
         </nav>

@@ -43,7 +43,7 @@
                         <h4 class="text-primary">management</h4>
                     </div>
                     <div class="align-self-center">
-                        <a href="{{ route('indTemp2') }}"><i class="far fa-eye fa-2x text-gray-300"></i></a>
+                        <a href="{{ route('motivate') }}"><i class="far fa-eye fa-2x text-gray-300"></i></a>
                     </div>
 
                 </div>
@@ -59,7 +59,7 @@
                         <h4 class="text-primary">management </h4>
                     </div>
                     <div class="align-self-center">
-                        <a href="{{ route('grpTemp') }}"><i class="far fa-eye fa-2x text-gray-300"></i></a>
+                        <a href="{{ route('performance') }}"><i class="far fa-eye fa-2x text-gray-300"></i></a>
 
                     </div>
                 </div>

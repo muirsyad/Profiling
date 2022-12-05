@@ -44,9 +44,14 @@ route::get('/admin/templates', [adminController::class, 'templates'])->name('tem
 route::get('/admin/templates/individual', [adminController::class, 'indTemplate'])->name('indTemp');
 route::get('/admin/templates/individual2', [adminController::class, 'indTemplate2'])->name('indTemp2');
 route::get('/admin/templates/keywords', [adminController::class, 'Template_key'])->name('key');
+route::get('/admin/templates/motivation', [adminController::class, 'Template_motivate'])->name('motivate');
+route::get('/admin/templates/performance', [adminController::class, 'Template_performance'])->name('performance');
+
 
 Route::post('/admin/templates/individual/update', [adminController::class, 'uptemplate'])->name('tempstore')->middleware('auth');
 Route::post('/admin/templates/keywords/update', [adminController::class, 'Update_keywords'])->name('keywordsstore')->middleware('auth');
+Route::post('/admin/templates/motivation/update', [adminController::class, 'Update_motivation'])->name('motivatestore')->middleware('auth');
+Route::post('/admin/templates/performance/update', [adminController::class, 'Update_performance'])->name('performancestore')->middleware('auth');
 
 
 route::get('/admin/templates/group', [adminController::class, 'grpTemplate'])->name('grpTemp');

@@ -77,6 +77,208 @@
                 }
             });
 
+            $("#btn-motivate").click(function(){
+                if($("#tab-motivate").is(":hidden")){
+                    console.log('press motivate');
+                    $("#tab-motivate").fadeIn();
+                    $("#tab-best").fadeOut();
+                    $("#tab-best").hide();
+                    $("#tab-demotivate").fadeOut();
+                    $("#tab-demotivate").hide();
+                    $("#tab-worst").fadeOut();
+                    $("#tab-worst").hide();
+                }
+
+            });
+
+            $("#btn-best").click(function(){
+                if($("#tab-best").is(":hidden")){
+                    console.log('press best');
+                    $("#tab-best").fadeIn();
+                    $("#tab-motivate").fadeOut();
+                    $("#tab-motivate").hide();
+                    $("#tab-demotivate").fadeOut();
+                    $("#tab-demotivate").hide();
+                    $("#tab-worst").fadeOut();
+                    $("#tab-worst").hide();
+
+                }
+
+            });
+
+            $("#btn-demotivate").click(function(){
+                if($("#tab-demotivate").is(":hidden")){
+                    $("#tab-demotivate").fadeIn();
+                    $("#tab-motivate").fadeOut();
+                    $("#tab-motivate").hide();
+                    $("#tab-best").fadeOut();
+                    $("#tab-best").hide();
+                    $("#tab-worst").fadeOut();
+                    $("#tab-worst").hide();
+                }
+            });
+
+            $("#btn-worst").click(function(){
+                if($("#tab-worst").is(":hidden")){
+                    $("#tab-worst").fadeIn();
+                    $("#tab-motivate").fadeOut();
+                    $("#tab-motivate").hide();
+                    $("#tab-demotivate").fadeOut();
+                    $("#tab-demotivate").hide();
+                    $("#tab-best").fadeOut();
+                    $("#tab-best").hide();
+                }
+            });
+
+            $("#btn-motivate1").click(function(){
+                if($("#tab-motivate1").is(":hidden")){
+                    console.log('press motivate');
+                    $("#tab-motivate1").fadeIn();
+                    $("#tab-best1").fadeOut();
+                    $("#tab-best1").hide();
+                    $("#tab-demotivate1").fadeOut();
+                    $("#tab-demotivate1").hide();
+                    $("#tab-worst1").fadeOut();
+                    $("#tab-worst1").hide();
+                }
+            });
+
+            $("#btn-best1").click(function(){
+                if($("#tab-best1").is(":hidden")){
+                    console.log('press best1');
+                    $("#tab-best1").fadeIn();
+                    $("#tab-motivate1").fadeOut();
+                    $("#tab-motivate1").hide();
+                    $("#tab-demotivate1").fadeOut();
+                    $("#tab-demotivate1").hide();
+                    $("#tab-worst1").fadeOut();
+                    $("#tab-worst1").hide();
+                }
+            });
+
+            $("#btn-demotivate1").click(function(){
+                if($("#tab-demotivate1").is(":hidden")){
+                    $("#tab-demotivate1").fadeIn();
+                    $("#tab-motivate1").fadeOut();
+                    $("#tab-motivate1").hide();
+                    $("#tab-best1").fadeOut();
+                    $("#tab-best1").hide();
+                    $("#tab-worst1").fadeOut();
+                    $("#tab-worst1").hide();
+                }
+            });
+
+            $("#btn-worst1").click(function(){
+                if($("#tab-worst1").is(":hidden")){
+                    $("#tab-worst1").fadeIn();
+                    $("#tab-motivate1").fadeOut();
+                    $("#tab-motivate1").hide();
+                    $("#tab-demotivate1").fadeOut();
+                    $("#tab-demotivate1").hide();
+                    $("#tab-best1").fadeOut();
+                    $("#tab-best1").hide();
+                }
+            });
+            $("#btn-motivate2").click(function(){
+                if($("#tab-motivate2").is(":hidden")){
+                    console.log('press motivate');
+                    $("#tab-motivate2").fadeIn();
+                    $("#tab-best2").fadeOut();
+                    $("#tab-best2").hide();
+                    $("#tab-demotivate2").fadeOut();
+                    $("#tab-demotivate2").hide();
+                    $("#tab-worst2").fadeOut();
+                    $("#tab-worst2").hide();
+                }
+            });
+
+            $("#btn-best2").click(function(){
+                if($("#tab-best2").is(":hidden")){
+                    console.log('press best1');
+                    $("#tab-best2").fadeIn();
+                    $("#tab-motivate2").fadeOut();
+                    $("#tab-motivate2").hide();
+                    $("#tab-demotivate2").fadeOut();
+                    $("#tab-demotivate2").hide();
+                    $("#tab-worst2").fadeOut();
+                    $("#tab-worst2").hide();
+                }
+            });
+
+            $("#btn-demotivate2").click(function(){
+                if($("#tab-demotivate2").is(":hidden")){
+                    $("#tab-demotivate2").fadeIn();
+                    $("#tab-motivate2").fadeOut();
+                    $("#tab-motivate2").hide();
+                    $("#tab-best2").fadeOut();
+                    $("#tab-best2").hide();
+                    $("#tab-worst2").fadeOut();
+                    $("#tab-worst2").hide();
+                }
+            });
+
+            $("#btn-worst2").click(function(){
+                if($("#tab-worst2").is(":hidden")){
+                    $("#tab-worst2").fadeIn();
+                    $("#tab-motivate2").fadeOut();
+                    $("#tab-motivate2").hide();
+                    $("#tab-demotivate2").fadeOut();
+                    $("#tab-demotivate2").hide();
+                    $("#tab-best2").fadeOut();
+                    $("#tab-best2").hide();
+                }
+            });
+
+            $("#btn-motivate3").click(function(){
+                if($("#tab-motivate3").is(":hidden")){
+                    console.log('press motivate');
+                    $("#tab-motivate3").fadeIn();
+                    $("#tab-best3").fadeOut();
+                    $("#tab-best3").hide();
+                    $("#tab-demotivate3").fadeOut();
+                    $("#tab-demotivate3").hide();
+                    $("#tab-worst3").fadeOut();
+                    $("#tab-worst3").hide();
+                }
+            });
+
+            $("#btn-best3").click(function(){
+                if($("#tab-best3").is(":hidden")){
+                    console.log('press best1');
+                    $("#tab-best3").fadeIn();
+                    $("#tab-motivate3").fadeOut();
+                    $("#tab-motivate3").hide();
+                    $("#tab-demotivate3").fadeOut();
+                    $("#tab-demotivate3").hide();
+                    $("#tab-worst3").fadeOut();
+                    $("#tab-worst3").hide();
+                }
+            });
+
+            $("#btn-demotivate3").click(function(){
+                if($("#tab-demotivate3").is(":hidden")){
+                    $("#tab-demotivate3").fadeIn();
+                    $("#tab-motivate3").fadeOut();
+                    $("#tab-motivate3").hide();
+                    $("#tab-best3").fadeOut();
+                    $("#tab-best3").hide();
+                    $("#tab-worst3").fadeOut();
+                    $("#tab-worst3").hide();
+                }
+            });
+
+            $("#btn-worst3").click(function(){
+                if($("#tab-worst3").is(":hidden")){
+                    $("#tab-worst3").fadeIn();
+                    $("#tab-motivate3").fadeOut();
+                    $("#tab-motivate3").hide();
+                    $("#tab-demotivate3").fadeOut();
+                    $("#tab-demotivate3").hide();
+                    $("#tab-best3").fadeOut();
+                    $("#tab-best3").hide();
+                }
+            });
+
             // Test new query
             $(document).ready(function() {
                 $("#hidep").click(function() {

@@ -200,7 +200,102 @@ class adminController extends Controller
         ]);
     }
 
-    public function Template_motivation(){
+    public function Template_motivate(){
+
+
+
+        $styleD = $this->arrvalue('D');
+        $styleI = $this->arrvalue('I');
+        $styleS = $this->arrvalue('S');
+        $styleC = $this->arrvalue('C');
+
+
+
+
+        $keyI = $this->selkey('I');
+        $keyS = $this->selkey('S');
+        $keyC = $this->selkey('C');
+
+
+
+        $keyI = explode(",",$keyI->keywords);
+        $keyS = explode(",",$keyS->keywords);
+        $keyC = explode(",",$keyC->keywords);
+
+        //count
+        // $Count_kd = count($keyD);
+        $Count_ki = count($keyI);
+        $Count_ks = count($keyS);
+        $Count_kc = count($keyC);
+
+
+
+
+
+
+
+
+        return view('admin.T_Motivation',[
+
+            'keyI' => $keyI,
+            'keyS' => $keyS,
+            'keyC' => $keyC,
+            // 'count_kd' => $Count_kd,
+            'count_ki' => $Count_ki,
+            'count_ks' => $Count_ks,
+            'count_kc' => $Count_kc,
+            'styleD' => $styleD,
+            'styleI' => $styleI,
+            'styleS' => $styleS,
+            'styleC' => $styleC,
+        ]);
+    }
+    public function Template_performance(){
+
+        $perD = $this->arrperformance('D');
+        $perI = $this->arrperformance('I');
+        $perS = $this->arrperformance('S');
+        $perC = $this->arrperformance('C');
+
+
+
+        return view('admin.T_Performance',[
+            'perD' => $perD,
+            'perI' => $perI,
+            'perS' => $perS,
+            'perC' => $perC,
+        ]);
+
+
+
+    }
+
+    //small function in motivate function
+
+    public function arrvalue($style){
+        $style = $this->selmotivate($style);
+        $motivate = explode('.',$style->Wmotivate);
+        $best = explode('.',$style->Wbest);
+        $demotivate = explode('.',$style->Wdemotive);
+        $worst = explode('.',$style->Wworst);
+
+        $keyDarr = array();
+        array_push($keyDarr,$motivate,$best, $demotivate, $worst );
+
+        return $keyDarr;
+
+    }
+    public function arrperformance($style){
+        $style = $this->selperformance($style);
+        $A_improve = explode('.',$style->A_improve);
+        $O_better = explode('.',$style->O_better);
+        $O_avoid = explode('.',$style->O_avoid);
+        $Y_environment = explode('.',$style->Y_environment);
+
+        $keyDarr = array();
+        array_push($keyDarr,$A_improve,$O_better, $O_avoid, $Y_environment );
+
+        return $keyDarr;
 
     }
     public function grpTemplate()
@@ -390,6 +485,29 @@ class adminController extends Controller
 
 
     }
+
+    public function Update_motivation(Request $request){
+
+
+        $combine = $request['value0'].".".$request['value1'].".".$request['value2'].".".$request['value3'];
+         //dd($request);
+        $update = DB::table('templates_reports')->where('Behaviour_type',$request['style'])
+        ->update([$request['valuef'] => $combine]);
+
+        return redirect(route('motivate'));
+
+    }
+    public function Update_performance(Request $request){
+
+
+        $combine = $request['value0'].".".$request['value1'].".".$request['value2'].".".$request['value3'];
+         //dd($request);
+        $update = DB::table('templates_reports')->where('Behaviour_type',$request['style'])
+        ->update([$request['valuef'] => $combine]);
+
+        return redirect(route('performance'));
+
+    }
     public function arraytostr($arrayDH){
         //to combine collection tom sting with comma
         foreach($arrayDH as $dh){
@@ -492,9 +610,41 @@ class adminController extends Controller
 
         return $key;
     }
-    public function selmotivation($style){
+    public function selmotivate($style){
         $key = DB::table('templates_reports')
-        ->select('keywords')
+        ->select('Wmotivate','Wbest','Wdemotive','Wworst')
+        ->where('Behaviour_type', $style)
+        ->first();
+
+        return $key;
+    }
+    public function selperformance($style){
+        $key = DB::table('templates_reports')
+        ->select('A_improve','O_better','O_avoid','Y_environment')
+        ->where('Behaviour_type', $style)
+        ->first();
+
+        return $key;
+    }
+    public function selbest($style){
+        $key = DB::table('templates_reports')
+        ->select('Wbest')
+        ->where('Behaviour_type', $style)
+        ->first();
+
+        return $key;
+    }
+    public function seldemotivate($style){
+        $key = DB::table('templates_reports')
+        ->select('Wdemotive')
+        ->where('Behaviour_type', $style)
+        ->first();
+
+        return $key;
+    }
+    public function selworst($style){
+        $key = DB::table('templates_reports')
+        ->select('Wworst')
         ->where('Behaviour_type', $style)
         ->first();
 

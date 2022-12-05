@@ -158,12 +158,13 @@ class questionsController extends Controller
 
         //dd(auth()->user()->id);
         //$clientid = auth()->user()->client_id;
+
         $record = new record;
         $record->answer_records = $str;
         $record->created_at = date('Y-m-d');
         $record->user_id = auth()->user()->id;
         $record->client_id = auth()->user()->client_id;
-        $record->client_id = auth()->user()->department;
+        $record->department_id = auth()->user()->department_id;
         $record->D = $varD;
         $record->I = $varI;
         $record->S = $varS;
