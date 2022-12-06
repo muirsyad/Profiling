@@ -162,7 +162,7 @@
                 <div class="col-12 mb-3">
                     <span class="h-6 text-danger">* Please wait for 100% to download your PDF report</span>
                     <div class="progress-bar__container mt-3">
-                        <div id="progress" class="progress-bar"><span class="pro-text">{{ $percentage }}%</span></div>
+                        <div id="progress" class="progress-bar"><span class="pro-text"></span></div>
                     </div>
                 </div>
 
@@ -209,16 +209,22 @@
                         Str = Str.replace(']', '')
                         Str = parseInt(Str);
                         console.log(Str);
-                        document.getElementById("link_wrapper").innerHTML =
-                            Str
 
-                        var value = 100 -  Str
+
+                        var value = 100 -  Str;
+                        var balance = value;
                         value = "-" + value + "%";
                         console.log("Progress " + value);
                         $(document).ready(function() {
                             $("#progress").css('left', value);
-                            if(value === 0 ){
-                                $('#ButtonId').prop('disabled', false);
+                            console.log("Value :" + balance);
+                            if(balance === 0 ){
+                                console.log("Test in");
+                                $("#ButtonId").removeClass('disabled');
+                            }
+                            else{
+                                console.log("Test in");
+                                $("#ButtonId").addClass('disabled');
                             }
 
 
@@ -245,7 +251,7 @@
             // $arr = json_decode($progress, true);
         @endphp
 
-        <input type="text" id="progress">
+
 
         <script>
             var value = 100 - {{ $percentage }}

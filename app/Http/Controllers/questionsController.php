@@ -3072,7 +3072,7 @@ class questionsController extends Controller
 
     public function fetchcomments(){
 
-
+        // $progress = DB::table('progress')->first();
         $cid = auth()->user()->client_id;
         $comments = 80;
         // return response()->json([
@@ -3086,7 +3086,7 @@ class questionsController extends Controller
        $percentage = $allanswer/$all*100;
     //    $percentage = 100;
        $percentage = intval($percentage);
-
+    //
     //    dd($percentage);
 
     //     return $percentage;
