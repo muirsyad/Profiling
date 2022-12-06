@@ -3071,7 +3071,7 @@ class questionsController extends Controller
     }
 
     public function fetchcomments(){
-        $progress = DB::table('progress')->first();
+
 
         $cid = auth()->user()->client_id;
         $comments = 80;
