@@ -73,6 +73,10 @@ route::get('/dd',[questionsController::class,'pdf'])->name('pdf')->middleware('a
 route::get('/pdf2',[questionsController::class,'inv2'])->name('inv2')->middleware('auth');
 route::get('/pdf/version3',[questionsController::class,'inv3'])->name('inv3')->middleware('auth');
 
+//ajax test
+route::get('/fetch-comments',[questionsController::class,'fetchcomments'])->name('comm')->middleware('auth');
+
+
 Route::post('/Cuser', [userController::class, 'Ustore'])->name('userR')->middleware('auth');
 
 //email test

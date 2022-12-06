@@ -55,6 +55,7 @@
             }
 
         }
+
         .progress-bar__container {
             width: 80%;
             height: 2rem;
@@ -66,15 +67,15 @@
             box-shadow: 0 0 5px #033e13;
             margin-left: auto;
             margin-right: auto;
-            }
+        }
 
-            .progress-bar {
+        .progress-bar {
             position: absolute;
             height: 100%;
             width: 100%;
             content: "";
             background-color: #17c93a;
-            top:0;
+            top: 0;
             bottom: 0;
             left: -4%;
             border-radius: inherit;
@@ -83,14 +84,16 @@
             /* align-items:center; */
             color: rgb(11, 0, 0);
             font-family: sans-serif;
-            }
-            span.pro-text{
-                text-align: right;
-                color: #ffffff;
-                margin-right: 77px;
-            }
+        }
 
+        span.pro-text {
+            text-align: right;
+            color: #ffffff;
+            margin-right: 77px;
+        }
     </style>
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"
+        integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
 
     <div class="card mt-3">
         <div class="card-body">
@@ -162,6 +165,11 @@
                         <div id="progress" class="progress-bar"><span class="pro-text">{{ $percentage }}%</span></div>
                     </div>
                 </div>
+
+
+                <div id="link_wrapper">
+
+                </div>
                 @if ($percentage >= 100)
                     <div class="col text center">
                         {{-- <a href="{{ route('dlpdf') }}" class="btn btn-primary">Download</a> --}}
@@ -170,7 +178,7 @@
                         <a href="{{ route('inv3') }}" class="btn btn-primary">Download ver 3</a>
 
                     </div>
-                    @else
+                @else
                     <div class="col text center">
 
                         <a href="#" class="btn btn-primary">Home</a>
@@ -187,20 +195,53 @@
 
         {{-- aswer records
         {{ $record->answer_records }} --}}
-        <script src="https://code.jquery.com/jquery-3.6.1.min.js"
-        integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
-       @php
-            $var = 50;
-        @endphp
+
         <script>
-            var value = 100- {{ $percentage }}
-            value = "-"+value+"%";
-            console.log("Progress "+value);
-            $(document).ready(function(){
-            $("#progress").css('left', value);
+            function loadXMLDoc() {
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        // document.getElementById("link_wrapper").innerHTML =
+                        //     this.responseText;
+                        document.getElementById("link_wrapper").innerHTML =
+                        this.responseText;
+                        var Str = this.responseText;
+                        Str = Str.replace('[','')
+                        Str = Str.replace(']','')
+                        Str = parseInt(Str);
+                        console.log(Str);
 
 
-        });
+                    }
+                };
+                xhttp.open("GET", "{{ route('comm') }}", true);
+                xhttp.send();
+            }
+            setInterval(function() {
+                loadXMLDoc();
+                // 30sec
+            }, 5000);
+
+            window.onload = loadXMLDoc;
+        </script>
+
+        @php
+
+            $var = 50;
+            // $arr = json_decode($progress, true);
+        @endphp
+
+        <input type="text" id="progress">
+
+        <script>
+            var value = 100 - {{ $percentage }}
+            value = "-" + value + "%";
+            console.log("Progress " + value);
+            $(document).ready(function() {
+                $("#progress").css('left', value);
+
+
+            });
         </script>
         <script>
             var D = <?php echo $D; ?>;

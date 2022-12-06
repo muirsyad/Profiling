@@ -417,7 +417,7 @@ class questionsController extends Controller
         $update = record::where('user_id', $record->user_id)->update(['High' => $sorted[0]]);
         $update = record::where('user_id', $record->user_id)->update(['Low' => $sorted[1]]);
         $dept = Departments::find(auth()->user()->department_id);
-       $cid = auth()->user()->client_id;
+        $cid = auth()->user()->client_id;
 
        $all = DB::table('users')->where('client_id', $cid)->count();
 
@@ -430,12 +430,15 @@ class questionsController extends Controller
 
 
 
+
+
         return view('user.results', [
             'record' => $record,
             'high' => $highV,
             'department' => $dept->department,
             'plot' => $plot,
             'percentage' => $percentage,
+
         ]);
     }
     public function results2()
@@ -3065,5 +3068,32 @@ class questionsController extends Controller
         $query= DB::table('answer_records')
         ->where('client_id',$cid)
         ->get();
+    }
+
+    public function fetchcomments(){
+        $progress = DB::table('progress')->first();
+
+        $cid = auth()->user()->client_id;
+        $comments = 80;
+        // return response()->json([
+        //     'progress' => $progress,
+        // ]);
+
+        $all = DB::table('users')->where('client_id', $cid)->count();
+
+       $allanswer = DB::table('answer_records')->where('client_id', $cid)->count();
+        // $allanswer = 4;
+       $percentage = $allanswer/$all*100;
+    //    $percentage = 100;
+       $percentage = intval($percentage);
+
+    //    dd($percentage);
+
+    //     return $percentage;
+
+        return response()->json([
+            '0' =>$percentage,
+        ]);
+
     }
 }
