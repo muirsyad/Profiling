@@ -212,7 +212,7 @@
                         document.getElementById("link_wrapper").innerHTML =
                             Str
 
-                        var value = 100 - {{ Str }}
+                        var value = 100 -  Str
                         value = "-" + value + "%";
                         console.log("Progress " + value);
                         $(document).ready(function() {
