@@ -203,13 +203,24 @@
                     if (this.readyState == 4 && this.status == 200) {
                         // document.getElementById("link_wrapper").innerHTML =
                         //     this.responseText;
-                        document.getElementById("link_wrapper").innerHTML =
-                        this.responseText;
+
                         var Str = this.responseText;
-                        Str = Str.replace('[','')
-                        Str = Str.replace(']','')
+                        Str = Str.replace('[', '')
+                        Str = Str.replace(']', '')
                         Str = parseInt(Str);
                         console.log(Str);
+                        document.getElementById("link_wrapper").innerHTML =
+                            Str
+
+                        var value = 100 - {{ Str }}
+                        value = "-" + value + "%";
+                        console.log("Progress " + value);
+                        $(document).ready(function() {
+                            $("#progress").css('left', value);
+
+
+                        });
+
 
 
                     }
