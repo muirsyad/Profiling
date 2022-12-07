@@ -2,10 +2,10 @@
         // event.preventDefault();
         var limit = 5;
         $(document).ready(function() {
-            cstyle('D',limit);
-            cstyle('I',limit);
-            cstyle('S',limit);
-            cstyle('C',limit);
+            // cstyle('D',limit);
+            // cstyle('I',limit);
+            // cstyle('S',limit);
+            // cstyle('C',limit);
 
 
             $("#hide").click(function() {
@@ -332,16 +332,7 @@
             newdiv.appendChild(newinput);
 
         }
-        var cH=1;
-        var cL=1;
-        var num=0;
-        var nv=null;
-        var cH = document.getElementById('ch').textContent;
-        var cL = document.getElementById('cl').textContent;
-        // console.log(cH);
-        cH = parseInt(cH);
-        cL = parseInt(cL);
-        // console.log(cH);
+
         function addro(type,style){
 
             if(type == 'High'){

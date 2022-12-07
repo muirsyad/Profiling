@@ -342,14 +342,58 @@
         hr {
             margin: 30px;
         }
+        .report-name{
+            position: absolute;
+            width: 203px;
+            height: 14px;
+            left: 100px;
+            top: 760px;
+        }
+
+        .report-position{
+            position: absolute;
+            width: 203px;
+            height: 14px;
+            left: 100px;
+            top: 800px;
+        }
+        .report-company{
+            position: absolute;
+            width: 203px;
+            height: 14px;
+            left: 500px;
+            top: 760px;
+        }
+        .report-date{
+            position: absolute;
+            width: 203px;
+            height: 14px;
+            left: 500px;
+            top: 800px;
+        }
+        .size-18{
+            font-size: 24px
+        }
+
 
 
     </style>
     {{-- page 1     --}}
     <div class="page-break">
-        <h1 class="title">DiSC Profiling Report</h1>
+        <img src="{{ public_path('assets/img/cover.png') }}" width="825px" height="1120px" >
+        <div>
+            <h4 class="report-name size-18">Name</h4>
+            <h4 class="report-company size-18">LHI Counsulting</h4>
+            <h4 class="report-position size-18">Posotion</h4>
+            <h4 class="report-date size-18">20.12.2022</h4>
 
-        <img src="{{ asset('assets/img/lhi.png') }}" width="300px" height="300px" class="log-center"
+
+        </div>
+        {{-- <img src="{{ asset('assets/img/lhi.png') }}" width="300px" height="300px" class="log-center"
+        alt="t"> --}}
+        {{-- <h1 class="title">DiSC Profiling Report</h1>
+
+        <img src="{{ public_path('assets/img/lhi.png') }}" width="300px" height="300px" class="log-center"
             alt="t">
         <hr class="green mb-3">
         <div class="namebox mb-3">
@@ -358,7 +402,8 @@
             <h4>Department: {{ $user->department }}</h4>
             <h4>Date: {{ $user->created_at }}</h4>
         </div>
-        <hr class="green mb-3">
+        <hr class="green mb-3"> --}}
+
     </div>
 
     @yield('content')

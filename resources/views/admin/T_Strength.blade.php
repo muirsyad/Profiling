@@ -1,8 +1,8 @@
 @extends('admin_template')
 @section('content')
     <h1 class="title2 mb-3"> <i class="fas fa-bookmark"></i> Individual Report Template</h1>
-    <h4 class="title2 mb-3"><i class="fas fa-home"></i> <a href="{{ route('ad_index') }}">Dashboard</a> / <a href="{{ route('template') }}"> Template</a> / <a
-            href="{{ route('key') }}">Keywords</a></h4>
+    <h4 class="title2 mb-3"><i class="fas fa-home"></i> <a href="{{ route('ad_index') }}">Dashboard</a> / <a href="{{ route('template') }}"> Template</a> /  <a
+            href="{{ route('indTemp') }}">Individual</a></h4>
 
     {{-- start form --}}
         <div class="d-flex justify-content-evenly mb-3">
@@ -11,11 +11,11 @@
             <button id="btn-S" type="button" class="btn btn-primary">Show S</button>
             <button id="btn-C" type="button" class="btn btn-primary">Show C</button>
         </div>
-    <form action="{{ route('keywordsstore') }}" method="post" id="form_template">
+    <form action="{{ route('strengthstore') }}" method="post" id="form_template">
         @csrf
         <div id="tab-D" class="card title2 col-10 mx-auto mb-3">
             <div class="card-header">
-                <h3 class="text-primary">Keywords Template</h3>
+                <h3 class="text-primary">Behaviour Template</h3>
             </div>
 
             <div class="card-body">
@@ -26,17 +26,19 @@
                         <p>High</p>
                         <input type="hidden" name="style" value="D">
                         <div id="inputcon" class="exampleD">
-
-                            <span id="ch">{{ $count_kd }}</span>
-                            @foreach ($keyD as $i=>$keyD )
+                            {{-- <span id="ch">{{ $Dcount }}</span> --}}
+                            @foreach ($SD as $i=>$Dhigh )
                                 @if($i>4)
                                     @break
                                 @endif
                             <div class="mb-3">
-                                <input type="text" value="{{ $keyD }}" class="form-control" id="keyD{{ $i+1 }}"
+                                <input type="text" value="{{ $Dhigh }}" class="form-control" id="D_High{{ $i+1 }}"
                                     placeholder="soalan" name="value[]">
+
                             </div>
+
                             @endforeach
+                            <input id="countD" type="hidden" value="{{ $countD }}">
 
 
 
@@ -44,12 +46,13 @@
 
 
                     </div>
+
                     <div class="d-flex justify-content-between">
 
                         @if($i <4)
-                            <button type="button" class="btn btn-primary" onclick="addro('High','D')">Add row H </button>
+                            <button id="btn-rowD" type="button" class="btn btn-primary" onclick="addro1('D')">Add row H </button>
                         @else
-                            <button disabled type="button" class="btn btn-primary" onclick="addro('High','D')">Add row H </button>
+                            <button id="btn-rowD" disabled type="button" class="btn btn-primary" onclick="addro1('D')">Add row H </button>
                         @endif
 
 
@@ -63,8 +66,7 @@
             </div>
         </div>
     </form>
-
-    <form action="{{ route('keywordsstore') }}" method="post" id="form_template">
+    <form action="{{ route('strengthstore') }}" method="post" id="form_template">
         @csrf
         <div style="display: none" id="tab-i" class="card title2 col-10 mx-auto mb-3">
             <div class="card-header">
@@ -77,26 +79,29 @@
                 <div class="row">
                     <div class="col">
                         <p>High</p>
-                        <input type="hidden" name="style" value="I">
-                        <div id="inputcon" class="exampleD">
-                            <span id="ch">{{ $count_ki }}</span>
-                            @foreach ($keyI as $i=>$keyI )
+                        <div id="inputcon" class="exampleI">
+                            <input type="hidden" name="style" value="I">
+                            @foreach ($SI as $i=>$Ihigh )
                                 @if($i>4)
                                     @break
                                 @endif
                             <div class="mb-3">
-                                <input type="text" value="{{ $keyI }}" class="form-control" id="keyI{{ $i+1 }}"
+                                <input type="text" value="{{ $Ihigh }}" class="form-control" id="I_High{{ $i+1 }}"
                                     placeholder="soalan" name="value[]">
+
                             </div>
                             @endforeach
+                            <input id="countI" type="hidden" value="{{ $countI }}">
+
                         </div>
                     </div>
+
                         <div class="d-flex justify-content-between">
 
                         @if($i <4)
-                            <button type="button" class="btn btn-primary" onclick="addro('High','I')">Add row H </button>
+                            <button id="btn-rowI" type="button" class="btn btn-primary" onclick="addro1('I')">Add row H </button>
                         @else
-                            <button disabled type="button" class="btn btn-primary" onclick="addro('High','I')">Add row H </button>
+                            <button id="btn-rowI" disabled type="button" class="btn btn-primary" onclick="addro1('I')">Add row H </button>
                         @endif
 
 
@@ -110,8 +115,7 @@
             </div>
         </div>
     </form>
-
-    <form action="{{ route('keywordsstore') }}" method="post" id="form_template">
+    <form action="{{ route('strengthstore') }}" method="post" id="form_template">
         @csrf
         <div style="display: none" id="tab-S" class="card title2 col-10 mx-auto mb-3">
             <div class="card-header">
@@ -124,28 +128,30 @@
                 <div class="row">
                     <div class="col">
                         <p>High</p>
-                        <div id="inputcon" class="exampleD">
-                            <input type="hidden" name="style" value="S">
-
-                            <span id="ch">{{ $count_ks }}</span>
-                            @foreach ($keyS as $i=>$keyS )
+                        <div id="inputcon" class="exampleS">
+                            {{-- <span id="ch">{{ $Scount }}</span> --}}
+                            @foreach ($SS as $i=>$Shigh )
                                 @if($i>4)
                                     @break
                                 @endif
                             <div class="mb-3">
-                                <input type="text" value="{{ $keyS }}" class="form-control" id="keyS{{ $i+1 }}"
+                                <input type="text" value="{{ $Shigh }}" class="form-control" id="S_High{{ $i+1 }}"
                                     placeholder="soalan" name="value[]">
+                                    <input type="hidden" name="style" value="S">
+
                             </div>
                             @endforeach
+                            <input id="countS" type="hidden" value="{{ $countS }}">
+
                         </div>
                     </div>
 
                     <div class="d-flex justify-content-between">
 
                         @if($i <4)
-                            <button type="button" class="btn btn-primary" onclick="addro('High','S')">Add row H </button>
+                            <button id="btn-rowS" type="button" class="btn btn-primary" onclick="addro1('S')">Add row H </button>
                         @else
-                            <button disabled type="button" class="btn btn-primary" onclick="addro('High','S')">Add row H </button>
+                            <button id="btn-rowS" disabled type="button" class="btn btn-primary" onclick="addro1('S')">Add row H </button>
                         @endif
 
 
@@ -160,8 +166,7 @@
             </div>
         </div>
     </form>
-
-    <form action="{{ route('keywordsstore') }}" method="post" id="form_template">
+    <form action="{{ route('strengthstore') }}" method="post" id="form_template">
         @csrf
         <div style="display: none" id="tab-C" class="card title2 col-10 mx-auto mb-3">
             <div class="card-header">
@@ -170,32 +175,35 @@
 
             <div class="card-body">
 
-                <h3 class="text-primary mb-3">Compliance (i)</h3>
+                <h3 class="text-primary mb-3">Compliance (C)</h3>
                 <div class="row">
                     <div class="col">
                         <p>High</p>
-                        <div id="inputcon" class="exampleD">
-                            <input type="hidden" name="style" value="C">
-
-                            <span id="ch">{{ $count_kc }}</span>
-                            @foreach ($keyC as $i=>$keyC )
+                        <div id="inputcon" class="exampleC">
+                            {{-- <span id="ch">{{ $Ccount }}</span> --}}
+                            @foreach ($SC as $i=>$Chigh )
                                 @if($i>4)
                                     @break
                                 @endif
                             <div class="mb-3">
-                                <input type="text" value="{{ $keyC }}" class="form-control" id="keyC{{ $i+1 }}"
+                                <input type="text" value="{{ $Chigh }}" class="form-control" id="C_High{{ $i+1 }}"
                                     placeholder="soalan" name="value[]">
+
+                                    <input type="hidden" name="style" value="C">
+
                             </div>
                             @endforeach
+                            <input id="countC" type="hidden" value="{{ $countC }}">
+
                         </div>
                     </div>
 
                     <div class="d-flex justify-content-between">
 
                         @if($i <4)
-                            <button type="button" class="btn btn-primary" onclick="addro('High','S')">Add row H </button>
+                            <button id="btn-rowC" type="button" class="btn btn-primary" onclick="addro1('C')">Add row H </button>
                         @else
-                            <button disabled type="button" class="btn btn-primary" onclick="addro('High','S')">Add row H </button>
+                            <button id="btn-rowC" disabled type="button" class="btn btn-primary" onclick="addro1('C')">Add row H </button>
                         @endif
 
 
@@ -221,7 +229,7 @@
 
 {{-- <x-t_function/> --}}
 
-    <script src="{{ URL::asset('assets/js/funnew.js') }}"></script>
+    <script src="{{ URL::asset('assets/js/functionjs.js') }}"></script>
 
 
 @endsection

@@ -1,7 +1,7 @@
 @extends('admin_template')
 @section('content')
     <h1 class="title2 mb-3"> <i class="fas fa-bookmark"></i> Individual Report Template</h1>
-    <h4 class="title2 mb-3"><i class="fas fa-home"></i> <a href="{{ route('ad_index') }}">Dashboard</a> / <a
+    <h4 class="title2 mb-3"><i class="fas fa-home"></i> <a href="{{ route('ad_index') }}">Dashboard</a> / <a href="{{ route('template') }}"> Template</a> / <a
             href="{{ route('key') }}">Motivation </a></h4>
 
     {{-- start form --}}
@@ -29,43 +29,7 @@
 
                 <h3 class="text-primary mb-3">Dominance (D)</h3>
                 <span style="color: red;" ><sup>*</sup>Please save first before edit other value tab</span>
-                {{-- <div class="row">
-                    <div class="col">
-                        <p>High</p>
-                        <input type="hidden" name="style" value="D">
-                        <div id="inputcon" class="exampleD">
 
-                            <span id="ch">{{ $count_kd }}</span>
-                            @foreach ($keyD as $i=>$keyD )
-                                @if($i>4)
-                                    @break
-                                @endif
-                            <div class="mb-3">
-                                <input type="text" value="{{ $keyD }}" class="form-control" id="keyD{{ $i+1 }}"
-                                    placeholder="soalan" name="keyD{{ $i+1 }}">
-                            </div>
-                            @endforeach
-
-
-
-                        </div>
-
-
-                    </div>
-                    <div class="d-flex justify-content-between">
-
-                        @if($i <4)
-                            <button type="button" class="btn btn-primary" onclick="addro('High','D')">Add row H </button>
-                        @else
-                            <button disabled type="button" class="btn btn-primary" onclick="addro('High','D')">Add row H </button>
-                        @endif
-
-
-                    </div>
-                    <div class="p-4">
-                        <button type="submit" class="btn btn-primary">Save Changes</button>
-                    </div>
-                </div> --}}
                 <div id="tab-motivate"  >
                     <form action="{{ route('motivatestore') }}" method="POST">
                         @csrf
@@ -74,7 +38,7 @@
                         @foreach ( $styleD[0] as $i =>$motivate )
                         <div class="mb-3">
                             <input type="text" value="{{ $motivate }}" class="form-control" id="keyI"
-                                placeholder="soalan" name="value{{ $i }}">
+                                placeholder="soalan" name="value[]">
                         </div>
                         @endforeach
 
@@ -96,7 +60,7 @@
                         @foreach ( $styleD[1] as $i =>$best )
                         <div class="mb-3">
                             <input type="text" value="{{ $best }}" class="form-control" id="keyI"
-                                placeholder="soalan" name="value{{ $i }}">
+                                placeholder="soalan" name="value[]">
                         </div>
                         @endforeach
 
@@ -118,7 +82,7 @@
                         @foreach ( $styleD[2] as $i =>$demotive )
                         <div class="mb-3">
                             <input type="text" value="{{ $demotive }}" class="form-control" id="keyI"
-                                placeholder="soalan" name="value{{ $i }}">
+                                placeholder="soalan" name="value[]">
                         </div>
                         @endforeach
 
@@ -140,7 +104,7 @@
                         @foreach ( $styleD[3] as $i =>$worst )
                         <div class="mb-3">
                             <input type="text" value="{{ $worst }}" class="form-control" id="keyI"
-                                placeholder="soalan" name="value{{ $i }}">
+                                placeholder="soalan" name="value[]">
                         </div>
                         @endforeach
 
@@ -175,7 +139,7 @@
                 <h3 class="text-primary mb-3">Influance (i)</h3>
                 <span style="color: red;" ><sup>*</sup>Please save first before edit other value tab</span>
 
-                <div id="tab-motivate1"  >
+                <div id="tab-motivate1">
                     <form action="{{ route('motivatestore') }}" method="POST">
                         @csrf
                         <input type="hidden" name="valuef" value="Wmotivate">
@@ -183,7 +147,7 @@
                         @foreach ( $styleI[0] as $i =>$motivate )
                         <div class="mb-3">
                             <input type="text" value="{{ $motivate }}" class="form-control" id="keyI"
-                                placeholder="soalan" name="value{{ $i }}">
+                                placeholder="soalan" name="value[]">
                         </div>
                         @endforeach
 
@@ -205,7 +169,7 @@
                         @foreach ( $styleI[1] as $i =>$best )
                         <div class="mb-3">
                             <input type="text" value="{{ $best }}" class="form-control" id="keyI"
-                                placeholder="soalan" name="value{{ $i }}">
+                                placeholder="soalan" name="value[]">
                         </div>
                         @endforeach
 
@@ -227,7 +191,7 @@
                         @foreach ( $styleI[2] as $i =>$demotive )
                         <div class="mb-3">
                             <input type="text" value="{{ $demotive }}" class="form-control" id="keyI"
-                                placeholder="soalan" name="value{{ $i }}">
+                                placeholder="soalan" name="value[]">
                         </div>
                         @endforeach
 
@@ -249,7 +213,7 @@
                         @foreach ( $styleI[3] as $i =>$worst )
                         <div class="mb-3">
                             <input type="text" value="{{ $worst }}" class="form-control" id="keyI"
-                                placeholder="soalan" name="value{{ $i }}">
+                                placeholder="soalan" name="value[]">
                         </div>
                         @endforeach
 
@@ -292,7 +256,7 @@
                         @foreach ( $styleS[0] as $i =>$motivate )
                         <div class="mb-3">
                             <input type="text" value="{{ $motivate }}" class="form-control" id="keyI"
-                                placeholder="soalan" name="value{{ $i }}">
+                                placeholder="soalan" name="value[]}">
                         </div>
                         @endforeach
 
@@ -314,7 +278,7 @@
                         @foreach ( $styleS[1] as $i =>$best )
                         <div class="mb-3">
                             <input type="text" value="{{ $best }}" class="form-control" id="keyI"
-                                placeholder="soalan" name="value{{ $i }}">
+                                placeholder="soalan" name="value[]">
                         </div>
                         @endforeach
 
@@ -336,7 +300,7 @@
                         @foreach ( $styleS[2] as $i =>$demotive )
                         <div class="mb-3">
                             <input type="text" value="{{ $demotive }}" class="form-control" id="keyI"
-                                placeholder="soalan" name="value{{ $i }}">
+                                placeholder="soalan" name="value[]">
                         </div>
                         @endforeach
 
@@ -358,7 +322,7 @@
                         @foreach ( $styleS[3] as $i =>$worst )
                         <div class="mb-3">
                             <input type="text" value="{{ $worst }}" class="form-control" id="keyI"
-                                placeholder="soalan" name="value{{ $i }}">
+                                placeholder="soalan" name="value[]">
                         </div>
                         @endforeach
 
@@ -401,7 +365,7 @@
                         @foreach ( $styleC[0] as $i =>$motivate )
                         <div class="mb-3">
                             <input type="text" value="{{ $motivate }}" class="form-control" id="keyI"
-                                placeholder="soalan" name="value{{ $i }}">
+                                placeholder="soalan" name="value[]">
                         </div>
                         @endforeach
 
@@ -423,7 +387,7 @@
                         @foreach ( $styleC[1] as $i =>$best )
                         <div class="mb-3">
                             <input type="text" value="{{ $best }}" class="form-control" id="keyI"
-                                placeholder="soalan" name="value{{ $i }}">
+                                placeholder="soalan" name="value[]">
                         </div>
                         @endforeach
 
@@ -445,7 +409,7 @@
                         @foreach ( $styleC[2] as $i =>$demotive )
                         <div class="mb-3">
                             <input type="text" value="{{ $demotive }}" class="form-control" id="keyI"
-                                placeholder="soalan" name="value{{ $i }}">
+                                placeholder="soalan" name="value[]">
                         </div>
                         @endforeach
 
@@ -467,7 +431,7 @@
                         @foreach ( $styleC[3] as $i =>$worst )
                         <div class="mb-3">
                             <input type="text" value="{{ $worst }}" class="form-control" id="keyI"
-                                placeholder="soalan" name="value{{ $i }}">
+                                placeholder="soalan" name="value[]">
                         </div>
                         @endforeach
 
@@ -480,9 +444,6 @@
 
                     </form>
                 </div>
-
-
-
             </div>
         </div>
 
@@ -496,7 +457,7 @@
 
 {{-- <x-t_function/> --}}
 
-    <script src="{{ URL::asset('assets/js/functionjs.js') }}"></script>
+    <script src="{{ URL::asset('assets/js/funnew.js') }}"></script>
 
 
 @endsection

@@ -207,6 +207,12 @@ class questionsController extends Controller
         $high = 0;
         $highV = "";
 
+        $plot = explode(",", $record->plot);
+        $max = max($plot);
+
+        $b_val = $this->max($plot, $max);
+        //dd($b_val);
+
         if ($record->D > $high) {
             $high = $record->D;
             $highV = 'D';
@@ -438,6 +444,7 @@ class questionsController extends Controller
             'department' => $dept->department,
             'plot' => $plot,
             'percentage' => $percentage,
+            'Hvalue' => $b_val,
 
         ]);
     }
@@ -1099,7 +1106,7 @@ class questionsController extends Controller
         $max = max($plot);
         //get hight behaviour
         $b_val = $this->max($plot, $max);
-        //dd($b_val);
+        // dd($b_val);
 
         if ($b_val == 'D') {
             $D_value = 2;
@@ -1268,6 +1275,7 @@ class questionsController extends Controller
         $Y_environment = explode('.', $Y_environment);
         $stg = explode('.', $stg);
 
+
         $best = explode('.', $best);
         $values1 = explode('.', $values1);
         $values2 = explode('.', $values2);
@@ -1297,6 +1305,7 @@ class questionsController extends Controller
         $dept = auth()->user()->department_id;
         $same = $this->same($dept,$b_val);
         $same = intval($same);
+
 
 
         $pdf = pdf::loadView('PDF.individual3', [

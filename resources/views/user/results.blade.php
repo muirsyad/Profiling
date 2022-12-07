@@ -115,7 +115,7 @@
 
                 <div class="col-xl-12 mb-3">
                     Higest Behaviour type:
-                    <label class="px-3">{{ $high }}</label>
+                    <label class="px-3">{{ $Hvalue }}</label>
                 </div>
 
                 <div class="col-xl-12 mb-3">

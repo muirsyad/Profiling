@@ -162,6 +162,52 @@ class adminController extends Controller
             'Clcount' => $Clcount,
         ]);
     }
+    public function indTemplate3()
+    {
+        $highlowD = $this->selBehaviour('D');
+        $highlowI = $this->selBehaviour('I');
+        $highlowS = $this->selBehaviour('S');
+        $highlowC = $this->selBehaviour('C');
+
+        $Dhigh = explode(".",$highlowD->H_temp);
+        $Dcount = count($Dhigh);
+        $DLow = explode(".",$highlowD->L_temp);
+        $Dlcount = count($DLow);
+
+        $Ihigh = explode(".",$highlowI->H_temp);
+        $Icount = count($Ihigh);
+        $ILow = explode(".",$highlowI->L_temp);
+        $Ilcount = count($ILow);
+
+        $Shigh = explode(".",$highlowS->H_temp);
+        $Scount = count($Shigh);
+        $SLow = explode(".",$highlowS->L_temp);
+        $Slcount = count($SLow);
+
+        $Chigh = explode(".",$highlowC->H_temp);
+        $Ccount = count($Chigh);
+        $CLow = explode(".",$highlowC->L_temp);
+        $Clcount = count($CLow);
+
+        return view('admin.inv-template3',[
+            'Dhigh' => $Dhigh,
+            'DLow' => $DLow,
+            'Dcount' => $Dcount,
+            'Dlcount' => $Dlcount,
+            'Ihigh' => $Ihigh,
+            'ILow' => $ILow,
+            'Icount' => $Icount,
+            'Ilcount' => $Ilcount,
+            'Shigh' => $Shigh,
+            'SLow' => $SLow,
+            'Scount' => $Scount,
+            'Slcount' => $Slcount,
+            'Chigh' => $Chigh,
+            'CLow' => $CLow,
+            'Ccount' => $Ccount,
+            'Clcount' => $Clcount,
+        ]);
+    }
     //keywords template
     public function Template_key(){
         $keyD = $this->selkey('D');
@@ -269,6 +315,32 @@ class adminController extends Controller
 
 
     }
+    public function Template_strength(){
+        $sterngthD = $this->arrstrength('D');
+        $countD = count($sterngthD);
+
+        $sterngthI = $this->arrstrength('I');
+        $countI = count($sterngthI);
+        $sterngthS = $this->arrstrength('S');
+        $countS = count($sterngthS);
+        $sterngthC = $this->arrstrength('C');
+        $countC = count($sterngthC);
+        // dd($sterngthD);
+
+
+
+        return view('admin.T_Strength',[
+            'SD' => $sterngthD,
+            'SI' => $sterngthI,
+            'SS' => $sterngthS,
+            'SC' => $sterngthC,
+            'countD' => $countD,
+            'countI' => $countI,
+            'countS' => $countS,
+            'countC' => $countC,
+        ]);
+
+    }
 
     //small function in motivate function
 
@@ -296,6 +368,17 @@ class adminController extends Controller
         array_push($keyDarr,$A_improve,$O_better, $O_avoid, $Y_environment );
 
         return $keyDarr;
+
+    }
+    public function arrstrength($style){
+        $style = $this->selstrengthen($style);
+        $strength = explode('.',$style->Strength);
+
+
+        $keyDarr = array();
+        array_push($keyDarr,$strength );
+
+        return $strength;
 
     }
     public function grpTemplate()
@@ -400,7 +483,7 @@ class adminController extends Controller
 
 
     }
-    public function uptemplate(Request $request){
+    public function uptemplate2(Request $request){
 
         //dd($request->style);
         $arrayDH = array();
@@ -451,62 +534,72 @@ class adminController extends Controller
 
 
     }
+    public function uptemplate(Request $request){
+
+        //dd($request->style);
+        $valueH = $request['valueH'];
+        $valueL = $request['valueL'];
+        //dd($valueH,$valueL);
+        $valueH =array_filter($valueH);
+        $valueL=array_filter($valueL);
+
+        $arrvalueH = array();
+        $arrvalueH = implode('.', $valueH);
+        $arrvalueL = array();
+        $arrvalueL = implode('.', $valueL);
+        //dd($request);
+        $update = DB::table('templates_reports')->where('Behaviour_type',$request['style'])
+        ->update(['L_temp' => $arrvalueL,'H_temp' => $arrvalueH,]);
+
+        return redirect(route('indTemp2'));
+    }
+
     public function Update_keywords(Request $request){
         //dd($request);
-        $keyD = array();
-        $keyI = array();
-        $keyS = array();
-        $keyC = array();
-
-        array_push($keyD,$request->keyD1,$request->keyD2,$request->keyD3,$request->keyD4,$request->keyD5);
-        array_push($keyI,$request->keyI1,$request->keyI2,$request->keyI3,$request->keyI4,$request->keyI5);
-        array_push($keyS,$request->keyS1,$request->keyS2,$request->keyS3,$request->keyS4,$request->keyS5);
-        array_push($keyC,$request->keyC1,$request->keyC2,$request->keyC3,$request->keyC4,$request->keyS5);
-
-
-
-        $keyD = $this->arraytostr2($keyD);
-        $keyI = $this->arraytostr2($keyI);
-        $keyS = $this->arraytostr2($keyS);
-        $keyC = $this->arraytostr2($keyC);
-
-
-
-        $update = DB::table('templates_reports')->where('Behaviour_type','D')
-        ->update(['keywords' => $keyD]);
-        $update = DB::table('templates_reports')->where('Behaviour_type','I')
-        ->update(['keywords' => $keyI]);
-        $update = DB::table('templates_reports')->where('Behaviour_type','S')
-        ->update(['keywords' => $keyS]);
-        $update = DB::table('templates_reports')->where('Behaviour_type','C')
-        ->update(['keywords' => $keyC]);
-
+        $value = $request['value'];
+        $arrvalue = array();
+        $arrvalue = implode(',', $value);
+        $update = DB::table('templates_reports')->where('Behaviour_type',$request['style'])
+        ->update(['keywords' => $arrvalue]);
         return redirect(route('key'));
 
 
     }
 
     public function Update_motivation(Request $request){
-
-
-        $combine = $request['value0'].".".$request['value1'].".".$request['value2'].".".$request['value3'];
-         //dd($request);
+        //dd($request);
+        $value = $request['value'];
+        $arrvalue = array();
+        $arrvalue = implode('.', $value);
         $update = DB::table('templates_reports')->where('Behaviour_type',$request['style'])
-        ->update([$request['valuef'] => $combine]);
+        ->update([$request['valuef'] => $arrvalue]);
 
         return redirect(route('motivate'));
 
     }
     public function Update_performance(Request $request){
 
-
-        $combine = $request['value0'].".".$request['value1'].".".$request['value2'].".".$request['value3'];
-         //dd($request);
+        $value = $request['value'];
+        $arrvalue = array();
+        $arrvalue = implode('.', $value);
         $update = DB::table('templates_reports')->where('Behaviour_type',$request['style'])
-        ->update([$request['valuef'] => $combine]);
+        ->update([$request['valuef'] => $arrvalue]);
 
         return redirect(route('performance'));
 
+    }
+    public function Update_strength(Request $request){
+        //dd($request);
+
+
+        $value = $request['value'];
+        $arrvalue = array();
+        $arrvalue = implode('.', $value);
+        //dd($request);
+        $update = DB::table('templates_reports')->where('Behaviour_type',$request['style'])
+        ->update(['Strength' => $arrvalue]);
+
+        return redirect(route('strength'));
     }
     public function arraytostr($arrayDH){
         //to combine collection tom sting with comma
@@ -621,6 +714,14 @@ class adminController extends Controller
     public function selperformance($style){
         $key = DB::table('templates_reports')
         ->select('A_improve','O_better','O_avoid','Y_environment')
+        ->where('Behaviour_type', $style)
+        ->first();
+
+        return $key;
+    }
+    public function selstrengthen($style){
+        $key = DB::table('templates_reports')
+        ->select('Strength')
         ->where('Behaviour_type', $style)
         ->first();
 

@@ -1,7 +1,7 @@
 @extends('admin_template')
 @section('content')
     <h1 class="title2 mb-3"> <i class="fas fa-bookmark"></i> Individual Report Template</h1>
-    <h4 class="title2 mb-3"><i class="fas fa-home"></i> <a href="{{ route('ad_index') }}">Dashboard</a> / <a
+    <h4 class="title2 mb-3"><i class="fas fa-home"></i> <a href="{{ route('ad_index') }}">Dashboard</a> / <a href="{{ route('template') }}"> Template</a> / <a
             href="{{ route('key') }}">Performance  </a></h4>
 
     {{-- start form --}}
@@ -38,7 +38,7 @@
                         @foreach ( $perD[0] as $i =>$improve )
                         <div class="mb-3">
                             <input type="text" value="{{ $improve }}" class="form-control" id="keyI"
-                                placeholder="soalan" name="value{{ $i }}">
+                                placeholder="soalan" name="value[]">
                         </div>
                         @endforeach
 
@@ -60,7 +60,7 @@
                         @foreach ( $perD[1] as $i =>$better )
                         <div class="mb-3">
                             <input type="text" value="{{ $better }}" class="form-control" id="keyI"
-                                placeholder="soalan" name="value{{ $i }}">
+                                placeholder="soalan" name="value[]">
                         </div>
                         @endforeach
 
@@ -82,7 +82,7 @@
                         @foreach ( $perD[2] as $i =>$avoid )
                         <div class="mb-3">
                             <input type="text" value="{{ $avoid }}" class="form-control" id="keyI"
-                                placeholder="soalan" name="value{{ $i }}">
+                                placeholder="soalan" name="value[]">
                         </div>
                         @endforeach
 
@@ -104,7 +104,7 @@
                         @foreach ( $perD[3] as $i =>$env )
                         <div class="mb-3">
                             <input type="text" value="{{ $env }}" class="form-control" id="keyI"
-                                placeholder="soalan" name="value{{ $i }}">
+                                placeholder="soalan" name="value[]">
                         </div>
                         @endforeach
 
@@ -147,7 +147,7 @@
                         @foreach ( $perI[0] as $i =>$improve )
                         <div class="mb-3">
                             <input type="text" value="{{ $improve }}" class="form-control" id="keyI"
-                                placeholder="soalan" name="value{{ $i }}">
+                                placeholder="soalan" name="value[]">
                         </div>
                         @endforeach
 
@@ -169,7 +169,7 @@
                         @foreach ( $perI[1] as $i =>$better )
                         <div class="mb-3">
                             <input type="text" value="{{ $better }}" class="form-control" id="keyI"
-                                placeholder="soalan" name="value{{ $i }}">
+                                placeholder="soalan" name="value[]">
                         </div>
                         @endforeach
 
@@ -191,7 +191,7 @@
                         @foreach ( $perI[2] as $i =>$avoid )
                         <div class="mb-3">
                             <input type="text" value="{{ $avoid }}" class="form-control" id="keyI"
-                                placeholder="soalan" name="value{{ $i }}">
+                                placeholder="soalan" name="value[]">
                         </div>
                         @endforeach
 
@@ -213,7 +213,7 @@
                         @foreach ( $perI[3] as $i =>$env )
                         <div class="mb-3">
                             <input type="text" value="{{ $env }}" class="form-control" id="keyI"
-                                placeholder="soalan" name="value{{ $i }}">
+                                placeholder="soalan" name="value[]">
                         </div>
                         @endforeach
 
@@ -256,7 +256,7 @@
                         @foreach ( $perS[0] as $i =>$improve )
                         <div class="mb-3">
                             <input type="text" value="{{ $improve }}" class="form-control" id="keyI"
-                                placeholder="soalan" name="value{{ $i }}">
+                                placeholder="soalan" name="value[]">
                         </div>
                         @endforeach
 
@@ -278,7 +278,7 @@
                         @foreach ( $perS[1] as $i =>$better )
                         <div class="mb-3">
                             <input type="text" value="{{ $better }}" class="form-control" id="keyI"
-                                placeholder="soalan" name="value{{ $i }}">
+                                placeholder="soalan" name="value[]">
                         </div>
                         @endforeach
 
@@ -300,7 +300,7 @@
                         @foreach ( $perS[2] as $i =>$avoid )
                         <div class="mb-3">
                             <input type="text" value="{{ $avoid }}" class="form-control" id="keyI"
-                                placeholder="soalan" name="value{{ $i }}">
+                                placeholder="soalan" name="value[]">
                         </div>
                         @endforeach
 
@@ -322,7 +322,7 @@
                         @foreach ( $perS[3] as $i =>$env )
                         <div class="mb-3">
                             <input type="text" value="{{ $env }}" class="form-control" id="keyI"
-                                placeholder="soalan" name="value{{ $i }}">
+                                placeholder="soalan" name="value[]">
                         </div>
                         @endforeach
 
@@ -365,7 +365,7 @@
                         @foreach ( $perC[0] as $i =>$improve )
                         <div class="mb-3">
                             <input type="text" value="{{ $improve }}" class="form-control" id="keyI"
-                                placeholder="soalan" name="value{{ $i }}">
+                                placeholder="soalan" name="value[]">
                         </div>
                         @endforeach
 
@@ -387,7 +387,7 @@
                         @foreach ( $perC[1] as $i =>$better )
                         <div class="mb-3">
                             <input type="text" value="{{ $better }}" class="form-control" id="keyI"
-                                placeholder="soalan" name="value{{ $i }}">
+                                placeholder="soalan" name="value[]">
                         </div>
                         @endforeach
 
@@ -409,7 +409,7 @@
                         @foreach ( $perC[2] as $i =>$avoid )
                         <div class="mb-3">
                             <input type="text" value="{{ $avoid }}" class="form-control" id="keyI"
-                                placeholder="soalan" name="value{{ $i }}">
+                                placeholder="soalan" name="value[]">
                         </div>
                         @endforeach
 
@@ -431,7 +431,7 @@
                         @foreach ( $perC[3] as $i =>$env )
                         <div class="mb-3">
                             <input type="text" value="{{ $env }}" class="form-control" id="keyI"
-                                placeholder="soalan" name="value{{ $i }}">
+                                placeholder="soalan" name="value[]">
                         </div>
                         @endforeach
 
@@ -450,7 +450,7 @@
             </div>
         </div>
 
-    <script src="{{ URL::asset('assets/js/functionjs.js') }}"></script>
+    <script src="{{ URL::asset('assets/js/funnew.js') }}"></script>
 
 
 @endsection

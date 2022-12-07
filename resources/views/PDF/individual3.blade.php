@@ -101,9 +101,7 @@
                     <ul class="text-size-md2">
 
                         @foreach ($stg as $i => $srtg)
-                            @if ($i > 1)
-                            @break
-                        @endif
+
                         <li class="font-sm">{{ $srtg }}</li>
                     @endforeach
 

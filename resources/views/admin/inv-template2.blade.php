@@ -1,7 +1,7 @@
 @extends('admin_template')
 @section('content')
     <h1 class="title2 mb-3"> <i class="fas fa-bookmark"></i> Individual Report Template</h1>
-    <h4 class="title2 mb-3"><i class="fas fa-home"></i> <a href="{{ route('ad_index') }}">Dashboard</a> / <a
+    <h4 class="title2 mb-3"><i class="fas fa-home"></i> <a href="{{ route('ad_index') }}">Dashboard</a> / <a href="{{ route('template') }}"> Template</a> /  <a
             href="{{ route('indTemp') }}">Individual</a></h4>
 
     {{-- start form --}}
@@ -29,12 +29,10 @@
 
                             <span id="ch">{{ $Dcount }}</span>
                             @foreach ($Dhigh as $i=>$Dhigh )
-                                @if($i>4)
-                                    @break
-                                @endif
+
                             <div class="mb-3">
                                 <input type="text" value="{{ $Dhigh }}" class="form-control" id="D_High{{ $i+1 }}"
-                                    placeholder="soalan" name="D_High{{ $i+1 }}">
+                                    placeholder="soalan" name="valueH[]">
                             </div>
                             @endforeach
 
@@ -54,7 +52,7 @@
                                         @break
                                     @endif
                                     <input type="text" value="{{ $DLow }}" class="form-control" id="D_low{{ $i+1 }}"
-                                        placeholder="soalan" name="D_low{{ $j+1 }}">
+                                        placeholder="soalan" name="valueL[]">
                                 </div>
                             @endforeach
 
@@ -86,7 +84,10 @@
 
             </div>
         </div>
-
+    </form>
+    <form action="{{ route('tempstore') }}" method="post" id="form_template">
+        @csrf
+        <input type="hidden" name="style" value="I">
         <div style="display: none" id="tab-i" class="card title2 col-10 mx-auto mb-3">
             <div class="card-header">
                 <h3 class="text-primary">Behaviour Template</h3>
@@ -106,7 +107,7 @@
                                 @endif
                             <div class="mb-3">
                                 <input type="text" value="{{ $Ihigh }}" class="form-control" id="I_High{{ $i+1 }}"
-                                    placeholder="soalan" name="I_High{{ $i+1 }}">
+                                    placeholder="soalan" name="valueH[]">
                             </div>
                             @endforeach
                         </div>
@@ -121,7 +122,7 @@
                                         @break
                                     @endif
                                     <input type="text" value="{{ $ILow }}" class="form-control" id="I_low{{ $i+1 }}"
-                                        placeholder="soalan" name="I_low{{ $j+1 }}">
+                                        placeholder="soalan" name="valueL[]">
                                 </div>
                             @endforeach
                         </div>
@@ -148,6 +149,10 @@
 
             </div>
         </div>
+    </form>
+    <form action="{{ route('tempstore') }}" method="post" id="form_template">
+        @csrf
+                <input type="hidden" name="style" value="S">
 
         <div style="display: none" id="tab-S" class="card title2 col-10 mx-auto mb-3">
             <div class="card-header">
@@ -168,7 +173,7 @@
                                 @endif
                             <div class="mb-3">
                                 <input type="text" value="{{ $Shigh }}" class="form-control" id="S_High{{ $i+1 }}"
-                                    placeholder="soalan" name="S_High{{ $i+1 }}">
+                                    placeholder="soalan" name="valueH[]">
                             </div>
                             @endforeach
                         </div>
@@ -183,7 +188,7 @@
                                         @break
                                     @endif
                                     <input type="text" value="{{ $SLow }}" class="form-control" id="S_low{{ $i+1 }}"
-                                        placeholder="soalan" name="S_low{{ $j+1 }}">
+                                        placeholder="soalan" name="valueL[]">
                                 </div>
                             @endforeach
                         </div>
@@ -211,6 +216,10 @@
 
             </div>
         </div>
+    </form>
+    <form action="{{ route('tempstore') }}" method="post" id="form_template">
+        @csrf
+        <input type="hidden" name="style" value="C">
 
         <div style="display: none" id="tab-C" class="card title2 col-10 mx-auto mb-3">
             <div class="card-header">
@@ -231,7 +240,7 @@
                                 @endif
                             <div class="mb-3">
                                 <input type="text" value="{{ $Chigh }}" class="form-control" id="C_High{{ $i+1 }}"
-                                    placeholder="soalan" name="C_High{{ $i+1 }}">
+                                    placeholder="soalan" name="valueH[]">
                             </div>
                             @endforeach
                         </div>
@@ -246,7 +255,7 @@
                                         @break
                                     @endif
                                     <input type="text" value="{{ $CLow }}" class="form-control" id="C_low{{ $i+1 }}"
-                                        placeholder="soalan" name="C_low{{ $j+1 }}">
+                                        placeholder="soalan" name="valueL[]">
                                 </div>
                             @endforeach
                         </div>
@@ -274,6 +283,7 @@
 
             </div>
         </div>
+    </form>
 
 
 
@@ -285,7 +295,7 @@
 
 {{-- <x-t_function/> --}}
 
-    <script src="{{ URL::asset('assets/js/functionjs.js') }}"></script>
+    <script src="{{ URL::asset('assets/js/funnew.js') }}"></script>
 
 
 @endsection
