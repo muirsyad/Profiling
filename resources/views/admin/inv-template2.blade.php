@@ -1,5 +1,16 @@
 @extends('admin_template')
 @section('content')
+
+            @if (session()->has('message'))
+            <script>
+                Swal.fire({
+                    title: 'Success!',
+                    text:  '{{ session()->get('message') }}',
+                    icon: 'success',
+                    confirmButtonText: 'Okey'
+                })
+            </script>
+            @endif
     <h1 class="title2 mb-3"> <i class="fas fa-bookmark"></i> Individual Report Template</h1>
     <h4 class="title2 mb-3"><i class="fas fa-home"></i> <a href="{{ route('ad_index') }}">Dashboard</a> / <a href="{{ route('template') }}"> Template</a> /  <a
             href="{{ route('indTemp') }}">Individual</a></h4>
@@ -25,9 +36,10 @@
                     <div class="col">
                         <p>High</p>
                         <input type="hidden" name="style" value="D">
-                        <div id="inputcon" class="exampleD">
+                        <div id="inputcon" class="exampleDH">
 
                             <span id="ch">{{ $Dcount }}</span>
+                            <input id="chD" type="hidden" value="{{ $Dcount }}">
                             @foreach ($Dhigh as $i=>$Dhigh )
 
                             <div class="mb-3">
@@ -44,8 +56,9 @@
                     </div>
                     <div class="col">
                         <p>Low</p>
-                        <div id="inputcon" class="example2D">
+                        <div id="inputcon" class="exampleDL">
                             <span id="cl">{{ $Dlcount }}</span>
+                            <input id="clD" type="hidden" value="{{ $Dlcount }}">
                             @foreach ($DLow as $j=>$DLow )
                                 <div class="mb-3">
                                     @if($j>4)
@@ -65,15 +78,15 @@
                     <div class="d-flex justify-content-between">
 
                         @if($i <4)
-                            <button type="button" class="btn btn-primary" onclick="addro('High','D')">Add row H </button>
+                            <button id="btnH-rowD" type="button" class="btn btn-primary" onclick="addrow1('High','D')">Add row H </button>
                         @else
-                            <button disabled type="button" class="btn btn-primary" onclick="addro('High','D')">Add row H </button>
+                            <button disabled type="button" class="btn btn-primary" onclick="addrow1('High','D')">Add row H </button>
                         @endif
 
                         @if($j <4)
-                            <button id="btn-dL" type="button" class="btn btn-primary" onclick="addro('Low','D')">Add row L</button>
+                            <button id="btnL-rowD" type="button" class="btn btn-primary" onclick="addrow1('Low','D')">Add row L</button>
                         @else
-                            <button disabled type="button" class="btn btn-primary" onclick="addro('Low','D')">Add row L</button>
+                            <button disabled type="button" class="btn btn-primary" onclick="addrow1('Low','D')">Add row L</button>
                         @endif
                     </div>
                     <div class="p-4">
@@ -99,8 +112,10 @@
                 <div class="row">
                     <div class="col">
                         <p>High</p>
-                        <div id="inputcon" class="exampleD">
+                        <div id="inputcon" class="exampleIH">
                             <span id="ch">{{ $Icount }}</span>
+                            <input id="chI" type="hidden" value="{{ $Icount }}">
+
                             @foreach ($Ihigh as $i=>$Ihigh )
                                 @if($i>4)
                                     @break
@@ -114,8 +129,10 @@
                     </div>
                     <div class="col">
                         <p>Low</p>
-                        <div id="inputcon" class="example2D">
+                        <div id="inputcon" class="exampleIL">
                             <span id="cl">{{ $Ilcount }}</span>
+                            <input id="clI" type="hidden" value="{{ $Ilcount }}">
+
                             @foreach ($ILow as $j=>$ILow )
                                 <div class="mb-3">
                                     @if($j>4)
@@ -130,15 +147,15 @@
                         <div class="d-flex justify-content-between">
 
                         @if($i <4)
-                            <button type="button" class="btn btn-primary" onclick="addro('High','I')">Add row H </button>
+                            <button id="btnH-rowI" type="button" class="btn btn-primary" onclick="addrow1('High','I')">Add row H </button>
                         @else
-                            <button disabled type="button" class="btn btn-primary" onclick="addro('High','I')">Add row H </button>
+                            <button disabled type="button" class="btn btn-primary" onclick="addrow1('High','I')">Add row H </button>
                         @endif
 
                         @if($j <4)
-                            <button id="btn-dL" type="button" class="btn btn-primary" onclick="addro('Low','I')">Add row L</button>
+                            <button id="btnL-rowI" type="button" class="btn btn-primary" onclick="addrow1('Low','I')">Add row L</button>
                         @else
-                            <button disabled type="button" class="btn btn-primary" onclick="addro('Low','I')">Add row L</button>
+                            <button disabled type="button" class="btn btn-primary" onclick="addrow1('Low','I')">Add row L</button>
                         @endif
                     </div>
                     <div class="p-4">
@@ -165,8 +182,10 @@
                 <div class="row">
                     <div class="col">
                         <p>High</p>
-                        <div id="inputcon" class="exampleD">
+                        <div id="inputcon" class="exampleSH">
                             <span id="ch">{{ $Scount }}</span>
+                            <input id="chS" type="hidden" value="{{ $Scount }}">
+
                             @foreach ($Shigh as $i=>$Shigh )
                                 @if($i>4)
                                     @break
@@ -180,8 +199,10 @@
                     </div>
                     <div class="col">
                         <p>Low</p>
-                        <div id="inputcon" class="example2D">
+                        <div id="inputcon" class="exampleSL">
                             <span id="cl">{{ $Slcount }}</span>
+                            <input id="clS" type="hidden" value="{{ $Slcount }}">
+
                             @foreach ($SLow as $j=>$SLow )
                                 <div class="mb-3">
                                     @if($j>4)
@@ -196,15 +217,15 @@
                     <div class="d-flex justify-content-between">
 
                         @if($i <4)
-                            <button type="button" class="btn btn-primary" onclick="addro('High','S')">Add row H </button>
+                            <button id="btnH-rowS" type="button" class="btn btn-primary" onclick="addrow1('High','S')">Add row H </button>
                         @else
-                            <button disabled type="button" class="btn btn-primary" onclick="addro('High','S')">Add row H </button>
+                            <button disabled type="button" class="btn btn-primary" onclick="addrow1('High','S')">Add row H </button>
                         @endif
 
                         @if($j <4)
-                            <button id="btn-dL" type="button" class="btn btn-primary" onclick="addro('Low','S')">Add row L</button>
+                            <button id="btnH-rowS" type="button" class="btn btn-primary" onclick="addrow1('Low','S')">Add row L</button>
                         @else
-                            <button disabled type="button" class="btn btn-primary" onclick="addro('Low','S')">Add row L</button>
+                            <button disabled type="button" class="btn btn-primary" onclick="addrow1('Low','S')">Add row L</button>
                         @endif
 
                     </div>
@@ -228,16 +249,16 @@
 
             <div class="card-body">
 
-                <h3 class="text-primary mb-3">Compliance (i)</h3>
+                <h3 class="text-primary mb-3">Compliance (C)</h3>
                 <div class="row">
                     <div class="col">
                         <p>High</p>
-                        <div id="inputcon" class="exampleD">
+                        <div id="inputcon" class="exampleCH">
                             <span id="ch">{{ $Ccount }}</span>
+                            <input id="chC" type="hidden" value="{{ $Ccount }}">
+
                             @foreach ($Chigh as $i=>$Chigh )
-                                @if($i>4)
-                                    @break
-                                @endif
+
                             <div class="mb-3">
                                 <input type="text" value="{{ $Chigh }}" class="form-control" id="C_High{{ $i+1 }}"
                                     placeholder="soalan" name="valueH[]">
@@ -247,8 +268,10 @@
                     </div>
                     <div class="col">
                         <p>Low</p>
-                        <div id="inputcon" class="example2D">
+                        <div id="inputcon" class="exampleCL">
                             <span id="cl">{{ $Clcount }}</span>
+                            <input id="clC" type="hidden" value="{{ $Clcount }}">
+
                             @foreach ($CLow as $j=>$CLow )
                                 <div class="mb-3">
                                     @if($j>4)
@@ -262,16 +285,16 @@
                     </div>
                     <div class="d-flex justify-content-between">
 
-                        @if($i <4)
-                            <button type="button" class="btn btn-primary" onclick="addro('High','S')">Add row H </button>
+                        @if($i <5)
+                            <button id="btnH-rowC" type="button" class="btn btn-primary" onclick="addrow1('High','C')">Add row H </button>
                         @else
-                            <button disabled type="button" class="btn btn-primary" onclick="addro('High','S')">Add row H </button>
+                            <button disabled type="button" class="btn btn-primary" onclick="addrow1('High','C')">Add row H </button>
                         @endif
 
-                        @if($j <4)
-                            <button id="btn-dL" type="button" class="btn btn-primary" onclick="addro('Low','S')">Add row L</button>
+                        @if($j <5)
+                            <button  id="btnL-rowC" type="button" class="btn btn-primary" onclick="addrow1('Low','C')">Add row L</button>
                         @else
-                            <button disabled type="button" class="btn btn-primary" onclick="addro('Low','S')">Add row L</button>
+                            <button disabled type="button" class="btn btn-primary" onclick="addrow1('Low','C')">Add row L</button>
                         @endif
 
                     </div>

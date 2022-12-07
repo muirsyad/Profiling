@@ -1,5 +1,18 @@
 @extends('admin_template')
 @section('content')
+
+
+
+            @if (session()->has('message'))
+            <script>
+                Swal.fire({
+                    title: 'Success!',
+                    text:  '{{ session()->get('message') }}',
+                    icon: 'success',
+                    confirmButtonText: 'Okey'
+                })
+            </script>
+            @endif
     <h1 class="title2 mb-3"> <i class="fas fa-bookmark"></i> Individual Report Template</h1>
     <h4 class="title2 mb-3"><i class="fas fa-home"></i> <a href="{{ route('ad_index') }}">Dashboard</a> / <a href="{{ route('template') }}"> Template</a> / <a
             href="{{ route('key') }}">Motivation </a></h4>

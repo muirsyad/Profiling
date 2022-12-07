@@ -311,6 +311,209 @@
         }
         var count = 1
         console.log(count);
+
+        function addrow1(type,style){
+            switch(type){
+                case 'High':
+                    //code
+
+                    stylecaseH(style);
+                    break;
+                case 'Low':
+                    //code
+                    stylecaseL(style);
+                    break;
+            }
+        }
+        function stylecaseH(style){
+
+            switch(style){
+                case 'D':
+                    //code
+
+                    var str = 'ch'+style;
+                    var count = document.getElementById(str).value;
+                    var count = parseInt(count);
+
+                    if(count <= 4){
+
+                        incrow(count,style,'H');
+                        if(count = 4){
+                            document.getElementById("btnH-rowD").disabled = true;
+                        }
+
+                    }
+                    else{
+
+                        debugger
+                    }
+
+                    break;
+                case 'I':
+                    //code
+                    var str = 'ch'+style;
+                    var count = document.getElementById(str).value;
+                    var count = parseInt(count);
+
+                    if(count <= 4){
+
+                        incrow(count,style,'H');
+                        if(count = 4){
+                            document.getElementById("btnH-rowI").disabled = true;
+                        }
+                    }
+                    else{
+
+                        debugger
+                    }
+                    break;
+                case 'S':
+                    //code
+                    var str = 'ch'+style;
+                    var count = document.getElementById(str).value;
+                    var count = parseInt(count);
+
+                    if(count <= 4){
+
+                        incrow(count,style,'H');
+                        if(count = 4){
+                            document.getElementById("btnH-rowS").disabled = true;
+                        }
+                    }
+                    else{
+
+                        debugger
+                    }
+                    break;
+                case 'C':
+                    //code
+                    var str = 'ch'+style;
+                    var count = document.getElementById(str).value;
+                    var count = parseInt(count);
+
+                    if(count <= 4){
+
+                        incrow(count,style,'H');
+                        if(count = 4){
+                            document.getElementById("btnH-rowC").disabled = true;
+                        }
+                    }
+                    else{
+
+                        debugger
+                    }
+                    break;
+            }
+
+        }
+        function stylecaseL(style){
+            switch(style){
+                case 'D':
+                    //code
+
+                    var str = 'cl'+style;
+                    var count = document.getElementById(str).value;
+                    var count = parseInt(count);
+
+                    if(count <= 4){
+
+                        incrow(count,style,'L');
+                        if(count = 4){
+                            document.getElementById("btnL-rowD").disabled = true;
+                        }
+                    }
+                    else{
+
+                        debugger
+                    }
+
+                    break;
+                case 'I':
+                    //code
+                    var str = 'cl'+style;
+                    var count = document.getElementById(str).value;
+                    var count = parseInt(count);
+
+                    if(count <= 4){
+
+                        incrow(count,style,'L');
+                        if(count = 4){
+                            document.getElementById("btnL-rowI").disabled = true;
+                        }
+                    }
+                    else{
+
+                        debugger
+                    }
+                    break;
+                case 'S':
+                    //code
+                    var str = 'cl'+style;
+                    var count = document.getElementById(str).value;
+                    var count = parseInt(count);
+
+                    if(count <= 4){
+
+                        incrow(count,style,'L');
+                        if(count = 4){
+                            document.getElementById("btnL-rowS").disabled = true;
+                        }
+                    }
+                    else{
+
+                        debugger
+                    }
+                    break;
+                case 'C':
+                    //code
+                    var str = 'cl'+style;
+                    var count = document.getElementById(str).value;
+                    var count = parseInt(count);
+
+                    if(count <= 4){
+
+                        incrow(count,style,'L');
+                        if(count = 4){
+                            document.getElementById("btnL-rowC").disabled = true;
+                        }
+                    }
+                    else{
+
+                        debugger
+                    }
+                    break;
+            }
+        }
+        function incrow(count,style,type){
+
+            num = count;
+            qury = '.example'+style+type;
+            style = stylevar(style);
+            nv='value'+type+'[]';
+
+            const newrow = document.querySelector(qury);
+            //create element
+            console.log(qury);
+            console.log(newrow);
+            const newdiv = document.createElement('div');
+            newdiv.className = 'mb-3';
+            newdiv.id = nv;
+            const newinput = document.createElement('input');
+            newinput.className = 'form-control';
+            newinput.name=nv;
+
+            newrow.appendChild(newdiv);
+            newdiv.appendChild(newinput);
+
+            //debugger
+
+
+        }
+        function decrow(count,style){
+
+
+
+        }
         function addrow() {
 
             count += 1;
@@ -402,7 +605,6 @@
                     if(cL <=5){
                         cH += 1;
                         num = cH;
-
                         qury = '.example'+style;
                         style = stylevar(style);
                         // nv = style+type+cH;

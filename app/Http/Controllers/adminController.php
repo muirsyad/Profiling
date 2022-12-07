@@ -535,11 +535,10 @@ class adminController extends Controller
 
     }
     public function uptemplate(Request $request){
-
         //dd($request->style);
         $valueH = $request['valueH'];
         $valueL = $request['valueL'];
-        //dd($valueH,$valueL);
+        // dd($valueH,$valueL);
         $valueH =array_filter($valueH);
         $valueL=array_filter($valueL);
 
@@ -551,7 +550,7 @@ class adminController extends Controller
         $update = DB::table('templates_reports')->where('Behaviour_type',$request['style'])
         ->update(['L_temp' => $arrvalueL,'H_temp' => $arrvalueH,]);
 
-        return redirect(route('indTemp2'));
+        return redirect(route('indTemp2'))->with('message', 'Template has been updated');
     }
 
     public function Update_keywords(Request $request){
@@ -561,7 +560,7 @@ class adminController extends Controller
         $arrvalue = implode(',', $value);
         $update = DB::table('templates_reports')->where('Behaviour_type',$request['style'])
         ->update(['keywords' => $arrvalue]);
-        return redirect(route('key'));
+        return redirect(route('key'))->with('message', 'Template has been updated');
 
 
     }
@@ -574,7 +573,7 @@ class adminController extends Controller
         $update = DB::table('templates_reports')->where('Behaviour_type',$request['style'])
         ->update([$request['valuef'] => $arrvalue]);
 
-        return redirect(route('motivate'));
+        return redirect(route('motivate'))->with('message', 'Template has been updated');
 
     }
     public function Update_performance(Request $request){
@@ -585,7 +584,7 @@ class adminController extends Controller
         $update = DB::table('templates_reports')->where('Behaviour_type',$request['style'])
         ->update([$request['valuef'] => $arrvalue]);
 
-        return redirect(route('performance'));
+        return redirect(route('performance'))->with('message', 'Template has been updated');
 
     }
     public function Update_strength(Request $request){
@@ -594,12 +593,13 @@ class adminController extends Controller
 
         $value = $request['value'];
         $arrvalue = array();
+        $value = array_filter($value);
         $arrvalue = implode('.', $value);
         //dd($request);
         $update = DB::table('templates_reports')->where('Behaviour_type',$request['style'])
         ->update(['Strength' => $arrvalue]);
 
-        return redirect(route('strength'));
+        return redirect(route('strength'))->with('message', 'Template has been updated');
     }
     public function arraytostr($arrayDH){
         //to combine collection tom sting with comma

@@ -1,8 +1,20 @@
 @extends('admin_template')
 @section('content')
+
+        @if (session()->has('message'))
+        <script>
+            Swal.fire({
+                title: 'Success!',
+                text:  '{{ session()->get('message') }}',
+                icon: 'success',
+                confirmButtonText: 'Okey'
+            })
+        </script>
+
+        @endif
     <h1 class="title2 mb-3"> <i class="fas fa-bookmark"></i> Individual Report Template</h1>
     <h4 class="title2 mb-3"><i class="fas fa-home"></i> <a href="{{ route('ad_index') }}">Dashboard</a> / <a href="{{ route('template') }}"> Template</a> /  <a
-            href="{{ route('indTemp') }}">Individual</a></h4>
+            href="{{ route('strength') }}">Strength</a></h4>
 
     {{-- start form --}}
         <div class="d-flex justify-content-evenly mb-3">
@@ -15,7 +27,7 @@
         @csrf
         <div id="tab-D" class="card title2 col-10 mx-auto mb-3">
             <div class="card-header">
-                <h3 class="text-primary">Behaviour Template</h3>
+                <h3 class="text-primary">Strength Template</h3>
             </div>
 
             <div class="card-body">
@@ -23,7 +35,7 @@
                 <h3 class="text-primary mb-3">Dominance (D)</h3>
                 <div class="row">
                     <div class="col">
-                        <p>High</p>
+
                         <input type="hidden" name="style" value="D">
                         <div id="inputcon" class="exampleD">
                             {{-- <span id="ch">{{ $Dcount }}</span> --}}
@@ -70,7 +82,7 @@
         @csrf
         <div style="display: none" id="tab-i" class="card title2 col-10 mx-auto mb-3">
             <div class="card-header">
-                <h3 class="text-primary">Behaviour Template</h3>
+                <h3 class="text-primary">Strength Template</h3>
             </div>
 
             <div class="card-body">
@@ -78,7 +90,7 @@
                 <h3 class="text-primary mb-3">Influance (i)</h3>
                 <div class="row">
                     <div class="col">
-                        <p>High</p>
+
                         <div id="inputcon" class="exampleI">
                             <input type="hidden" name="style" value="I">
                             @foreach ($SI as $i=>$Ihigh )
@@ -119,7 +131,7 @@
         @csrf
         <div style="display: none" id="tab-S" class="card title2 col-10 mx-auto mb-3">
             <div class="card-header">
-                <h3 class="text-primary">Behaviour Template</h3>
+                <h3 class="text-primary">Strength Template</h3>
             </div>
 
             <div class="card-body">
@@ -127,7 +139,7 @@
                 <h3 class="text-primary mb-3">Stediness (S)</h3>
                 <div class="row">
                     <div class="col">
-                        <p>High</p>
+
                         <div id="inputcon" class="exampleS">
                             {{-- <span id="ch">{{ $Scount }}</span> --}}
                             @foreach ($SS as $i=>$Shigh )
@@ -170,7 +182,7 @@
         @csrf
         <div style="display: none" id="tab-C" class="card title2 col-10 mx-auto mb-3">
             <div class="card-header">
-                <h3 class="text-primary">Behaviour Template</h3>
+                <h3 class="text-primary">Strength Template</h3>
             </div>
 
             <div class="card-body">
@@ -178,7 +190,7 @@
                 <h3 class="text-primary mb-3">Compliance (C)</h3>
                 <div class="row">
                     <div class="col">
-                        <p>High</p>
+
                         <div id="inputcon" class="exampleC">
                             {{-- <span id="ch">{{ $Ccount }}</span> --}}
                             @foreach ($SC as $i=>$Chigh )
