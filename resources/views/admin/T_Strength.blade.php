@@ -241,7 +241,7 @@
 
 {{-- <x-t_function/> --}}
 
-    <script src="{{ URL::asset('assets/js/functionjs.js') }}"></script>
+    <script src="{{ URL::asset('assets/js/func2.js') }}"></script>
 
 
 @endsection
