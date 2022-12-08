@@ -447,9 +447,6 @@ class adminController extends Controller
             $update = DB::table('users')->where('id', $p->id)
             ->update(['status' => 2]);
             }
-            else{
-                dd($count);
-            }
         }
     }
     public function invite(Clients $clients)
