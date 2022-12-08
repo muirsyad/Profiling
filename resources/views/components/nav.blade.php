@@ -1,5 +1,8 @@
 <!-- Walk as if you are kissing the Earth with your feet. - Thich Nhat Hanh -->
-<nav class="navbar navbar-dark side-admin bg-gradient align-items-start sidebar sidebar-dark accordion  p-0">
+<style>
+
+</style>
+<nav class="shadow navbar navbar-dark side-admin bg-gradient align-items-start sidebar sidebar-dark accordion p-0">
     <div class="container-fluid d-flex flex-column p-0">
         {{-- <a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
             <div class="sidebar-brand-icon img-fluid"><img src="{{ asset('assets/img/lhilogo.svg') }}" style="width:100px"

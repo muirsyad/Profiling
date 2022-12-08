@@ -426,7 +426,8 @@ class adminController extends Controller
 
         //dd($clients,$participants,$department);
         $valuevar = $progress."%";
-
+        // dd( $participants);
+        $update = $this->updatestts($participants);
         return view('admin.details', [
             'client' => $clients,
             'participants' => $participants,
@@ -436,6 +437,20 @@ class adminController extends Controller
             'var' => $valuevar,
             'progress' => $progress,
         ]);
+    }
+
+    public function updatestts($participants){
+        foreach( $participants as $p){
+            $count = DB::table('answer_records')->where('user_id', $p->id)->count();
+
+            if($count > 0){
+            $update = DB::table('users')->where('id', $p->id)
+            ->update(['status' => 2]);
+            }
+            else{
+                dd($count);
+            }
+        }
     }
     public function invite(Clients $clients)
     {

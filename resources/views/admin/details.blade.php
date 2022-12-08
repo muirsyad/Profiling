@@ -98,7 +98,8 @@
                 <th style="width:10%">No</th>
                 <th style="width:20%">Name</th>
                 <th style="width:30%">email</th>
-                <th style="width:30%">department</th>
+                <th style="width:20%">department</th>
+                <th style="width:10%">Status</th>
                 <th style="width:10%">action</th>
             </tr>
         </thead>
@@ -122,6 +123,12 @@
                         $i++;
                     @endphp
                     <td>{{ $dp }}</td>
+                        @if ($participants->status = 2)
+                        <td><i style="color: green;" class="fas fa-solid fa-check"></i></td>
+
+                        @else
+                        <td><i style="color: red;" class="fas fa-solid fa-check"></i></td>
+                        @endif
                     <td>
                         <div class="row">
                             {{-- <div class="col"><a href="/admin/clients/details/{{ $participants->id }}"><i
