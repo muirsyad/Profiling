@@ -123,12 +123,12 @@
                         $i++;
                     @endphp
                     <td>{{ $dp }}</td>
-                        @if ($participants->status = 2)
+                        @if ($participants->status === 2)
                             <td><i style="color: red;" class="fas fa-solid fa-check"></i></td>
 
 
                         @else
-                        <td><i style="color: green;" class="fas fa-solid fa-check"></i></td>
+                            <td><i class="fa-solid fa-circle-xmark"></i></td>
 
                         @endif
                     <td>

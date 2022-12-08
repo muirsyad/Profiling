@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Acme&amp;display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Archivo+Black&amp;display=swap">
 
+
     <link rel="stylesheet" href="{{ URL::asset('assets/fonts/fontawesome-all.min.css') }}">
 
     <link rel="stylesheet" href="{{ URL::asset('assets/css/Contact-Form-by-Moorcam.css') }}">
