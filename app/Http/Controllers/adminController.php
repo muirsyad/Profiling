@@ -407,6 +407,7 @@ class adminController extends Controller
     {
 
         $clients = DB::table('clients')->where('id', $clients->id)->first();
+        dd($clients);
         $participants = DB::table('users')->where('client_id', $clients->id)->get();
         $department = DB::table('departments')->get();
         $countre = DB::table('answer_records')->where('client_id', $clients->id)->count();
