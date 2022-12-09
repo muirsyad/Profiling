@@ -204,6 +204,11 @@
                                             value="{{ $questions->value }}" />
                                         <label for="Q{{ $questions->id }}">{{ $questions->question }}</label>
                                     </div>
+                                    {{-- <div class="radiobtn mb-3">
+                                        <input type="radio" name="value[]" id="Q{{ $questions->id }}"
+                                            value="{{ $questions->value }}" />
+                                        <label for="Q{{ $questions->id }}">{{ $questions->question }}</label>
+                                    </div> --}}
                                 @endforeach
 
                             </div>

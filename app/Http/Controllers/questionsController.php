@@ -82,6 +82,7 @@ class questionsController extends Controller
     public function storQ(Request $request)
     {
         //dd($request);
+
         $formFields = $request->validate(
             [
 
@@ -206,7 +207,10 @@ class questionsController extends Controller
         //dd($record);
         $high = 0;
         $highV = "";
-
+        $val = array();
+        array_push($val, $record->D,$record->I, $record->S,$record->C);
+        $value = $this->splot($val);
+        // dd($value);
         $plot = explode(",", $record->plot);
         $max = max($plot);
 

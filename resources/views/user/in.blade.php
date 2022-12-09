@@ -186,9 +186,14 @@
 
 
                         @foreach ($grp as $questions)
-                            <div class="radiobtn">
+                            {{-- <div class="radiobtn">
                                 <input type="radio" name="Q{{ $questions->group_id }}" id="Q{{ $questions->id }}"
                                     value="{{ $questions->value }}" />
+                                <label for="Q{{ $questions->id }}">{{ $questions->question }}</label>
+                            </div> --}}
+                            <div class="radiobtn">
+                                <input type="radio" name="Q{{ $questions->group_id }}" id="Q{{ $questions->id }}"
+                                    value="value[]" />
                                 <label for="Q{{ $questions->id }}">{{ $questions->question }}</label>
                             </div>
                         @endforeach
