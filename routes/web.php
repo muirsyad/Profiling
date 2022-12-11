@@ -111,3 +111,6 @@ Route::get('gpdf/{clients}', [questionsController::class, 'Gpdf'])->name('Grepor
 
 Route::get('vtpdf', [questionsController::class, 'vtpdf'])->middleware('auth');
 
+//tailwind style new 
+Route::get('tl', [userController::class, 't_login'])->name('t_login');
+

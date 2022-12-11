@@ -186,4 +186,8 @@ class userController extends Controller
         // Mail::to($request->email2)->send(new Signup($code, $url));
         return redirect(route('Cview'));
     }
+
+    public function t_login(){
+        return view('TLD.login');
+    }
 }
