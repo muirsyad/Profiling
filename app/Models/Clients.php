@@ -14,6 +14,7 @@ class Clients extends Model
         'email',
         'address',
         'created_at',
-        'link_code'
+        'link_code',
+        'is_delete',
     ];
 }

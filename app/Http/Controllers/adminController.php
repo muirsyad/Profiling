@@ -396,11 +396,20 @@ class adminController extends Controller
             'email' => 'required',
             'address' => 'required',
             'created_at' => 'required',
-            'link_code' => 'required'
+            'link_code' => 'required',
+            'is_delete' => 'required',
         ]);
 
-        //dd($request->client);
-        Clients::create($formFields);
+        //dd($formFields);
+        // Clients::create($formFields);
+        $insert = DB::table('clients')->insert([
+            'client' => $formFields['client'],
+            'email' => $formFields['email'],
+            'address' => $formFields['address'],
+            'created_at' => $formFields['created_at'],
+            'link_code' => $formFields['link_code'],
+            'is_delete' => $formFields['is_delete'],
+        ]);
         return redirect('/admin/index');
     }
     public function details(Clients $clients)
