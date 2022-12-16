@@ -35,7 +35,7 @@
 
     <div class="card">
         <div class="card-body">
-            <h1>Register</h1>
+            <h1>Register clinet</h1>
             <form method="POST" action="{{ route('userR') }}">
                 @csrf
                 <div class="mb-3">

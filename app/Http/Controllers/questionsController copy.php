@@ -1389,370 +1389,6 @@ class questionsController extends Controller
     }
     //end
     //version 3 start
-    public function grv3()
-    {
-        $uderid = 20;
-        $bt = 'C';
-        $bvalue = 2;
-        $auth = auth()->user()->id;
-
-        //get plot value
-
-        $ans = DB::table('answer_records')->where('user_id', $auth)->first();
-        $join = DB::table('users')
-            ->join('departments', 'users.department_id', '=', 'departments.id')
-            ->select('users.*', 'departments.department')
-            ->where('users.id', $auth)
-            ->first();
-
-        //qury get value depat
-
-        // $personchart = $this->getURLchart();
-        $teamChart = $this->bydepart($join->department_id,'department_id');
-        $teamvalue = $teamChart;
-
-        $teamChart = $this->getURLchart($teamChart);
-
-        $companyChart = $this->bydepart($join->client_id,'client_id');
-        $companyvalue = $companyChart;
-        $companyChart = $this->getURLchart($companyChart);
-
-        $u_among = $this->comteam($join->id);
-        $u_among = $this->percentageamong($u_among);
-
-
-
-        $darray = explode(',', $ans->plot);
-        $integerIDs = array_map('intval', $darray);
-        //sort
-        $sorted = $this->bsort($integerIDs);
-        //your disc
-        $ystyle = array();
-        array_push($ystyle,$ans->D,$ans->I,$ans->S,$ans->C);
-
-
-
-        $plot = explode(",", $ans->plot);
-
-
-
-        $qc = new QuickChart(array(
-            'width' => 600,
-            'height' => 300,
-        ));
-
-        $qc->setConfig('{
-            type: "line",
-            data: {
-              labels: ["Hello world", "Test"],
-              datasets: [{
-                label: "Foo",
-                data: [1, 2]
-              }]
-            }
-          }');
-
-
-        $img = $qc->getUrl();
-
-
-        // chart
-        $qc = new QuickChart(array(
-            'width' => 150,
-            'height' => 400,
-            'version' => '2',
-        ));
-
-
-        //Behaviour value with range
-
-        $v_D = $plot[0];
-        $v_I = $plot[1];
-        $v_S = $plot[2];
-        $v_C = $plot[3];
-
-
-        //dd($v_D, $v_I, $v_S, $v_C);
-
-        $D_value = $this->assign_minmax($plot[0]);
-        $I_value = $this->assign_minmax($plot[1]);
-        $S_value = $this->assign_minmax($plot[2]);
-        $C_value = $this->assign_minmax($plot[3]);
-
-
-        $max = max($plot);
-        //get hight behaviour
-        $b_val = $this->max($plot, $max);
-        // dd($b_val);
-
-        if ($b_val == 'D') {
-            $D_value = 2;
-        }
-        if ($b_val == 'I') {
-            $I_value = 2;
-        }
-        if ($b_val == 'S') {
-            $S_value = 2;
-        }
-        if ($b_val == 'C') {
-            $C_value = 2;
-        }
-
-
-        $valbest = 2;
-
-
-        switch ($valbest) {
-            case $D_value;
-
-                $best = 'D';
-                $stylebest = 'Dominance';
-                $best = $this->com_best($best);
-                $highlow1 = $this->highlow($I_value);
-                $values1 = $this->com_I($I_value);
-                $style1 = 'Influance';
-                $highlow2 = $this->highlow($S_value);
-                $values2 = $this->com_S($S_value);
-                $style2 = 'Steadiness';
-                $highlow3 = $this->highlow($C_value);
-                $values3 = $this->com_C($C_value);
-                $style3 = 'Compliance';
-                $highlowbest = 'Highest';
-                //dd($I_value);
-                break;
-            case $I_value;
-                //dd('I');
-                $best = 'I';
-                $stylebest = 'Influance';
-                $best = $this->com_best($best);
-                $highlow1 = $this->highlow($D_value);
-                $values1 = $this->com_D($D_value);
-                $style1 = 'Dominance';
-                $highlow2 = $this->highlow($S_value);
-                $values2 = $this->com_S($S_value);
-                $style2 = 'Steadiness';
-                $highlow3 = $this->highlow($C_value);
-                $values3 = $this->com_C($C_value);
-                $style3 = 'Compliance';
-                $highlowbest = 'Highest';
-                break;
-            case $S_value;
-                //dd('S');
-                $best = 'S';
-                $stylebest = 'Steadiness';
-                $best = $this->com_best($best);
-                $highlow1 = $this->highlow($I_value);
-                $values1 = $this->com_I($I_value);
-                $style1  = 'Influance';
-                $highlow2 = $this->highlow($D_value);
-                $values2 = $this->com_D($D_value);
-                $style2 = 'Dominance';
-                $highlow3 = $this->highlow($C_value);
-                $values3 = $this->com_C($C_value);
-                $style3 = 'Compliance';
-                $highlowbest = 'Highest';
-                break;
-            case $C_value;
-                //dd('C');
-                $best = 'C';
-                $stylebest = "Compliance";
-                $best = $this->com_best($best);
-                $highlow1 = $this->highlow($I_value);
-                $values1 = $this->com_I($I_value);
-                $style1 = "Influance";
-                $highlow2 = $this->highlow($S_value);
-                $values2 = $this->com_S($S_value);
-                $style2 = "Steadiness";
-                $highlow3 = $this->highlow($D_value);
-                $values3 = $this->com_D($D_value);
-                $style3 = "Dominance";
-                $highlowbest = 'Highest';
-                break;
-
-            default:
-                dd('unknown value');
-        }
-
-
-
-        $qc->setConfig("{
-            type: 'line',
-            data: {
-                labels: ['','D', 'I', 'S', 'C',''],
-                datasets: [
-                  {
-                    label: 'My First dataset',
-                    backgroundColor: 'rgb(255, 99, 132)',
-                    borderColor: 'rgb(0, 0, 0)',
-                    data: [20,20,20, 20, 20, 20],
-                    fill: false,
-                    pointRadius:0,
-                    borderWidth: 1
-                  },
-                  {
-                    label: 'My Second dataset',
-                    fill: false,
-                    backgroundColor: 'rgb(54, 162, 235)',
-                    borderColor: 'rgb(54, 162, 235)',
-                    data: [null, $v_D, $v_I, $v_S, $v_C,null],
-                    pointRadius:0,
-                    borderWidth: 4
-                  },
-                ],
-              },
-              options: {
-                legend: {
-                    display: false,
-                },
-                title: {
-                  display: true,
-                  text: 'DiSC Profiling grpahs',
-                },
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true,
-                            display: false,
-                        }
-                    }]
-                }
-
-              },
-        }");
-
-        //dd($qc->getUrl());
-        $template = DB::table('templates_reports')->where('Behaviour_type', $b_val)->first();
-        //dd($template);
-
-
-        //dd($plot);
-        $keywords = $template->keywords;
-        $Wmotivate = $template->Wmotivate;
-        $Wbest = $template->Wbest;
-        $Wdemotive = $template->Wdemotive;
-        $Wworst = $template->Wworst;
-        $A_improve = $template->A_improve;
-        $O_better = $template->O_better;
-        $O_avoid = $template->O_avoid;
-        $Y_environment = $template->Y_environment;
-        $Behaviour_type = $template->Behaviour_type;
-        $stg = $template->Strength;
-
-        //$keywords = $template->keywords;
-
-        //dd($best, $Wmotivate);
-        $keywords = explode(',', $keywords);
-        $Wmotivate = explode('.', $Wmotivate);
-        $Wbest = explode('.', $Wbest);
-        $Wdemotive = explode('.', $Wdemotive);
-        $Wworst = explode('.', $Wworst);
-        $A_improve = explode('.', $A_improve);
-        $O_better = explode('.', $O_better);
-        $O_avoid = explode('.', $O_avoid);
-        $Y_environment = explode('.', $Y_environment);
-        $stg = explode('.', $stg);
-
-
-        $best = explode('.', $best);
-        $values1 = explode('.', $values1);
-        $values2 = explode('.', $values2);
-        $values3 = explode('.', $values3);
-
-
-
-
-        $bar = $this->barchart(0,0);
-
-        $line = $qc->getUrl();
-
-        $ch = 1;
-        $img1 = "https://picsum.photos/200";
-
-
-        // $values1 = $D_value;
-        // $values2 = $I_value;
-        // $values3 = $S_value;
-        // $valueBest = $best;
-        //technical report value
-        //presonal style
-        $style_personal = array();
-        array_push($style_personal,$ans->D,$ans->I,$ans->S,$ans->C);
-        $personalchart = $this->getURLchart($style_personal);
-
-        $dept = auth()->user()->department_id;
-        $same = $this->same($dept,$b_val);
-        $same = intval($same);
-
-
-
-        $pdf = pdf::loadView('PDF.individual3', [
-            'ansval' => $ans,
-            'user'  => $join,
-            'rank' => $sorted,
-            'ch' => $ch,
-            'img' => $img,
-            'line' => $line,
-            'b_val' => $b_val,
-            'best' => $best,
-            'same' => $same,
-            // 'D_values' => $D_value,
-            // 'I_values' => $I_value,
-            // 'S_values' => $S_value,
-            // 'C_values' => $C_value,
-            'values1' => $values1,
-            'values2' => $values2,
-            'values3' => $values3,
-            'style1' => $style1,
-            'style2' => $style2,
-            'style3' => $style3,
-            'stylebest' => $stylebest,
-            // 'D_hl' => $D_hl,
-            // 'I_hl' => $I_hl,
-            // 'S_hl' => $S_hl,
-            // 'C_hl' => $C_hl,
-            'highlow1' => $highlow1,
-            'highlow2' => $highlow2,
-            'highlow3' => $highlow3,
-            'highlowbest' => $highlowbest,
-            'keywords' => $keywords,
-            'Wmotivates' => $Wmotivate,
-            'Wbests' => $Wbest,
-            'Wdemotives' => $Wdemotive,
-            'Wworsts' => $Wworst,
-            'A_improves' => $A_improve,
-            'O_betters' => $O_better,
-            'O_avoids' => $O_avoid,
-            'Y_environments' => $Y_environment,
-            'Behaviour_type' => $Behaviour_type,
-            'stg' => $stg,
-            'personalchart' => $personalchart,
-            'teamChart' => $teamChart,
-            'companyChart' => $companyChart,
-            'teamvalue' => $teamvalue,
-            'companyvalue' => $companyvalue,
-            'style_personal' => $style_personal,
-            'ystyle' => $ystyle,
-            'bar' => $bar,
-
-
-        ]);
-        $pdf->getDomPDF()->setHttpContext(
-            stream_context_create([
-                'ssl' => [
-                    'allow_self_signed' => TRUE,
-                    'verify_peer' => FALSE,
-                    'verify_peer_name' => FALSE,
-                ]
-            ])
-        );
-        // $pdf->setPaper('A4', 'potrait');
-
-        $pdf->setOption('isRemoteEnabled', true);
-        return $pdf->stream('invoice.pdf');
-        //return $pdf->download('profiling.pdf');
-    }
-    //end
-    //version 3 start
     public function inv4()
     {
         $uderid = 20;
@@ -2855,11 +2491,9 @@ class questionsController extends Controller
                     fill: false,
                     backgroundColor: 'rgb(54, 162, 235)',
                     borderColor: 'rgb(54, 162, 235)',
-                    data: [null, 12,13,24,33,null],
-                    borderWidth: 4,
-                    pointStyle: 'circle',
-                   pointRadius: 2,
-                  pointBorderColor: 'rgb(0, 255, 94)'
+                    data: [null, $value[0], $value[1], $value[2], $value[3],null],
+                    pointRadius:0,
+                    borderWidth: 4
                   },
                 ],
               },
@@ -2872,19 +2506,14 @@ class questionsController extends Controller
                   text: 'DiSC Profiling grpahs',
                 },
                 scales: {
-                  
                     yAxes: [{
                         ticks: {
                             beginAtZero: true,
                             display: false,
                             min: 0,
                             max: 40,
-                        },
-                        grid:{
-                          lineWidth:10
-                          }
-                    }],
-                    
+                        }
+                    }]
                 }
 
               },
@@ -3254,7 +2883,7 @@ class questionsController extends Controller
         $qc = new QuickChart(array(
             'width' => $width,
             'height' => $height,
-            'version' => '3',
+            'version' => '2',
         ));
           $qc->setConfig("{
             type: 'radar',
@@ -3268,29 +2897,20 @@ class questionsController extends Controller
                     backgroundColor: 'rgba(255, 99, 132, 0.2)',
                     borderColor: 'rgb(255, 99, 132)',
                     pointBackgroundColor: 'rgb(255, 99, 132)',
-                    data: [$value[0],$value[1],$value[2],$value[3] ],
+                    data: [26, 9, 42, 23, 42, 26, 10],
                   },
                   
                 ],
               },
               options: {
-                title: {
-                  display: true,
-                  text: 'DiSC style Radar Chart',
-                },
                 scales: {
-                    r: {
-                        min: 0,
-                        max: 50,
-                        grid: {
-                          color: 'black'
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
                         }
-                      }
-                  },
-                  
-                
-                },
-                
+                    }]
+                }
+            }
         }");
 
         // Print the chart URL
@@ -3644,7 +3264,7 @@ class questionsController extends Controller
     //get URL For Chart
     public function getURLchart($plot){
         $url = $this->splot($plot);
-        $url = $this->Linequick("team" ,$url,200,350);
+        $url = $this->Linequick("team" ,$url,150,300);
         return $url;
     }
     public function getURLchart2($plot,$type){
@@ -3928,3 +3548,219 @@ class questionsController extends Controller
 
     }
 }
+
+{
+    "type": "radar",
+    "data": {
+      "datasets": [
+        {
+          "backgroundColor": "rgba(255, 99, 132, 0.5)",
+          "borderColor": "rgb(255, 99, 132)",
+          "data": [
+            15.09,
+            15.67,
+            12.5,
+            12.77,
+            13.62,
+            13.68,
+            13.93,
+            15.95
+          ],
+          "label": "D0",
+          "fill": false,
+          "spanGaps": false,
+          "lineTension": 0,
+          "pointRadius": 3,
+          "pointHoverRadius": 3,
+          "pointStyle": "circle",
+          "borderDash": [
+            0,
+            0
+          ],
+          "barPercentage": 0.9,
+          "categoryPercentage": 0.8,
+          "type": "radar",
+          "borderWidth": 3,
+          "hidden": false
+        },
+        {
+          "backgroundColor": "rgba(255, 159, 64, 0.5)",
+          "borderColor": "rgb(255, 159, 64)",
+          "data": [
+            24.55,
+            28.91,
+            21.81,
+            23.27,
+            26.98,
+            26.05,
+            25.39,
+            24.92
+          ],
+          "label": "D1",
+          "fill": "-1",
+          "spanGaps": false,
+          "lineTension": 0.4,
+          "pointRadius": 3,
+          "pointHoverRadius": 3,
+          "pointStyle": "circle",
+          "borderDash": [
+            0,
+            0
+          ],
+          "barPercentage": 0.9,
+          "categoryPercentage": 0.8,
+          "type": "radar",
+          "borderWidth": 3,
+          "hidden": false
+        },
+        {
+          "backgroundColor": "rgba(255, 205, 86, 0.5)",
+          "borderColor": "rgb(255, 205, 86)",
+          "data": [
+            36.35,
+            43.93,
+            32.54,
+            33.54,
+            42.82,
+            39.34,
+            35.84,
+            33.5
+          ],
+          "label": "D2",
+          "fill": 1,
+          "spanGaps": false,
+          "lineTension": 0.4,
+          "pointRadius": 3,
+          "pointHoverRadius": 3,
+          "pointStyle": "circle",
+          "borderDash": [
+            0,
+            0
+          ],
+          "barPercentage": 0.9,
+          "categoryPercentage": 0.8,
+          "type": "radar",
+          "borderWidth": 3,
+          "hidden": false
+        },
+        {
+          "backgroundColor": "rgba(75, 192, 192, 0.5)",
+          "borderColor": "rgb(75, 192, 192)",
+          "data": [
+            47.7,
+            58.92,
+            44.45,
+            49.08,
+            53.39,
+            51.85,
+            48.4,
+            49.36
+          ],
+          "label": "D3",
+          "fill": false,
+          "spanGaps": false,
+          "lineTension": 0.4,
+          "pointRadius": 3,
+          "pointHoverRadius": 3,
+          "pointStyle": "circle",
+          "borderDash": [
+            0,
+            0
+          ],
+          "barPercentage": 0.9,
+          "categoryPercentage": 0.8,
+          "type": "radar",
+          "borderWidth": 3,
+          "hidden": false
+        },
+        {
+          "backgroundColor": "rgba(54, 162, 235, 0.5)",
+          "borderColor": "rgb(54, 162, 235)",
+          "data": [
+            60.73,
+            71.97,
+            53.96,
+            57.22,
+            65.09,
+            62.06,
+            56.91,
+            60.52
+          ],
+          "label": "D4",
+          "fill": "-1",
+          "spanGaps": false,
+          "lineTension": 0.4,
+          "pointRadius": 3,
+          "pointHoverRadius": 3,
+          "pointStyle": "circle",
+          "borderDash": [
+            0,
+            0
+          ],
+          "barPercentage": 0.9,
+          "categoryPercentage": 0.8,
+          "type": "radar",
+          "borderWidth": 3,
+          "hidden": false
+        },
+        {
+          "backgroundColor": "rgba(153, 102, 255, 0.5)",
+          "borderColor": "rgb(153, 102, 255)",
+          "data": [
+            73.33,
+            80.78,
+            68.05,
+            68.59,
+            76.79,
+            77.24,
+            66.08,
+            72.37
+          ],
+          "label": "D5",
+          "fill": "-1",
+          "spanGaps": false,
+          "lineTension": 0.4,
+          "pointRadius": 3,
+          "pointHoverRadius": 3,
+          "pointStyle": "circle",
+          "borderDash": [
+            0,
+            0
+          ],
+          "barPercentage": 0.9,
+          "categoryPercentage": 0.8,
+          "type": "radar",
+          "borderWidth": 3,
+          "hidden": false
+        }
+      ],
+      "labels": [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August"
+      ]
+    },
+    "options": {
+      "title": {
+        "display": false,
+        "position": "top",
+        "fontSize": 12,
+        "fontFamily": "sans-serif",
+        "fontColor": "#666666",
+        "fontStyle": "bold",
+        "padding": 10,
+        "lineHeight": 1.2,
+        "text": "Chart title"
+      },
+      "scale": {
+        "ticks": {
+          "display": false,
+        },
+      },
+      
+  }

@@ -28,6 +28,7 @@ class User extends Authenticatable
         'role_id',
         'status',
         'created_at',
+        'is_delete',
     ];
 
     /**

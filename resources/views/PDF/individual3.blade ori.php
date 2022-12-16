@@ -77,11 +77,13 @@
         <table class="center">
             <tr>
                 <th>Personal Graphs</th>
-               
+                <th>Team Graphs</th>
+                <th>OrganizationGraphs</th>
             </tr>
             <tr>
                 <td><img src="{{ $personalchart }}" alt=""></td>
-                
+                <td><img src="{{ $teamChart }}" alt=""></td>
+                <td><img src="{{ $companyChart }}" alt=""></td>
             </tr>
 
         </table>

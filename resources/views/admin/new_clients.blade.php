@@ -9,6 +9,15 @@
                                     <div class="card mb-5">
                                         <div class="card-body p-sm-5">
                                             <h2 class="text-center mb-4">Add New Clients</h2>
+                                            @if ($errors->any())
+                                                <div class="alert alert-danger">
+                                                    <ul>
+                                                        @foreach ($errors->all() as $error)
+                                                            <li>{{ $error }}</li>
+                                                        @endforeach
+                                                    </ul>
+                                                </div>
+                                            @endif
                                             <form method="post" action="{{ route('Cstore') }}">
                                                 @csrf
                                                 <div class="mb-3"><input class="form-control" type="text" id="name-2" name="client" placeholder="Name"></div>

@@ -100,6 +100,7 @@
                 <input type="hidden" name="role_id" value="2">
                 <input type="hidden" name="status" value="1">
                 <input type="hidden" name="created_at" value="{{ date('Y-m-d') }}">
+                <input type="hidden" name="is_delete" value="0">
                 <div class="mb-3">
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </div>

@@ -14,6 +14,7 @@ class Signup extends Mailable
 
     public $name;
     public $url;
+    public $email;
     /**
      * Create a new message instance.
      *
@@ -24,6 +25,8 @@ class Signup extends Mailable
         //
         $this->name = $name;
         $this->url = $url;
+        // $this->email = $email;
+        
 
     }
 

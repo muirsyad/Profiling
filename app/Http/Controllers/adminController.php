@@ -95,8 +95,24 @@ class adminController extends Controller
 
     public function view()
     {
+        $select =Clients::all()->where('is_delete','0');
+        //dd($select);
+        $random = Str::random(8);
+        $code = $random;
+        $codedb = DB::table('clients')->where('link_code', 'LoUY')->value('link_code');
+        //dd($codedb,$code);
+        $x = 0;
+        $inc = 0;
+        while ($code ==  $codedb) {
+
+            $random = Str::random(8);
+            $code = $random;
+            $x = 1;
+        }
+        
         return view('admin.view_clients', [
-            'clients' => Clients::all(),
+            'clients' => $select,
+            'code' => $code,
         ]);
     }
 
@@ -393,7 +409,7 @@ class adminController extends Controller
         //dd($request);
         $formFields = $request->validate([
             'client' => 'required',
-            'email' => 'required',
+            'email' => ['required','unique:clients'],
             'address' => 'required',
             'created_at' => 'required',
             'link_code' => 'required',
@@ -475,8 +491,10 @@ class adminController extends Controller
     public function Cdelete(Clients $clients)
     {
         //$delete = DB::table('clients')->where('id', $clients->id)->delete();
-        $delete = Clients::find($clients->id)->delete();
-
+        // $delete = Clients::find($clients->id)->delete();
+        $delete = Clients::find($clients->id)->update(['is_delete' => '1']);
+        // $delete = Clients::find($clients->id)->get();
+        // dd($delete);
         return redirect('/admin/clients/view')->with('message', 'Departments deleted successfully');
     }
 

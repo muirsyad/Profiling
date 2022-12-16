@@ -50,7 +50,9 @@
             newlabel.innerText = 'Email Address';
             const newinput = document.createElement('input');
             newinput.className = 'form-control';
+            // newinput.name="email"+count;
             newinput.name="email"+count;
+
 
             newrow.appendChild(newdiv);
             newdiv.appendChild(newlabel);

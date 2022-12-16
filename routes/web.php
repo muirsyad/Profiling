@@ -32,10 +32,10 @@ Route::get('/admin/clients', [adminController::class, 'Chome'])->name('cHome')->
 Route::get('/admin/clients/create', [adminController::class, 'create'])->name('Ccreate')->middleware('auth');
 Route::post('/admin/clients/create/store', [adminController::class, 'store'])->name('Cstore')->middleware('auth');
 Route::get('/admin/clients/view', [adminController::class, 'view'])->name('Cview')->middleware('auth');
-Route::get('/admin/clients/details/{clients}', [adminController::class, 'details'])->name('details')->middleware('auth');
+Route::get('/admin/clients/details/{clients}', [adminController::class, 'details'])->name('Cdetails')->middleware('auth');
 Route::get('/admin/clients/details/{clients}/invite', [adminController::class, 'invite'])->name('invite')->middleware('auth');
-Route::get('/admin/clients/delete/{clients}', [adminController::class, 'Cdelete'])->name('delete')->middleware('auth');
-Route::get('/admin/clients/update/{clients}', [adminController::class, 'update'])->name('update')->middleware('auth');
+Route::get('/admin/clients/delete/{clients}', [adminController::class, 'Cdelete'])->name('Cdelete')->middleware('auth');
+Route::get('/admin/clients/update/{clients}', [adminController::class, 'update'])->name('Cupdate')->middleware('auth');
 Route::post('/admin/clients/change/{clients}', [adminController::class, 'change'])->name('update')->middleware('auth');
 Route::get('/admin/questions', [adminController::class, 'vquest'])->name('vquest')->middleware('auth');
 Route::get('/admin/profile', [adminController::class, 'profile'])->name('profile')->middleware('auth');
@@ -81,6 +81,8 @@ route::get('/dd',[questionsController::class,'pdf'])->name('pdf')->middleware('a
 //ver 2 pdf
 route::get('/pdf2',[questionsController::class,'inv2'])->name('inv2')->middleware('auth');
 route::get('/pdf/version3',[questionsController::class,'inv3'])->name('inv3')->middleware('auth');
+route::get('/pdf/inv4',[questionsController::class,'inv4'])->name('inv4')->middleware('auth');
+
 
 //ajax test
 route::get('/fetch-comments',[questionsController::class,'fetchcomments'])->name('comm')->middleware('auth');

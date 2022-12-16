@@ -182,7 +182,7 @@
                     <div class="col text center">
 
                         <a href="#" class="btn btn-primary">Home</a>
-
+                        <a href="{{ route('inv3') }}" class="btn btn-primary" >Download Individual</a>
                         <a href="{{ route('inv3') }}" class="btn btn-primary disabled" id="ButtonId">Download ver 3</a>
 
                     </div>

@@ -50,8 +50,69 @@
         .igreen{
             color: #009879
         }
+        i.cursor{
+        cursor: pointer;
+        }
     </style>
-    <h1 class="fw-bolder text-dark mb-0">List of Clients</h1>
+    <h1 class="fw-bolder text-dark mb-3">List of Clients</h1>
+    <!-- Button trigger modal -->
+<button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Add new Clients
+  </button>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Add New Clients</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            @if ($errors->any())
+            <script>
+                swal.fire({
+                        icon: "error",
+                        title: "Please try again",
+                        text: "Failed to add clients",
+                        });
+            </script>
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+            <form method="post" action="{{ route('Cstore') }}">
+                @csrf
+                <div class="mb-3"><input class="form-control" type="text" id="name-2" name="client" placeholder="Name"></div>
+                <div class="mb-3"><input class="form-control" type="email" id="email-2" name="email" placeholder="Email"></div>
+                <div class="mb-3"><input class="form-control" type="text" id="address-1" name="address" placeholder="Address"></div>
+                <input type="hidden" name="link_code" value="{{ $code }}">
+                <input type="hidden" name="is_delete" value=0>
+                <div class="mb-3"></div>
+                <input type="hidden" value="{{ date('Y-m-d') }}" name="created_at">
+
+            
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button class="btn btn-primary" type="submit">Submit</button>
+        </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+<!-- Modal -->
+
+
+  
+  
     {{-- <div class="card" id="TableSorterCard">
         <div class="row">
             <div class="col-12">
@@ -103,22 +164,56 @@
             </tr>
         </thead>
         <tbody>
+            @php
+                $i=0;
+            @endphp
             @foreach ($clients as $clients)
+            @php
+                $i++;
+            @endphp
                 <tr>
-                    <td>{{ $clients->id }}</td>
+                    <td>{{ $i }}</td>
                     <td>{{ $clients->client }}</td>
                     <td>{{ $clients->address }}</td>
                     <td>
-                        <div class="row">
-                            <div class="col"><a href="{{ URL::to('admin/clients/details')}}/{{ $clients->id }}"><i
+                        {{-- <div class="row">
+                            <div class="col"><a href="{{route('Cdetails',$clients->id)}}"><i
                                 class="far fa-eye igreen"></i></a></div>
-                            <div class="col"><a href="/admin/clients/update/{{ $clients->id }}"><i
+                            <div class="col"><a href="{{ route('Cupdate',$clients->id)}}"><i
                                         class="fas fa-pencil-alt igreen"></i></a></div>
-                            <div class="col"><a href="/admin/clients/delete/{{ $clients->id }}"><i
+                            
+                            <div class="col"><a href="{{route('Cdelete',$clients->id)}}"><i
+                                        class="fas fa-trash-alt igreen"></i></a></div>
+                        </div> --}}
+
+                        <div class="row">
+                            <div class="col"><a href="{{route('Cdetails',$clients->id)}}"><i
+                                class="far fa-eye igreen"></i></a></div>
+                            <div class="col pe-auto" data-bs-toggle="modal" data-bs-target="#updatemodel{{$i}}"><i
+                                        class="fas fa-pencil-alt igreen cursor"></i></div>
+                            
+                            <div class="col"><a href="{{route('Cdelete',$clients->id)}}"><i
                                         class="fas fa-trash-alt igreen"></i></a></div>
                         </div>
 
                     </td>
+                    <div class="modal fade" id="updatemodel{{$i}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                              <h1>Test {{$i}}</h1>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                              <button type="button" class="btn btn-primary">Save changes</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
             @endforeach
         </tbody>
     </table>

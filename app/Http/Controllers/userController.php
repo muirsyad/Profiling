@@ -54,6 +54,7 @@ class userController extends Controller
             'department_id' => 'required',
             'status' => 'required',
             'created_at' => 'required',
+            'is_delete' => 'required',
         ]);
         //hash password
         $formFields['password'] = bcrypt($formFields['password']);
@@ -140,18 +141,19 @@ class userController extends Controller
         return redirect('/')->with('message', 'You have beem logout');
     }
 
-    public function sendMail($name)
+    public function sendMail($name,$email)
     {
 
 
 
         $url = route('link', $name);
         //dd($name,$url);
-        Mail::to('muirsyad2399@gmail.com')->send(new Signup($name, $url));
+        Mail::to('muirsyad2399@gmail.com')->send(new Signup($name, $url,$email));
         return view('login');
     }
     public function sentMail(Request $request, $code)
-    {
+    {   $email=$request['email'];
+        //dd($request);
         //to count and exclude token
         $var = -1;
         $data = $request->all();
@@ -179,7 +181,10 @@ class userController extends Controller
             //Mail::to($j)->send(new Signup($code, $url));
         }
         //dd($arr);
+        
         foreach( $arr as $arr){
+            
+            
             Mail::to($arr)->send(new Signup($code, $url));
         }
 

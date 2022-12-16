@@ -77,11 +77,9 @@
         <table class="center">
             <tr>
                 <th>Personal Graphs</th>
-               
             </tr>
             <tr>
                 <td><img src="{{ $personalchart }}" alt=""></td>
-                
             </tr>
 
         </table>
@@ -169,7 +167,7 @@ test
 <hr>
 <hr>
 <hr>
-<hr>
+
 </table>
 <table class="footnote">
 <span>Notes;</span>
