@@ -36,7 +36,7 @@ Route::get('/admin/clients/details/{clients}', [adminController::class, 'details
 Route::get('/admin/clients/details/{clients}/invite', [adminController::class, 'invite'])->name('invite')->middleware('auth');
 Route::get('/admin/clients/delete/{clients}', [adminController::class, 'Cdelete'])->name('Cdelete')->middleware('auth');
 Route::get('/admin/clients/update/{clients}', [adminController::class, 'update'])->name('Cupdate')->middleware('auth');
-Route::post('/admin/clients/change/{clients}', [adminController::class, 'change'])->name('update')->middleware('auth');
+Route::post('/admin/clients/change/{clients}', [adminController::class, 'change'])->name('Cupdate')->middleware('auth');
 Route::get('/admin/questions', [adminController::class, 'vquest'])->name('vquest')->middleware('auth');
 Route::get('/admin/profile', [adminController::class, 'profile'])->name('profile')->middleware('auth');
 Route::get('/admin/profile/update', [adminController::class, 'profilemodify'])->name('profilemodify')->middleware('auth');

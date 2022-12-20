@@ -201,16 +201,24 @@
                         <div class="modal-dialog">
                           <div class="modal-content">
                             <div class="modal-header">
-                              <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                              <h5 class="modal-title" id="exampleModalLabel">Update Clients</h5>
                               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                              <h1>Test {{$i}}</h1>
+                                            <form method="post" action="/admin/clients/change/{{ $clients->id }}">
+                                                @csrf
+                                                <div class="mb-3"><input class="form-control" type="text" id="name-2" name="client" placeholder="Name" value="{{ $clients->client }}"></div>
+                                                <div class="mb-3"><input class="form-control" type="email" id="email-2" name="email" placeholder="Email" value="{{ $clients->email }}"></div>
+                                                <div class="mb-3"><input class="form-control" type="text" id="address-1" name="address" placeholder="Address" value="{{ $clients->address }}"></div>
+                                                <div class="mb-3"></div>
+                                                
+                                            
                             </div>
                             <div class="modal-footer">
                               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                              <button type="button" class="btn btn-primary">Save changes</button>
+                              <button type="submit" class="btn btn-primary">Save changes</button>
                             </div>
+                        </form>
                           </div>
                         </div>
                       </div>
