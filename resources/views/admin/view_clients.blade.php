@@ -205,7 +205,9 @@
                               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                            <form method="post" action="/admin/clients/change/{{ $clients->id }}">
+                                            {{-- <form method="post" action="/admin/clients/change/{{ $clients->id }}"> --}}
+                                                <form method="post" action="{{route('Cupdate',$clients->id)}}">
+
                                                 @csrf
                                                 <div class="mb-3"><input class="form-control" type="text" id="name-2" name="client" placeholder="Name" value="{{ $clients->client }}"></div>
                                                 <div class="mb-3"><input class="form-control" type="email" id="email-2" name="email" placeholder="Email" value="{{ $clients->email }}"></div>
