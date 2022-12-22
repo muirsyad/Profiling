@@ -43,14 +43,18 @@
                 <span style="color: red;" ><sup>*</sup>Please save first before edit other value tab</span>
 
                 <div id="tab-motivate">
+                    <div id="d_charNum_im"></div>
                     <form action="{{ route('performancestore') }}" method="POST">
                         @csrf
                         <input type="hidden" name="valuef" value="A_improve">
                         <input type="hidden" name="style" value="D">
                         @foreach ( $perD[0] as $i =>$improve )
                         <div class="mb-3">
-                            <input type="text" value="{{ $improve }}" class="form-control" id="keyI"
+                            <p class="dlimit_im{{$i+1}}">(0/100)</p>
+                            <div class="d_count_im">
+                            <input type="textbox" value="{{ $improve }}" class="form-control" id="d_im{{$i+1}}"
                                 placeholder="soalan" name="value[]">
+                            </div>
                         </div>
                         @endforeach
 
@@ -65,14 +69,18 @@
                 </div>
 
                 <div id="tab-best" style="display: none">
+                    <div id="d_charNum_bet"></div>
                     <form action="{{ route('performancestore') }}" method="POST">
                         @csrf
                         <input type="hidden" name="valuef" value="O_better">
                         <input type="hidden" name="style" value="D">
                         @foreach ( $perD[1] as $i =>$better )
                         <div class="mb-3">
-                            <input type="text" value="{{ $better }}" class="form-control" id="keyI"
+                            <p class="dlimit_bet{{$i+1}}">(0/100)</p>
+                            <div class="d_count_bet">
+                            <input type="textbox" value="{{ $better }}" class="form-control" id="d_bet{{$i+1}}"
                                 placeholder="soalan" name="value[]">
+                                </div>
                         </div>
                         @endforeach
 
@@ -87,14 +95,19 @@
                 </div>
 
                 <div id="tab-demotivate" style="display: none">
+                    <div id="d_charNum_avo"></div>
+
                     <form action="{{ route('performancestore') }}" method="POST">
                         @csrf
                         <input type="hidden" name="valuef" value="O_avoid">
                         <input type="hidden" name="style" value="D">
                         @foreach ( $perD[2] as $i =>$avoid )
                         <div class="mb-3">
-                            <input type="text" value="{{ $avoid }}" class="form-control" id="keyI"
+                            <p class="dlimit_avo{{$i+1}}">(0/100)</p>
+                            <div class="d_count_avo">
+                            <input type="textbox" value="{{ $avoid }}" class="form-control" id="d_avo{{$i+1}}"
                                 placeholder="soalan" name="value[]">
+                                </div>
                         </div>
                         @endforeach
 
@@ -109,14 +122,18 @@
                 </div>
 
                 <div id="tab-worst" style="display: none">
+                    <div id="d_charNum_env"></div>
                     <form action="{{ route('performancestore') }}" method="POST">
                         @csrf
                         <input type="hidden" name="valuef" value="Y_environment">
                         <input type="hidden" name="style" value="D">
                         @foreach ( $perD[3] as $i =>$env )
                         <div class="mb-3">
-                            <input type="text" value="{{ $env }}" class="form-control" id="keyI"
+                            <p class="dlimit_env{{$i+1}}">(0/100)</p>
+                            <div class="d_count_env">
+                            <input type="textbox" value="{{ $env }}" class="form-control" id="d_env{{$i+1}}"
                                 placeholder="soalan" name="value[]">
+                                </div>
                         </div>
                         @endforeach
 
@@ -152,14 +169,18 @@
                 <span style="color: red;" ><sup>*</sup>Please save first before edit other value tab</span>
 
                 <div id="tab-motivate1"  >
+                    <div id="i_charNum_im"></div>
                     <form action="{{ route('performancestore') }}" method="POST">
                         @csrf
                         <input type="hidden" name="valuef" value="A_improve">
                         <input type="hidden" name="style" value="I">
                         @foreach ( $perI[0] as $i =>$improve )
                         <div class="mb-3">
-                            <input type="text" value="{{ $improve }}" class="form-control" id="keyI"
+                            <p class="ilimit_im{{$i+1}}">(0/100)</p>
+                            <div class="i_count_im">
+                            <input type="textbox" value="{{ $improve }}" class="form-control" id="i_im{{$i+1}}"
                                 placeholder="soalan" name="value[]">
+                            </div>
                         </div>
                         @endforeach
 
@@ -174,14 +195,18 @@
                 </div>
 
                 <div id="tab-best1" style="display: none">
+                    <div id="i_charNum_bet"></div>
                     <form action="{{ route('performancestore') }}" method="POST">
                         @csrf
                         <input type="hidden" name="valuef" value="O_better">
                         <input type="hidden" name="style" value="I">
                         @foreach ( $perI[1] as $i =>$better )
                         <div class="mb-3">
-                            <input type="text" value="{{ $better }}" class="form-control" id="keyI"
+                            <p class="ilimit_bet{{$i+1}}">(0/100)</p>
+                            <div class="i_count_bet">
+                            <input type="textbox" value="{{ $better }}" class="form-control" id="i_bet{{$i+1}}"
                                 placeholder="soalan" name="value[]">
+                            </div>
                         </div>
                         @endforeach
 
@@ -196,14 +221,19 @@
                 </div>
 
                 <div id="tab-demotivate1" style="display: none">
+                    <div id="i_charNum_avo"></div>
+
                     <form action="{{ route('performancestore') }}" method="POST">
                         @csrf
                         <input type="hidden" name="valuef" value="O_avoid">
                         <input type="hidden" name="style" value="I">
                         @foreach ( $perI[2] as $i =>$avoid )
                         <div class="mb-3">
-                            <input type="text" value="{{ $avoid }}" class="form-control" id="keyI"
+                            <p class="ilimit_avo{{$i+1}}">(0/100)</p>
+                            <div class="i_count_avo">
+                            <input type="textbox" value="{{ $avoid }}" class="form-control" id="i_avo{{$i+1}}"
                                 placeholder="soalan" name="value[]">
+                            </div>
                         </div>
                         @endforeach
 
@@ -218,14 +248,18 @@
                 </div>
 
                 <div id="tab-worst1" style="display: none">
+                    <div id="i_charNum_env"></div>
                     <form action="{{ route('performancestore') }}" method="POST">
                         @csrf
                         <input type="hidden" name="valuef" value="Y_environment">
                         <input type="hidden" name="style" value="I">
                         @foreach ( $perI[3] as $i =>$env )
                         <div class="mb-3">
-                            <input type="text" value="{{ $env }}" class="form-control" id="keyI"
+                            <p class="ilimit_env{{$i+1}}">(0/100)</p>
+                            <div class="i_count_env">
+                            <input type="text" value="{{ $env }}" class="form-control" id="i_env{{$i+1}}"
                                 placeholder="soalan" name="value[]">
+                            </div>
                         </div>
                         @endforeach
 

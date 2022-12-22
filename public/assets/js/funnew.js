@@ -463,9 +463,13 @@ $(document).ready(function () {
     // word_count(2,'c');
     // word_count(3,'c');
     // word_count(4,'c');
-    
+    looplimit('d');
+    looplimit('i');
     looplimit('s');
     looplimit('c');
+    
+    W_limit('d');
+    W_limit('i');
     W_limit('s');
     W_limit('c');
     
