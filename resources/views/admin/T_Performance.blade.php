@@ -295,8 +295,11 @@
                         <input type="hidden" name="style" value="S">
                         @foreach ( $perS[1] as $i =>$better )
                         <div class="mb-3">
-                            <input type="text" value="{{ $better }}" class="form-control" id="keyI"
+                            <p id="slimit_bet{{$i+1}}">(0/100)</p>
+                            <div class="s_count_bet">
+                            <input type="textbox" value="{{ $better }}" class="form-control" id="s_bet{{$i+1}}"
                                 placeholder="soalan" name="value[]">
+                            </div>
                         </div>
                         @endforeach
 
@@ -319,8 +322,11 @@
                         <input type="hidden" name="style" value="S">
                         @foreach ( $perS[2] as $i =>$avoid )
                         <div class="mb-3">
-                            <input type="text" value="{{ $avoid }}" class="form-control" id="keyI"
+                            <p id="slimit_avo{{$i+1}}">(0/100)</p>
+                            <div class="s_count_avo">
+                            <input type="textbox" value="{{ $avoid }}" class="form-control" id="s_avo{{$i+1}}"
                                 placeholder="soalan" name="value[]">
+                            </div>
                         </div>
                         @endforeach
 
@@ -343,8 +349,11 @@
                         <input type="hidden" name="style" value="S">
                         @foreach ( $perS[3] as $i =>$env )
                         <div class="mb-3">
-                            <input type="text" value="{{ $env }}" class="form-control" id="keyI"
+                            <p id="slimit_env{{$i+1}}">(0/100)</p>
+                            <div class="s_count_env">
+                            <input type="textbox" value="{{ $env }}" class="form-control" id="s_env{{$i+1}}"
                                 placeholder="soalan" name="value[]">
+                            </div>
                         </div>
                         @endforeach
 
