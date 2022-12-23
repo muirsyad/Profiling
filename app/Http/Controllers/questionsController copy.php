@@ -24,18 +24,21 @@ class questionsController extends Controller
     //
     public function index()
     {
-        $record = DB::table('answer_records')->where('user_id', auth()->user()->id)->count();
-
-        return view('user.index', [
-            ''
-        ]);
+        // $record = DB::table('answer_records')->where('user_id', auth()->user()->id)->count();
+        // dd('ewc');
+        // return view('user.index', [
+        //     ''
+        // ]);
     }
     public function quiz()
     {
         $record = DB::table('answer_records')->where('user_id', auth()->user()->id)->count();
+        dd($record);
+
 
         if ($record > 0) {
-            return redirect('/home')->with('error', 'Your already answer');
+            return redirect(route('results'))->with('error', 'Your already answer');
+
         } else {
             return view('user.Bqust');
         }

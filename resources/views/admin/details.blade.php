@@ -62,7 +62,7 @@
     </style>
 
     <div class="d-flex justify-content-between">
-        <h1 class="fw-bolder text-dark mb-3">List of Participantsneww</h1>
+        <h1 class="fw-bolder text-dark mb-3">List of Participants</h1>
         <div class="mb-3"><a href="{{ route('invite', $client->id) }}" class="btn btn-primary text-decoration-none ">Invite
             </a></div>
     </div>

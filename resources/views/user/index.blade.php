@@ -14,7 +14,7 @@
                             <div class="col-12 offset-0 d-flex justify-content-center"><a
                                     class="btn btn-primary text-center border rounded-pill" role="button"
                                     href="{{ route('quiz') }}"
-                                    style="background: var(--bs-success);color: rgb(255,231,122);">Start Quiz</a></div>
+                                    style="background: var(--bs-success);color: rgb(255,231,122);">Start Quizz</a></div>
                         </div>
                     </div>
                 </div>

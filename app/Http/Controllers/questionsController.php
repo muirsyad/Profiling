@@ -35,7 +35,8 @@ class questionsController extends Controller
         $record = DB::table('answer_records')->where('user_id', auth()->user()->id)->count();
 
         if ($record > 0) {
-            return redirect('/home')->with('error', 'Your already answer');
+            // return redirect('/home')->with('error', 'Your already answer');
+            return redirect(route('results'))->with('error', 'Your already answer and redirected to your results');
         } else {
             return view('user.Bqust');
         }

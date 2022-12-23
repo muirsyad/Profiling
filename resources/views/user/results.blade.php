@@ -159,12 +159,12 @@
                 </div>
 
 
-                <div class="col-12 mb-3">
+                {{-- <div class="col-12 mb-3">
                     <span class="h-6 text-danger">* Please wait for 100% to download your PDF report</span>
                     <div class="progress-bar__container mt-3">
                         <div id="progress" class="progress-bar"><span class="pro-text"></span></div>
                     </div>
-                </div>
+                </div> --}}
 
 
                 <div id="link_wrapper">
@@ -181,9 +181,8 @@
                 @else
                     <div class="col text center">
 
-                        <a href="#" class="btn btn-primary">Home</a>
+                        <a href="{{route('Qhome')}}" class="btn btn-primary">Home</a>
                         <a href="{{ route('inv3') }}" class="btn btn-primary" >Download Individual</a>
-                        <a href="{{ route('inv3') }}" class="btn btn-primary disabled" id="ButtonId">Download ver 3</a>
 
                     </div>
                 @endif
