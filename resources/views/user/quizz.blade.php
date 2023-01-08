@@ -182,7 +182,7 @@
         @csrf
         <div class="row">
             <div class="col-lg-6 col-sm-12 mx-auto">
-                <div class="card p-3" style="margin-top: 5em">
+                <div class="card p-3" style="margin-top: 2em">
                     <div class="card-body">
                         @foreach ($groups as $groups)
                             @php

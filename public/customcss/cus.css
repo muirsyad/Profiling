@@ -15,4 +15,77 @@ a:active {text-decoration:none}
 }
 
 
+#participants {
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+  
+  #participants td, #participants th {
+    border: 0px solid #ddd;
+    padding: 8px;
+    text-align:center;
+}
+  
+  #participants tr:nth-child(even){background-color: #f2f2f2;}
+  
+  #participants tr:hover {background-color: #ddd;}
+  
+  #participants th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: center;
+    background-color: #04AA6D;
+    color: white;
+}
+  #participants th:first-of-type{
+    border-radius:10px 0px 0px 10px;
+}
+  #participants th:last-of-type{
+    border-radius:0px 10px 10px 0px;
+}
+  
+  /* #participants td:nth-child(5){
+    color:red;
+    
+} */
+.participants-index td:nth-child(4),
+.participants-view td:nth-child(5){
+  color:red;
+  
+}
+  
+
+  
+.done {
+    
+    border-radius: 5px;
+    background-color: Palegreen;
+    padding:9px;
+    width:120px;
+    margin: 0px auto 0px;
+    color: darkgreen;
+}
+  
+.undone {
+    border-radius: 5px;
+    background-color: pink;
+    padding:9px;
+    width:120px;
+    margin: 0px auto 0px;
+}
+.unregister {
+  border-radius: 5px;
+  background-color: rgb(236, 255, 110);
+  padding:9px;
+  width:120px;
+  margin: 0px auto 0px;
+}
+  
+.done,.undone,.unregister{
+    font-weight: bold;
+}
+
+/* nav css */
+
 

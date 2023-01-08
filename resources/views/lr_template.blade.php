@@ -25,15 +25,35 @@
 
 </head>
 <style>
+     html {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  overflow-x:hidden 
+  
+}
     body{
+        height: 100%;
+        margin: 0;
     background-image: url("{{ URL::asset('assets/img/back.png') }}");
+    /* background: blanchedalmond; */
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+    box-sizing: border-box;
+    overflow: hidden;
+   
+    
     }
+
+    
 </style>
 <body>
-    <div class="container"
+    
+
+  
+    {{-- <div class="container"
         style="position:absolute; left:0; right:0; top: 50%; transform: translateY(-50%); -ms-transform: translateY(-50%); -moz-transform: translateY(-50%); -webkit-transform: translateY(-50%); -o-transform: translateY(-50%);">
         <div class="row justify-content-center">
             <div class="col-md-10 col-lg-9 col-xl-9 col-xxl-7">
@@ -41,7 +61,7 @@
                     <div class="card-body p-0">
                         <div class="row">
                             <div class="col-lg-12">
-                                <div class="p-5">
+                                <div class="p-5"> --}}
 
 
                                 @yield('content')
@@ -54,8 +74,9 @@
                                                 confirmButtonText: 'Cool'
                                             })
                                         </script>
-                                </div>
-                                @endif
+                                        @endif
+                                {{-- </div>
+                                
                             </div>
                         </div>
                     </div>
@@ -63,7 +84,7 @@
             </div>
         </div>
     </div>
-    </div>
+    </div> --}}
 
     <script src=" {{ URL::asset('assets/bootstrap/js/bootstrap.min.js') }}"></script>
 
@@ -79,6 +100,7 @@
     <script src="{{ URL::asset('assets/js/luden') }}"></script>
 
     <script src="{{ URL::asset('assets/js/theme.js') }}"></script>
+
 </body>
 
 </html>

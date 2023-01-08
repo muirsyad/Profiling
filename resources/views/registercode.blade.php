@@ -1,112 +1,83 @@
 @extends('lr_template')
 @section('content')
-    {{--
-    <div class="text-center">
-        <h4 class="text-dark mb-4">Create an Account!</h4>
-    </div>
-    <form class="user" action="{{ route('adminR') }}" method="post">
+    <style>
+        form {
+            margin-top: 100px;
+            
+        }
+    </style>
+    <form method="POST" action="{{ route('adminR') }}">
         @csrf
-        <div class="mb-3"><input name="name" class= "form-control form-control-user" type="text" placeholder="Name" required="">
-        </div>
-        <div class="mb-3"><input name="email" class="form-control form-control-user" type="email" id="email"
-                placeholder="Email Address" required=""></div>
-        <div class="row mb-3">
-            <div class="col-sm-6 mb-3 mb-sm-0"><input name="password" class="form-control form-control-user" type="password" id="password"
-                    placeholder="Password" required=""></div>
-            <div class="col-sm-6"><input name="password2" class="form-control form-control-user" type="password" id="verifyPassword"
-                    placeholder="Repeat Password" required=""></div>
-        </div>
-        <div class="row mb-3">
-            <div class="col-sm-6 mb-3 mb-sm-0"><input name="department_id" class="form-control form-control-user" type="text"
-                    placeholder="Department" required=""></div>
-            <div class="col-sm-6"><input name="client_id" class="form-control form-control-user" type="text" placeholder="Company"
-                    required=""></div>
-        </div>
-        <input type="hidden" name="role_id" value="1">
-        <input type="hidden" name="status" value="1">
-        <input type="hidden" name="date_created" value="{{ date('Y-m-d') }}">
-        <div class="row mb-3">
-            <p id="emailErrorMsg" class="text-danger" style="display:none;">Paragraph</p>
-            <p id="passwordErrorMsg" class="text-danger" style="display:none;">Paragraph</p>
-        </div><button class="btn btn-primary d-block btn-user w-100" id="submitBtn" type="submit">Register Account</button>
-        <hr>
-    </form>
-    <div class="text-center"><a class="small" href="login.html">Already have an account? Login!</a></div> --}}
+        <div class="form-body">
 
-    <div class="card">
-        <div class="card-body">
-            <h1>Register</h1>
-            <form method="POST" action="{{ route('adminR') }}">
-                @csrf
-                <div class="mb-3">
-                    <label for="exampleFormControlInput1" class="form-label">Name</label>
-                    <input type="text" class="form-control" id="exampleFormControlInput1"
-                        placeholder="example: Muhammad Kasim" name="name">
-                    @error('name')
-                        <p class="text-danger">{{ $message }}</p>
-                    @enderror
-                </div>
-                <div class="mb-3">
-                    <label for="department_id">Choose your departments:</label>
-                    <select name="department_id" id="department_id">
+            <div class="title mb-3 text-white text-center">
+                <h1 class="nomar fw-bold">Create an account</h1>
+                <span>Complete registeration to take DiSC Assement</span>
+            </div>
 
-                        @foreach ($dp as $dp)
-                            <option value="{{ $dp->id }}">{{ $dp->department }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label for="exampleFormControlTextarea1" class="form-label">Email address</label>
-                    <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com"
-                        name="email">
-                    @error('email')
-                        <p class="text-danger">{{ $message }}</p>
-                    @enderror
-                </div>
-                <div class="mb-3">
-                    <label for="exampleFormControlTextarea1" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="pass" placeholder="************"
-                        name="password">
-                        <div class="mt-2">
-                            <input type="checkbox" onclick="showPass()">Show Password
+            <form action="#">
+                <div class="row ">
+                    <div class="col col-lg-6 p-4 mx-auto">
+                        <div class="form-floating mb-3">
+                            <input name="name" type="text" class="form-control" id="floatingPassword"
+                                placeholder="Password">
+                            <label for="floatingPassword">Name</label>
+                            @error('name')
+                                <p class="text-danger">{{ $message }}</p>
+                            @enderror
                         </div>
-
-                    @error('password')
-                        <p class="text-danger">{{ $message }}</p>
-                    @enderror
-                </div>
-                <div class="mb-3">
-                    <label for="exampleFormControlTextarea1" class="form-label">Password confirmation</label>
-                    <input type="password" class="form-control" id="pass2" placeholder="************"
-                        name="password_confirmation">
-                        <div class="mt-2">
-                            <input type="checkbox" onclick="showPass2()">Show Password
+                        <div class="form-floating mb-3">
+                            <select name="department_id" class="form-select" id="floatingSelect"
+                                aria-label="Floating label select example">
+                                @foreach ($dp as $dp)
+                                    <option value="{{ $dp->id }}">{{ $dp->department }}</option>
+                                @endforeach
+                            </select>
+                            <label for="floatingSelect">Your departments</label>
                         </div>
-                    @error('password_confirmation')
-                        <p class="text-danger">{{ $message }}</p>
-                    @enderror
-                </div>
-                {{-- <div class="mb-3">
-                    <label for="exampleFormControlTextarea1" class="form-label">No-tel</label>
-                    <input type="text" class="form-control" id="exampleFormControlInput1"
-                        placeholder="example: 01782726353" name="no-tel">
-
-                        @error('no-tel')
-                        <p class="text-danger">{{ $message }}</p>
+                        <div class="form-floating mb-3">
+                            <input name="email" type="email" class="form-control" id="floatingInput"
+                                placeholder="name@example.com">
+                            <label for="floatingInput">Email address</label>
+                        </div>
+                        @error('email')
+                            <p class="text-danger">{{ $message }}</p>
                         @enderror
-                </div> --}}
-                <input type="hidden" name="client_id" value='{{ $clients->id }}'>
-                {{-- <input type="hidden" name="department_id" value="1"> --}}
-                <input type="hidden" name="role_id" value="2">
-                <input type="hidden" name="status" value="1">
-                <input type="hidden" name="created_at" value="{{ date('Y-m-d') }}">
-                <input type="hidden" name="is_delete" value="0">
-                <div class="mb-3">
-                    <button type="submit" class="btn btn-primary">Submit</button>
+
+                        <div class="form-floating mb-3">
+                            <input name="password" type="password" class="form-control" id="floatingPassword" placeholder="Password">
+                            <label for="floatingPassword">Password</label>
+                        </div>
+                        @error('password')
+                        
+                            <p class="text-danger">{{ $message }}</p>
+                        @enderror
+                        <div class="form-floating mb-3">
+                            <input name="password_confirmation" type="password" class="form-control" id="floatingPassword"
+                                placeholder="Password">
+                            <label for="floatingPassword">Password</label>
+                            @error('password_confirmation')
+                                <p class="text-danger">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        <input type="hidden" name="client_id" value='{{ $clients->id }}'>
+                        {{-- <input type="hidden" name="department_id" value="1"> --}}
+                        <input type="hidden" name="role_id" value="2">
+                        <input type="hidden" name="status" value="2">
+                        <input type="hidden" name="created_at" value="{{ date('Y-m-d') }}">
+                        <input type="hidden" name="is_delete" value="0">
+                        <div class="d-grid gap-2 col-12 mx-auto">
+                            <button class="btn btn-success" type="submit">Submit</button>
+
+                        </div>
+
+
+                    </div>
                 </div>
+
             </form>
         </div>
-    </div>
+    </form>
     <script>
         function showPass() {
             var x = document.getElementById("pass");
@@ -116,6 +87,7 @@
                 x.type = "password";
             }
         }
+
         function showPass2() {
             var x = document.getElementById("pass2");
             if (x.type === "password") {

@@ -18,6 +18,7 @@ use App\Models\templates_report;
 use App\Models\Templates_summary;
 use Illuminate\Support\Facades\DB;
 use App\Models\Answer_records as record;
+use App\Models\User;
 
 class questionsController extends Controller
 {
@@ -437,6 +438,9 @@ class questionsController extends Controller
         $dept = Departments::find(auth()->user()->department_id);
         $cid = auth()->user()->client_id;
 
+
+        //update user status
+        $status = User::where('id',$record->user_id)->update(['status' => 1]);
        $all = DB::table('users')->where('client_id', $cid)->count();
 
        $allanswer = DB::table('answer_records')->where('client_id', $cid)->count();

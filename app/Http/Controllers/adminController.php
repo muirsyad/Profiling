@@ -11,6 +11,9 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
+use App\Imports\UsersImport;
+use App\Models\Users;
+use Maatwebsite\Excel\Facades\Excel;
 
 
 class adminController extends Controller
@@ -22,12 +25,12 @@ class adminController extends Controller
         $mcount = Clients::whereMonth('created_at', date('m'))->count();
         //dd($mcount);
         $recent = DB::table('clients')->orderBy('id', 'desc')->first();
-        $participants = DB::table('users')->where('role_id',2)->count();
+        $participants = DB::table('users')->where('role_id', 2)->count();
         $mothly = $this->monthly();
         $now = date('m');
-        $ans = DB::table('answer_records')->whereYear('created_at','2022')
-        ->whereMonth('created_at',date('m'))
-        ->get();
+        $ans = DB::table('answer_records')->whereYear('created_at', '2022')
+            ->whereMonth('created_at', date('m'))
+            ->get();
 
 
 
@@ -43,6 +46,23 @@ class adminController extends Controller
 
         //dd($recent);
         //dd($count);
+        $clients = Clients::all()->where('is_delete', '0');
+        $totClients = $clients->count();
+        // foreach ($clients as $client) {
+        //     $userdone = User::where('client_id', $client->id)->where('status', 1)->count();
+        //     $all = User::where('client_id', $client->id)->count();
+
+        //     if ($userdone == $all) {
+        //         $affected = DB::table('clients')
+        //             ->where('id', $client->id)
+        //             ->update(['status' => 1]);
+        //     }
+        // }
+        $clients = Clients::all()->where('is_delete', '0')->where('status', 0);
+        $uncomplete = $clients->count();
+        $c_complete  = Clients::all()->where('is_delete', '0')->where('status', 1)->count();
+        $total = User::where('role_id', 2)->count();
+        
         return view(
             'admin.index',
             [
@@ -52,6 +72,11 @@ class adminController extends Controller
                 'monthly' => $mothly,
                 'participants' => $participants,
                 'year' => $yearn,
+                'clients' => $clients,
+                'complete' => $c_complete,
+                'uncomplete' => $uncomplete,
+                'pax' => $total,
+                'totClients' => $totClients,
 
             ]
         );
@@ -95,12 +120,28 @@ class adminController extends Controller
 
     public function view()
     {
-        $select =Clients::all()->where('is_delete','0');
+        $select = Clients::all()->where('is_delete', '0');
         //dd($select);
+        foreach ($select as $client) {
+            $answer_all = DB::table('users')->where('client_id', $client->id)->count();
+            $answer = DB::table('users')->where('client_id', $client->id)->where('status', 1)->count();
+
+            if ($answer == $answer_all && $answer > 0) {
+                $complete = 1;
+                $complete = DB::table('clients')
+                    ->where('id', $client->id)
+                    ->update(['status' => 1]);
+            } else {
+                $complete = 0;
+                $complete = DB::table('clients')
+                    ->where('id', $client->id)
+                    ->update(['status' => 0]);
+            }
+        }
         $random = Str::random(8);
         $code = $random;
         $codedb = DB::table('clients')->where('link_code', 'LoUY')->value('link_code');
-        //dd($codedb,$code);
+        // //dd($codedb,$code);
         $x = 0;
         $inc = 0;
         while ($code ==  $codedb) {
@@ -109,10 +150,11 @@ class adminController extends Controller
             $code = $random;
             $x = 1;
         }
-        
+
         return view('admin.view_clients', [
             'clients' => $select,
             'code' => $code,
+
         ]);
     }
 
@@ -120,12 +162,12 @@ class adminController extends Controller
     {
         $highlow = $this->selBehaviour('D');
 
-        $Dhigh = explode(".",$highlow->H_temp);
+        $Dhigh = explode(".", $highlow->H_temp);
         $Dcount = count($Dhigh);
-        $DLow = explode(".",$highlow->L_temp);
+        $DLow = explode(".", $highlow->L_temp);
         $Dlcount = count($DLow);
 
-        return view('admin.inv-template',[
+        return view('admin.inv-template', [
             'Dhigh' => $Dhigh,
             'DLow' => $DLow,
             'Dcount' => $Dcount,
@@ -139,27 +181,27 @@ class adminController extends Controller
         $highlowS = $this->selBehaviour('S');
         $highlowC = $this->selBehaviour('C');
 
-        $Dhigh = explode(".",$highlowD->H_temp);
+        $Dhigh = explode(".", $highlowD->H_temp);
         $Dcount = count($Dhigh);
-        $DLow = explode(".",$highlowD->L_temp);
+        $DLow = explode(".", $highlowD->L_temp);
         $Dlcount = count($DLow);
 
-        $Ihigh = explode(".",$highlowI->H_temp);
+        $Ihigh = explode(".", $highlowI->H_temp);
         $Icount = count($Ihigh);
-        $ILow = explode(".",$highlowI->L_temp);
+        $ILow = explode(".", $highlowI->L_temp);
         $Ilcount = count($ILow);
 
-        $Shigh = explode(".",$highlowS->H_temp);
+        $Shigh = explode(".", $highlowS->H_temp);
         $Scount = count($Shigh);
-        $SLow = explode(".",$highlowS->L_temp);
+        $SLow = explode(".", $highlowS->L_temp);
         $Slcount = count($SLow);
 
-        $Chigh = explode(".",$highlowC->H_temp);
+        $Chigh = explode(".", $highlowC->H_temp);
         $Ccount = count($Chigh);
-        $CLow = explode(".",$highlowC->L_temp);
+        $CLow = explode(".", $highlowC->L_temp);
         $Clcount = count($CLow);
 
-        return view('admin.inv-template2',[
+        return view('admin.inv-template2', [
             'Dhigh' => $Dhigh,
             'DLow' => $DLow,
             'Dcount' => $Dcount,
@@ -185,27 +227,27 @@ class adminController extends Controller
         $highlowS = $this->selBehaviour('S');
         $highlowC = $this->selBehaviour('C');
 
-        $Dhigh = explode(".",$highlowD->H_temp);
+        $Dhigh = explode(".", $highlowD->H_temp);
         $Dcount = count($Dhigh);
-        $DLow = explode(".",$highlowD->L_temp);
+        $DLow = explode(".", $highlowD->L_temp);
         $Dlcount = count($DLow);
 
-        $Ihigh = explode(".",$highlowI->H_temp);
+        $Ihigh = explode(".", $highlowI->H_temp);
         $Icount = count($Ihigh);
-        $ILow = explode(".",$highlowI->L_temp);
+        $ILow = explode(".", $highlowI->L_temp);
         $Ilcount = count($ILow);
 
-        $Shigh = explode(".",$highlowS->H_temp);
+        $Shigh = explode(".", $highlowS->H_temp);
         $Scount = count($Shigh);
-        $SLow = explode(".",$highlowS->L_temp);
+        $SLow = explode(".", $highlowS->L_temp);
         $Slcount = count($SLow);
 
-        $Chigh = explode(".",$highlowC->H_temp);
+        $Chigh = explode(".", $highlowC->H_temp);
         $Ccount = count($Chigh);
-        $CLow = explode(".",$highlowC->L_temp);
+        $CLow = explode(".", $highlowC->L_temp);
         $Clcount = count($CLow);
 
-        return view('admin.inv-template3',[
+        return view('admin.inv-template3', [
             'Dhigh' => $Dhigh,
             'DLow' => $DLow,
             'Dcount' => $Dcount,
@@ -225,17 +267,18 @@ class adminController extends Controller
         ]);
     }
     //keywords template
-    public function Template_key(){
+    public function Template_key()
+    {
         $keyD = $this->selkey('D');
         $keyI = $this->selkey('I');
         $keyS = $this->selkey('S');
         $keyC = $this->selkey('C');
 
 
-        $keyD = explode(",",$keyD->keywords);
-        $keyI = explode(",",$keyI->keywords);
-        $keyS = explode(",",$keyS->keywords);
-        $keyC = explode(",",$keyC->keywords);
+        $keyD = explode(",", $keyD->keywords);
+        $keyI = explode(",", $keyI->keywords);
+        $keyS = explode(",", $keyS->keywords);
+        $keyC = explode(",", $keyC->keywords);
 
         //count
         $Count_kd = count($keyD);
@@ -250,7 +293,7 @@ class adminController extends Controller
 
 
 
-        return view('admin.T_Keywords',[
+        return view('admin.T_Keywords', [
             'keyD' => $keyD,
             'keyI' => $keyI,
             'keyS' => $keyS,
@@ -262,7 +305,8 @@ class adminController extends Controller
         ]);
     }
 
-    public function Template_motivate(){
+    public function Template_motivate()
+    {
 
 
 
@@ -280,9 +324,9 @@ class adminController extends Controller
 
 
 
-        $keyI = explode(",",$keyI->keywords);
-        $keyS = explode(",",$keyS->keywords);
-        $keyC = explode(",",$keyC->keywords);
+        $keyI = explode(",", $keyI->keywords);
+        $keyS = explode(",", $keyS->keywords);
+        $keyC = explode(",", $keyC->keywords);
 
         //count
         // $Count_kd = count($keyD);
@@ -297,7 +341,7 @@ class adminController extends Controller
 
 
 
-        return view('admin.T_Motivation',[
+        return view('admin.T_Motivation', [
 
             'keyI' => $keyI,
             'keyS' => $keyS,
@@ -312,7 +356,8 @@ class adminController extends Controller
             'styleC' => $styleC,
         ]);
     }
-    public function Template_performance(){
+    public function Template_performance()
+    {
 
         $perD = $this->arrperformance('D');
         $perI = $this->arrperformance('I');
@@ -321,17 +366,15 @@ class adminController extends Controller
 
 
 
-        return view('admin.T_Performance',[
+        return view('admin.T_Performance', [
             'perD' => $perD,
             'perI' => $perI,
             'perS' => $perS,
             'perC' => $perC,
         ]);
-
-
-
     }
-    public function Template_strength(){
+    public function Template_strength()
+    {
         $sterngthD = $this->arrstrength('D');
         $countD = count($sterngthD);
 
@@ -345,7 +388,7 @@ class adminController extends Controller
 
 
 
-        return view('admin.T_Strength',[
+        return view('admin.T_Strength', [
             'SD' => $sterngthD,
             'SI' => $sterngthI,
             'SS' => $sterngthS,
@@ -355,47 +398,46 @@ class adminController extends Controller
             'countS' => $countS,
             'countC' => $countC,
         ]);
-
     }
 
     //small function in motivate function
 
-    public function arrvalue($style){
+    public function arrvalue($style)
+    {
         $style = $this->selmotivate($style);
-        $motivate = explode('.',$style->Wmotivate);
-        $best = explode('.',$style->Wbest);
-        $demotivate = explode('.',$style->Wdemotive);
-        $worst = explode('.',$style->Wworst);
+        $motivate = explode('.', $style->Wmotivate);
+        $best = explode('.', $style->Wbest);
+        $demotivate = explode('.', $style->Wdemotive);
+        $worst = explode('.', $style->Wworst);
 
         $keyDarr = array();
-        array_push($keyDarr,$motivate,$best, $demotivate, $worst );
+        array_push($keyDarr, $motivate, $best, $demotivate, $worst);
 
         return $keyDarr;
-
     }
-    public function arrperformance($style){
+    public function arrperformance($style)
+    {
         $style = $this->selperformance($style);
-        $A_improve = explode('.',$style->A_improve);
-        $O_better = explode('.',$style->O_better);
-        $O_avoid = explode('.',$style->O_avoid);
-        $Y_environment = explode('.',$style->Y_environment);
+        $A_improve = explode('.', $style->A_improve);
+        $O_better = explode('.', $style->O_better);
+        $O_avoid = explode('.', $style->O_avoid);
+        $Y_environment = explode('.', $style->Y_environment);
 
         $keyDarr = array();
-        array_push($keyDarr,$A_improve,$O_better, $O_avoid, $Y_environment );
+        array_push($keyDarr, $A_improve, $O_better, $O_avoid, $Y_environment);
 
         return $keyDarr;
-
     }
-    public function arrstrength($style){
+    public function arrstrength($style)
+    {
         $style = $this->selstrengthen($style);
-        $strength = explode('.',$style->Strength);
+        $strength = explode('.', $style->Strength);
 
 
         $keyDarr = array();
-        array_push($keyDarr,$strength );
+        array_push($keyDarr, $strength);
 
         return $strength;
-
     }
     public function grpTemplate()
     {
@@ -409,7 +451,7 @@ class adminController extends Controller
         //dd($request);
         $formFields = $request->validate([
             'client' => 'required',
-            'email' => ['required','unique:clients'],
+            'email' => ['required', 'unique:clients'],
             'address' => 'required',
             'created_at' => 'required',
             'link_code' => 'required',
@@ -433,18 +475,20 @@ class adminController extends Controller
 
         $clients = DB::table('clients')->where('id', $clients->id)->first();
         $participants = DB::table('users')->where('client_id', $clients->id)->get();
-        // dd($participants);
+        // $participants = Users::where('client_id', $clients->id)->get();
+        //  dd($participants);
+
+
 
         $department = DB::table('departments')->get();
         $countre = DB::table('answer_records')->where('client_id', $clients->id)->count();
         $countall = DB::table('users')->where('client_id', $clients->id)->count();
-        $allc =count($participants);
-        if($allc > 0){
-            $progress = $countre/$allc*100;
+        $allc = count($participants);
+        if ($allc > 0) {
+            $progress = $countre / $allc * 100;
             $progress = intval($progress);
-        }
-        else{
-            $progress=0;
+        } else {
+            $progress = 0;
         }
 
 
@@ -452,7 +496,7 @@ class adminController extends Controller
 
 
         //dd($clients,$participants,$department);
-        $valuevar = $progress."%";
+        $valuevar = $progress . "%";
         // dd( $participants);
         $update = $this->updatestts($participants);
         //dd($participants);
@@ -467,8 +511,9 @@ class adminController extends Controller
         ]);
     }
 
-    public function updatestts($participants){
-        foreach( $participants as $p){
+    public function updatestts($participants)
+    {
+        foreach ($participants as $p) {
             $count = DB::table('answer_records')->where('user_id', $p->id)->count();
 
             // if($count > 0){
@@ -486,6 +531,16 @@ class adminController extends Controller
             'clients' => $clients,
 
         ]);
+    }
+
+    public function uploadPax(Clients $clients, Request $request)
+    {
+
+        // $client = Clients::where( 'client', $row[2])->first();
+
+        Excel::import(new UsersImport($request->cid), $request->file);
+
+        return redirect(route('Cview'))->with('success', 'All good!');
     }
 
     public function Cdelete(Clients $clients)
@@ -525,7 +580,8 @@ class adminController extends Controller
 
 
     }
-    public function uptemplate2(Request $request){
+    public function uptemplate2(Request $request)
+    {
 
         //dd($request->style);
         $arrayDH = array();
@@ -537,14 +593,14 @@ class adminController extends Controller
         $arrayCH = array();
         $arrayCL = array();
 
-        array_push($arrayDH,$request->D_High1,$request->D_High2,$request->D_High3,$request->D_High4,$request->D_High5);
-        array_push($arrayDL,$request->D_low1,$request->D_low2,$request->D_low3,$request->D_low4,$request->D_low5);
-        array_push($arrayIH,$request->I_High1,$request->I_High2,$request->I_High3,$request->I_High4,$request->I_High5);
-        array_push($arrayIL,$request->I_low1,$request->I_low2,$request->I_low3,$request->I_low4,$request->I_low5);
-        array_push($arraySH,$request->S_High1,$request->S_High2,$request->S_High3,$request->S_High4,$request->S_High5);
-        array_push($arraySL,$request->S_low1,$request->S_low2,$request->S_low3,$request->S_low4,$request->S_low5);
-        array_push($arrayCH,$request->C_High1,$request->C_High2,$request->C_High3,$request->C_High4,$request->C_High5);
-        array_push($arrayCL,$request->C_low1,$request->C_low2,$request->C_low3,$request->C_low4,$request->C_low5);
+        array_push($arrayDH, $request->D_High1, $request->D_High2, $request->D_High3, $request->D_High4, $request->D_High5);
+        array_push($arrayDL, $request->D_low1, $request->D_low2, $request->D_low3, $request->D_low4, $request->D_low5);
+        array_push($arrayIH, $request->I_High1, $request->I_High2, $request->I_High3, $request->I_High4, $request->I_High5);
+        array_push($arrayIL, $request->I_low1, $request->I_low2, $request->I_low3, $request->I_low4, $request->I_low5);
+        array_push($arraySH, $request->S_High1, $request->S_High2, $request->S_High3, $request->S_High4, $request->S_High5);
+        array_push($arraySL, $request->S_low1, $request->S_low2, $request->S_low3, $request->S_low4, $request->S_low5);
+        array_push($arrayCH, $request->C_High1, $request->C_High2, $request->C_High3, $request->C_High4, $request->C_High5);
+        array_push($arrayCL, $request->C_low1, $request->C_low2, $request->C_low3, $request->C_low4, $request->C_low5);
 
 
 
@@ -558,14 +614,14 @@ class adminController extends Controller
         $arrayCH = $this->arraytostr($arrayCH);
         $arrayCL = $this->arraytostr($arrayCL);
 
-        $update = DB::table('templates_reports')->where('Behaviour_type','D')
-        ->update(['H_temp' => $arrayDH, 'L_temp' => $arrayDL]);
-        $update = DB::table('templates_reports')->where('Behaviour_type','I')
-        ->update(['H_temp' => $arrayIH, 'L_temp' => $arrayIL]);
-        $update = DB::table('templates_reports')->where('Behaviour_type','S')
-        ->update(['H_temp' => $arraySH, 'L_temp' => $arraySL]);
-        $update = DB::table('templates_reports')->where('Behaviour_type','')
-        ->update(['H_temp' => $arrayCH, 'L_temp' => $arrayCL]);
+        $update = DB::table('templates_reports')->where('Behaviour_type', 'D')
+            ->update(['H_temp' => $arrayDH, 'L_temp' => $arrayDL]);
+        $update = DB::table('templates_reports')->where('Behaviour_type', 'I')
+            ->update(['H_temp' => $arrayIH, 'L_temp' => $arrayIL]);
+        $update = DB::table('templates_reports')->where('Behaviour_type', 'S')
+            ->update(['H_temp' => $arraySH, 'L_temp' => $arraySL]);
+        $update = DB::table('templates_reports')->where('Behaviour_type', '')
+            ->update(['H_temp' => $arrayCH, 'L_temp' => $arrayCL]);
 
 
 
@@ -576,60 +632,61 @@ class adminController extends Controller
 
 
     }
-    public function uptemplate(Request $request){
+    public function uptemplate(Request $request)
+    {
         //dd($request->style);
         $valueH = $request['valueH'];
         $valueL = $request['valueL'];
         // dd($valueH,$valueL);
-        $valueH =array_filter($valueH);
-        $valueL=array_filter($valueL);
+        $valueH = array_filter($valueH);
+        $valueL = array_filter($valueL);
 
         $arrvalueH = array();
         $arrvalueH = implode('.', $valueH);
         $arrvalueL = array();
         $arrvalueL = implode('.', $valueL);
         //dd($request);
-        $update = DB::table('templates_reports')->where('Behaviour_type',$request['style'])
-        ->update(['L_temp' => $arrvalueL,'H_temp' => $arrvalueH,]);
+        $update = DB::table('templates_reports')->where('Behaviour_type', $request['style'])
+            ->update(['L_temp' => $arrvalueL, 'H_temp' => $arrvalueH,]);
 
         return redirect(route('indTemp2'))->with('message', 'Template has been updated');
     }
 
-    public function Update_keywords(Request $request){
+    public function Update_keywords(Request $request)
+    {
         //dd($request);
         $value = $request['value'];
         $arrvalue = array();
         $arrvalue = implode(',', $value);
-        $update = DB::table('templates_reports')->where('Behaviour_type',$request['style'])
-        ->update(['keywords' => $arrvalue]);
+        $update = DB::table('templates_reports')->where('Behaviour_type', $request['style'])
+            ->update(['keywords' => $arrvalue]);
         return redirect(route('key'))->with('message', 'Template has been updated');
-
-
     }
 
-    public function Update_motivation(Request $request){
+    public function Update_motivation(Request $request)
+    {
         //dd($request);
         $value = $request['value'];
         $arrvalue = array();
         $arrvalue = implode('.', $value);
-        $update = DB::table('templates_reports')->where('Behaviour_type',$request['style'])
-        ->update([$request['valuef'] => $arrvalue]);
+        $update = DB::table('templates_reports')->where('Behaviour_type', $request['style'])
+            ->update([$request['valuef'] => $arrvalue]);
 
         return redirect(route('motivate'))->with('message', 'Template has been updated');
-
     }
-    public function Update_performance(Request $request){
+    public function Update_performance(Request $request)
+    {
 
         $value = $request['value'];
         $arrvalue = array();
         $arrvalue = implode('.', $value);
-        $update = DB::table('templates_reports')->where('Behaviour_type',$request['style'])
-        ->update([$request['valuef'] => $arrvalue]);
+        $update = DB::table('templates_reports')->where('Behaviour_type', $request['style'])
+            ->update([$request['valuef'] => $arrvalue]);
 
         return redirect(route('performance'))->with('message', 'Template has been updated');
-
     }
-    public function Update_strength(Request $request){
+    public function Update_strength(Request $request)
+    {
         //dd($request);
 
 
@@ -638,24 +695,26 @@ class adminController extends Controller
         $value = array_filter($value);
         $arrvalue = implode('.', $value);
         //dd($request);
-        $update = DB::table('templates_reports')->where('Behaviour_type',$request['style'])
-        ->update(['Strength' => $arrvalue]);
+        $update = DB::table('templates_reports')->where('Behaviour_type', $request['style'])
+            ->update(['Strength' => $arrvalue]);
 
         return redirect(route('strength'))->with('message', 'Template has been updated');
     }
-    public function arraytostr($arrayDH){
+    public function arraytostr($arrayDH)
+    {
         //to combine collection tom sting with comma
-        foreach($arrayDH as $dh){
-            if(isset($dh)){
+        foreach ($arrayDH as $dh) {
+            if (isset($dh)) {
                 $stdh = implode(".", $arrayDH);
             }
         }
         return $stdh;
     }
-    public function arraytostr2($arrayDH){
+    public function arraytostr2($arrayDH)
+    {
         //to combine collection tom sting with comma
-        foreach($arrayDH as $dh){
-            if(isset($dh)){
+        foreach ($arrayDH as $dh) {
+            if (isset($dh)) {
                 $stdh = implode(",", $arrayDH);
             }
         }
@@ -667,26 +726,26 @@ class adminController extends Controller
 
         return view('admin.profile');
     }
-    public function profilemodify(Request $request){
+    public function profilemodify(Request $request)
+    {
         $formFields = $request->validate([
             'email' => 'required',
             'name' => 'required',
             'password' => 'required',
             'comfirmationpassword' => 'required',
         ]);
-        if($formFields['password'] === $formFields['comfirmationpassword']){
-                $formFields['password'] = bcrypt($formFields['password']);
-                // $user = DB::table('users')->where('id',auth()->user()->id)->update(['name' => $formFields['name']]);
-                // $user = DB::table('users')->where('id',auth()->user()->id)->update(['email' => $formFields['email']]);
-                // $user = DB::table('users')->where('id',auth()->user()->id)->update(['password' => $formFields['password']]);
+        if ($formFields['password'] === $formFields['comfirmationpassword']) {
+            $formFields['password'] = bcrypt($formFields['password']);
+            // $user = DB::table('users')->where('id',auth()->user()->id)->update(['name' => $formFields['name']]);
+            // $user = DB::table('users')->where('id',auth()->user()->id)->update(['email' => $formFields['email']]);
+            // $user = DB::table('users')->where('id',auth()->user()->id)->update(['password' => $formFields['password']]);
 
-                $user = DB::table('users')->where('id',auth()->user()->id)
-                ->update(['name' => $formFields['name'],'email' => $formFields['email'],'password' => $formFields['password']]);
+            $user = DB::table('users')->where('id', auth()->user()->id)
+                ->update(['name' => $formFields['name'], 'email' => $formFields['email'], 'password' => $formFields['password']]);
 
 
-                return redirect(route('ad_index'));
-        }
-        else{
+            return redirect(route('ad_index'));
+        } else {
 
             return redirect('admin.profile');
         }
@@ -711,98 +770,104 @@ class adminController extends Controller
         // $month='10';
 
         $monthly = DB::table('clients')
-                ->select('id','name','created_at')
-                ->whereMonth('created_at',$month)
-                // ->where('role_id',2)
-                ->count();
+            ->select('id', 'name', 'created_at')
+            ->whereMonth('created_at', $month)
+            // ->where('role_id',2)
+            ->count();
         //dd($monthly,$currmon,$nextmon,$month);
         //dd($monthly);
         return $monthly;
     }
-    public function countmonthly($count){
+    public function countmonthly($count)
+    {
 
-        $count = DB::table('answer_records')->whereYear('created_at','2022')
-        ->whereMonth('created_at',$count)
-        ->count();
+        $count = DB::table('answer_records')->whereYear('created_at', '2022')
+            ->whereMonth('created_at', $count)
+            ->count();
         return $count;
     }
 
 
     //SQL function
-    public function selBehaviour($style){
+    public function selBehaviour($style)
+    {
         $array = DB::table('templates_reports')
-        ->select('L_temp','H_temp')
-        ->where('Behaviour_type', $style)
-        ->first();
+            ->select('L_temp', 'H_temp')
+            ->where('Behaviour_type', $style)
+            ->first();
 
         return $array;
     }
-    public function selkey($style){
+    public function selkey($style)
+    {
         $key = DB::table('templates_reports')
-        ->select('keywords')
-        ->where('Behaviour_type', $style)
-        ->first();
+            ->select('keywords')
+            ->where('Behaviour_type', $style)
+            ->first();
 
         return $key;
     }
-    public function selmotivate($style){
+    public function selmotivate($style)
+    {
         $key = DB::table('templates_reports')
-        ->select('Wmotivate','Wbest','Wdemotive','Wworst')
-        ->where('Behaviour_type', $style)
-        ->first();
+            ->select('Wmotivate', 'Wbest', 'Wdemotive', 'Wworst')
+            ->where('Behaviour_type', $style)
+            ->first();
 
         return $key;
     }
-    public function selperformance($style){
+    public function selperformance($style)
+    {
         $key = DB::table('templates_reports')
-        ->select('A_improve','O_better','O_avoid','Y_environment')
-        ->where('Behaviour_type', $style)
-        ->first();
+            ->select('A_improve', 'O_better', 'O_avoid', 'Y_environment')
+            ->where('Behaviour_type', $style)
+            ->first();
 
         return $key;
     }
-    public function selstrengthen($style){
+    public function selstrengthen($style)
+    {
         $key = DB::table('templates_reports')
-        ->select('Strength')
-        ->where('Behaviour_type', $style)
-        ->first();
+            ->select('Strength')
+            ->where('Behaviour_type', $style)
+            ->first();
 
         return $key;
     }
-    public function selbest($style){
+    public function selbest($style)
+    {
         $key = DB::table('templates_reports')
-        ->select('Wbest')
-        ->where('Behaviour_type', $style)
-        ->first();
+            ->select('Wbest')
+            ->where('Behaviour_type', $style)
+            ->first();
 
         return $key;
     }
-    public function seldemotivate($style){
+    public function seldemotivate($style)
+    {
         $key = DB::table('templates_reports')
-        ->select('Wdemotive')
-        ->where('Behaviour_type', $style)
-        ->first();
+            ->select('Wdemotive')
+            ->where('Behaviour_type', $style)
+            ->first();
 
         return $key;
     }
-    public function selworst($style){
+    public function selworst($style)
+    {
         $key = DB::table('templates_reports')
-        ->select('Wworst')
-        ->where('Behaviour_type', $style)
-        ->first();
+            ->select('Wworst')
+            ->where('Behaviour_type', $style)
+            ->first();
 
         return $key;
     }
-    public function yearly(){
+    public function yearly()
+    {
         $year = array();
-        for($i=1;$i<=12;$i++){
+        for ($i = 1; $i <= 12; $i++) {
             $count = $this->countmonthly($i);
-            array_push($year,$count);
+            array_push($year, $count);
         }
         return $year;
     }
-
-
-
-
 }

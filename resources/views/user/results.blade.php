@@ -36,15 +36,13 @@
             background: white;
         }
 
-        .chartb {
-            /* width: 20%; */
-            /* height: 300px; */
-        }
+        .chartb {}
 
         @media screen and (min-width: 300px) {
             .chartb {
                 width: 100%;
                 height: 400px;
+                margin-top: -20%;
             }
         }
 
@@ -52,6 +50,7 @@
             .chartb {
                 width: 50%;
                 height: 650px;
+                margin-top: -5%;
             }
 
         }
@@ -91,17 +90,39 @@
             color: #ffffff;
             margin-right: 77px;
         }
+
+        .color-red {
+            background: rgb(7, 113, 188);
+        }
+
+        .color-blue {
+            background: rgb(221, 141, 13);
+        }
+
+        .mt-50 {
+            margin-top: 50px;
+        }
     </style>
     <script src="https://code.jquery.com/jquery-3.6.1.min.js"
         integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+    <p class="text-center display-4 text-dark mt-3"> <strong class="text-white">Your Results</strong> </p>
+
+    <div class="d-flex justify-content-around mb-3 text-center">
+        <div class="card p-3 color-red fw-bold text-white">
+
+            <label class="px-3 display-1">{{ $Hvalue }}</label>
+            DiSC Style:
+        </div>
+        
+
+    </div>
 
     <div class="card mt-3">
         <div class="card-body">
-            <p class="text-center display-4 text-dark mb-3"> <strong>Your Results</strong> </p>
             <div class="row text-center text-dark">
-                <hr />
 
-                <div class="col-xl-12 mb-3 ">
+
+                {{-- <div class="col-xl-12 mb-3 ">
                     Name:
 
                     <label class="px-3">{{ auth()->user()->name }}</label>
@@ -111,29 +132,20 @@
                 <div class="col-xl-12 mb-3">
                     Email Address:
                     <label class="px-3">{{ auth()->user()->email }}</label>
-                </div>
+                </div> --}}
 
-                <div class="col-xl-12 mb-3">
-                    Higest Behaviour type:
-                    <label class="px-3">{{ $Hvalue }}</label>
-                </div>
 
-                <div class="col-xl-12 mb-3">
-                    Department
-                    <label class="px-3">{{ $department }}</label>
-                </div>
-                <hr />
 
             </div>
 
             <div class="row">
-                <p class="text-center display-4 text-dark mb-3"> <strong>Graphs</strong> </p>
+                <p class="text-center display-4 text-dark"> <strong>Graphs</strong> </p>
                 <div class="d-flex justify-content-center ">
 
 
 
                     <div class="chartb">
-                        <canvas id="myChart" class="mb-5">
+                        <canvas id="myChart" class="">
 
                         </canvas>
 
@@ -181,8 +193,8 @@
                 @else
                     <div class="col text center">
 
-                        <a href="{{route('Qhome')}}" class="btn btn-primary">Home</a>
-                        <a href="{{ route('inv3') }}" class="btn btn-primary" >Download Individual</a>
+                        <a href="{{ route('Qhome') }}" class="btn btn-primary">Home</a>
+                        <a href="{{ route('inv3') }}" class="btn btn-primary">Download Individual</a>
 
                     </div>
                 @endif
@@ -210,18 +222,17 @@
                         console.log(Str);
 
 
-                        var value = 100 -  Str;
+                        var value = 100 - Str;
                         var balance = value;
                         value = "-" + value + "%";
                         console.log("Progress " + value);
                         $(document).ready(function() {
                             $("#progress").css('left', value);
                             console.log("Value :" + balance);
-                            if(balance === 0 ){
+                            if (balance === 0) {
                                 console.log("Test in");
                                 $("#ButtonId").removeClass('disabled');
-                            }
-                            else{
+                            } else {
                                 console.log("Test in");
                                 $("#ButtonId").addClass('disabled');
                             }
@@ -245,7 +256,7 @@
         </script>
 
         @php
-
+            
             $var = 50;
             // $arr = json_decode($progress, true);
         @endphp
@@ -301,6 +312,7 @@
                     },
                     {
 
+                        label: 'Behaviour type',
                         data: [20, 20, 20, 20, 20, 20],
                         fill: false,
                         borderColor: 'rgb(40, 40, 41)',
@@ -320,11 +332,16 @@
                 data: data,
                 options: {
                     // responsive: true,
+
+                    
                     plugins: {
                         title: {
                             display: true,
                             text: 'DiSC Profiing Graphs'
-                        }
+                        },
+                        legend: {
+                        display: false
+                    },
                     },
                     maintainAspectRatio: false,
                     layout: {

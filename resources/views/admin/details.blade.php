@@ -61,18 +61,60 @@
         }
     </style>
 
+    <!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Add participants
+  </button>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Upload Participants Details</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <span>Please upload only in <span class="text-danger fw-bold">CSV</span> fromat</span>
+            <form action="{{route('upload')}}" method="post" enctype="multipart/form-data">
+                @csrf
+            
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
+            </div>
+            <div class="custom-file">
+              <input name="file" type="file" class="custom-file-input" id="inputGroupFile01"
+                aria-describedby="inputGroupFileAddon01">
+              <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+            </div>
+            <input name="cid" type="hidden" value="{{$client->id}}">
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">upload</button>
+        </div>
+    </form>
+      </div>
+    </div>
+  </div>
+  
+
     <div class="d-flex justify-content-between">
         <h1 class="fw-bolder text-dark mb-3">List of Participants</h1>
-        <div class="mb-3"><a href="{{ route('invite', $client->id) }}" class="btn btn-primary text-decoration-none ">Invite
+        <div class="mb-3"><a href="{{ route('smail_csv', $client->link_code) }}" class="btn btn-primary text-decoration-none ">Send Mail
             </a></div>
     </div>
-    <h4 style="color: red; font-size:15px;">*Report can be genereted <strong>ONLY</strong> if all participants has answered</h4>
+    <h4 style="color: red; font-size:15px;">*Report can be genereted <strong>ONLY</strong> if all participants has answered
+    </h4>
 
     <div class="d-flex justify-content-end">
         @if ($countre == $countall)
             <a href="{{ route('Greport', $client->id) }}" class="btn btn-success text-decoration-none">Generate</a>
         @else
-        <a href="{{ route('Greport', $client->id) }}" class="btn btn-success text-decoration-none disabled" >Generate</a>
+            <a href="{{ route('Greport', $client->id) }}" class="btn btn-success text-decoration-none disabled">Generate</a>
         @endif
     </div>
 
@@ -87,66 +129,64 @@
 
 
     </select>
-    <div class="progress" style="margin-bottom: 20px; margin-top: 20px;" >
-        <div id="progress" class="progress-bar" role="progressbar" aria-label="Example with label" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{ $var }}</div>
-      </div>
+    <div class="progress" style="margin-bottom: 20px; margin-top: 20px;">
+        <div id="progress" class="progress-bar" role="progressbar" aria-label="Example with label" style="width: 25%;"
+            aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{ $var }}</div>
+    </div>
 
 
-    <table class="styled-table">
+    <table id="participants">
         <thead>
             <tr>
-                <th style="width:10%">No</th>
-                <th style="width:20%">Name</th>
-                <th style="width:30%">email</th>
-                <th style="width:20%">department</th>
-                <th style="width:10%">Status</th>
-                <th style="width:10%">action</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Department</th>
+                <th>Status</th>
             </tr>
+
         </thead>
         <tbody id="myList3">
             @php
                 $i = 1;
             @endphp
+
             @foreach ($participants as $participants)
+                @php
+                    $dp = DB::table('departments')
+                        ->where('id', $participants->department_id)
+                        ->first();
+                    $dp = $dp->department;
+                    // dd($participants->status);
+                @endphp
                 <tr>
-                    @php
-                        $dp = DB::table('departments')
-                            ->where('id', $participants->department_id)
-                            ->first();
-                        $dp = $dp->department;
-                        //dd($dp,$i);
-                    @endphp
-                    <td>{{ $i }}</td>
-                    <td>{{ $participants->name }}</td>
-                    <td>{{ $participants->email }}</td>
-                    @php
-                        $i++;
-                    @endphp
-                    <td>{{ $dp }}</td>
-                        @if ($participants->status === 2)
-                            <td><i style="color: red;" class="fas fa-solid fa-check"></i></td>
 
-
-                        @else
-                            <td><i class="fa-solid fa-circle-xmark"></i></td>
-
-                        @endif
+                
+                <td>{{ $participants->name }}</td>
+                <td>{{ $participants->email }}</td>
+                <td>{{ $dp }}</td>
+                @if ($participants->status == 1 )
                     <td>
-                        <div class="row">
-                            {{-- <div class="col"><a href="/admin/clients/details/{{ $participants->id }}"><i
-                                        class="far fa-eye igreen"></i></a></div> --}}
-                            <div class="col"><a href="{{ URL::to('details')}}/{{ $participants->id }}"><i
-                                            class="far fa-eye igreen"></i></a></div>
-                            <div class="col"><a href="/admin/clients/update/{{ $participants->id }}"><i
-                                        class="fas fa-pencil-alt igreen"></i></a></div>
-                            <div class="col"><a href="/admin/clients/delete/{{ $participants->id }}"><i
-                                        class="fas fa-trash-alt igreen"></i></a></div>
-                        </div>
-
+                        <div class="done">Done {{$participants->status}} </div>
                     </td>
+                @elseif ($participants->status == 2)
+                <td>
+                    <div class="undone">Uncompleted {{$participants->status}}</div>
+                </td>
+                @elseif ($participants->status == 3)
+                <td>
+                    <div class="unregister">Acessor</div>
+                </td>
+                @else
+                <td>
+                    <div class="unregister">Unregister {{$participants->status}}</div>
+                </td>
+                @endif
+            </tr>
+            
             @endforeach
         </tbody>
     </table>
+        
 
     <script type="text/javascript">
         $(document).ready(function() {
@@ -161,11 +201,11 @@
         });
     </script>
     <script>
-        $(document).ready(function(){
-            $("#progress").css('width', "<?php echo $var;?>");
+        $(document).ready(function() {
+            $("#progress").css('width', "<?php echo $var; ?>");
 
         });
-        </script>
+    </script>
     <script src="https://code.jquery.com/jquery-3.6.1.min.js"
         integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
 @endsection

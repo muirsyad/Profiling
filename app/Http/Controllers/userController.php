@@ -47,7 +47,8 @@ class userController extends Controller
         //dd($request);
         $formFields = $request->validate([
             'name' => ['required', 'min:3'],
-            'email' => ['required', 'email', Rule::unique('users', 'email')],
+            // 'email' => ['required', 'email', Rule::unique('users', 'email')],
+            'email' => ['required', 'email'],
             'password' => 'required|confirmed|min:6',
             'client_id' => 'required',
             'role_id' => 'required',
@@ -59,7 +60,13 @@ class userController extends Controller
         //hash password
         $formFields['password'] = bcrypt($formFields['password']);
         //create user
-        $user = User::create($formFields);
+        // $user = User::create($formFields);
+        User::where('email', $formFields['email'])
+            ->update([
+                'password' => $formFields['password'],
+                'department_id' => $formFields['department_id'],
+                'status' => 2,
+            ]);
 
         //Login
         //auth()->login($user);
@@ -141,18 +148,19 @@ class userController extends Controller
         return redirect('/')->with('message', 'You have beem logout');
     }
 
-    public function sendMail($name,$email)
+    public function sendMail($name, $email)
     {
 
 
 
         $url = route('link', $name);
         //dd($name,$url);
-        Mail::to('muirsyad2399@gmail.com')->send(new Signup($name, $url,$email));
+        Mail::to('muirsyad2399@gmail.com')->send(new Signup($name, $url, $email));
         return view('login');
     }
     public function sentMail(Request $request, $code)
-    {   $email=$request['email'];
+    {
+        $email = $request['email'];
         //dd($request);
         //to count and exclude token
         $var = -1;
@@ -166,25 +174,25 @@ class userController extends Controller
         $url = route('link', $code);
 
         //dd($name,$url);
-        $arr=[];
+        $arr = [];
 
-        $j=0;
+        $j = 0;
         //to put value in array
-        for($i=0; $i<$var; $i++) {
-            $j=$i+1;
-            $j="email".$j;
-            $j= $request->$j;
+        for ($i = 0; $i < $var; $i++) {
+            $j = $i + 1;
+            $j = "email" . $j;
+            $j = $request->$j;
             //dd($j);
-            array_push($arr,$j);
+            array_push($arr, $j);
             //dd($j);
             //dd($request->$j);
             //Mail::to($j)->send(new Signup($code, $url));
         }
         //dd($arr);
-        
-        foreach( $arr as $arr){
-            
-            
+
+        foreach ($arr as $arr) {
+
+
             Mail::to($arr)->send(new Signup($code, $url));
         }
 
@@ -192,7 +200,60 @@ class userController extends Controller
         return redirect(route('Cview'));
     }
 
-    public function t_login(){
+    public function sentMail_csv(Request $request, $code)
+    {
+
+
+        $client_id = Clients::where('link_code', $code)->first();
+
+        $unanswered = User::where('client_id', $client_id->id)->where('status', 0)->get();
+        //dd($code,$client_id->id,$unanswered[0]->email);
+        $url = route('link', $code);
+        foreach ($unanswered as $user) {
+            Mail::to($user->email)->send(new Signup($code, $url));
+        }
+        // $email=$request['email'];
+        // //dd($request);
+        // //to count and exclude token
+        // $var = -1;
+        // $data = $request->all();
+
+        // foreach ($data as $value) {
+        //     $var++;
+        // }
+
+        // //dd($code, $request , $var);
+        // $url = route('link', $code);
+
+        // //dd($name,$url);
+        // $arr=[];
+
+        // $j=0;
+        // //to put value in array
+        // for($i=0; $i<$var; $i++) {
+        //     $j=$i+1;
+        //     $j="email".$j;
+        //     $j= $request->$j;
+        //     //dd($j);
+        //     array_push($arr,$j);
+        //     //dd($j);
+        //     //dd($request->$j);
+        //     //Mail::to($j)->send(new Signup($code, $url));
+        // }
+        // //dd($arr);
+
+        // foreach( $arr as $arr){
+
+
+        //     Mail::to($arr)->send(new Signup($code, $url));
+        // }
+
+        // Mail::to($request->email2)->send(new Signup($code, $url));
+        return redirect(route('Cview'));
+    }
+
+    public function t_login()
+    {
         return view('TLD.login');
     }
 }

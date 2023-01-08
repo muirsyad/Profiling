@@ -34,6 +34,7 @@ Route::post('/admin/clients/create/store', [adminController::class, 'store'])->n
 Route::get('/admin/clients/view', [adminController::class, 'view'])->name('Cview')->middleware('auth');
 Route::get('/admin/clients/details/{clients}', [adminController::class, 'details'])->name('Cdetails')->middleware('auth');
 Route::get('/admin/clients/details/{clients}/invite', [adminController::class, 'invite'])->name('invite')->middleware('auth');
+Route::post('/admin/clients/details/upload', [adminController::class, 'uploadPax'])->name('upload')->middleware('auth');
 Route::get('/admin/clients/delete/{clients}', [adminController::class, 'Cdelete'])->name('Cdelete')->middleware('auth');
 Route::get('/admin/clients/update/{clients}', [adminController::class, 'update'])->name('Cupdate')->middleware('auth');
 Route::post('/admin/clients/change/{clients}', [adminController::class, 'change'])->name('Cupdate')->middleware('auth');
@@ -93,6 +94,7 @@ Route::post('/Cuser', [userController::class, 'Ustore'])->name('userR')->middlew
 //email test
 Route::get('/sendmail/{name}', [userController::class, 'sendMail'])->name('mail')->middleware('auth');
 Route::post('/sentmail/{code}', [userController::class, 'sentMail'])->name('smail')->middleware('auth');
+Route::get('/sentmail-csv/{code}', [userController::class, 'sentMail_csv'])->name('smail_csv')->middleware('auth');
 //random string
 route::get('/code', function () {
 

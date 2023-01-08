@@ -19,7 +19,7 @@
         <ul class="navbar-nav text-light" id="accordionSidebar">
             <li class="nav-item"><a class="nav-link" href="{{ route('ad_index') }}"><i
                         class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ route('cHome') }}"><i
+            <li class="nav-item"><a class="nav-link" href="{{ route('Cview') }}"><i
                         class="fas fa-users"></i><span>Client</span></a></li>
             <li class="nav-item"><a class="nav-link" href="{{ route('vquest') }}"><i
                         class="fas fa-question"></i><span>Question</span></a></li>
