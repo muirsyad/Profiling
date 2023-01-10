@@ -3,63 +3,7 @@
     {{-- {{ $clients->id }}
     {{ $clients->address }} --}}
 
-    <style>
-        .styled-table {
-            border-collapse: collapse;
-            margin: 25px 0;
-            font-size: 0.9em;
-            min-width: 400px;
-            border-radius: 5px 5px 0 0;
-            overflow: hidden;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-            text-align: center;
-
-        }
-
-        .styled-table thead tr {
-            background-color: #009879;
-            color: #ffffff;
-            /* text-align: left; */
-            font-weight: bold;
-        }
-
-        .styled-table th,
-        .styled-table td {
-            padding: 12px 15px;
-        }
-
-        .styled-table tbody tr {
-            border-bottom: 1px solid #dddddd;
-        }
-
-        .styled-table tbody tr:nth-of-type(even) {
-            background-color: #f3f3f3;
-        }
-
-        .styled-table tbody tr:last-of-type {
-            border-bottom: 2px solid #009879;
-        }
-
-        .styled-table tbody tr:hover {
-            font-weight: bold;
-            color: #009879;
-        }
-
-        #icon {
-            font-size: 50px;
-            color: red;
-            transition-duration: .6s;
-        }
-
-        .igreen {
-            color: #009879
-        }
-
-        .ddown {
-            border-radius: 55px;
-            color: gray;
-        }
-    </style>
+    
 
     <!-- Button trigger modal -->
 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
@@ -111,11 +55,14 @@
     </h4>
 
     <div class="d-flex justify-content-end">
-        @if ($countre == $countall)
+        {{-- @if ($countre == $countall)
             <a href="{{ route('Greport', $client->id) }}" class="btn btn-success text-decoration-none">Generate</a>
         @else
             <a href="{{ route('Greport', $client->id) }}" class="btn btn-success text-decoration-none disabled">Generate</a>
-        @endif
+        @endif --}}
+
+        <a href="{{ route('remainder', $client->link_code) }}" class="btn btn-success text-decoration-none">Notification</a>
+
     </div>
 
 
@@ -166,19 +113,19 @@
                 <td>{{ $dp }}</td>
                 @if ($participants->status == 1 )
                     <td>
-                        <div class="done">Done {{$participants->status}} </div>
+                        <div class="done">Done  </div>
                     </td>
                 @elseif ($participants->status == 2)
-                <td>
-                    <div class="undone">Uncompleted {{$participants->status}}</div>
+                <td class="td-red">
+                    <div class="undone">Uncompleted </div>
                 </td>
                 @elseif ($participants->status == 3)
                 <td>
                     <div class="unregister">Acessor</div>
                 </td>
                 @else
-                <td>
-                    <div class="unregister">Unregister {{$participants->status}}</div>
+                <td class="td-red">
+                    <div class="unregister">Unregister </div>
                 </td>
                 @endif
             </tr>

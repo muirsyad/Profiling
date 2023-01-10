@@ -24,7 +24,9 @@ Route::get('/logout', [userController::class, 'logout'])->name('logout');
 Route::get('/register', [userController::class, 'create'])->name('register');
 //register by client
 Route::get('/register/{name}', [userController::class, 'createcode'])->name('link');
-Route::post('/Cadmin', [userController::class, 'Rstore'])->name('adminR')->middleware('auth');
+Route::post('/Cadmin', [userController::class, 'Rstore'])->name('adminR');
+Route::post('/_UserStore', [userController::class, 'R_User'])->name('U_Store');
+
 
 //admin routes
 Route::get('/admin/index', [adminController::class, 'index'])->name('ad_index')->middleware('auth');
@@ -94,7 +96,10 @@ Route::post('/Cuser', [userController::class, 'Ustore'])->name('userR')->middlew
 //email test
 Route::get('/sendmail/{name}', [userController::class, 'sendMail'])->name('mail')->middleware('auth');
 Route::post('/sentmail/{code}', [userController::class, 'sentMail'])->name('smail')->middleware('auth');
+
+//lastest cvs send mail
 Route::get('/sentmail-csv/{code}', [userController::class, 'sentMail_csv'])->name('smail_csv')->middleware('auth');
+Route::get('/reminder/{code}', [userController::class, 'RemianderMail'])->name('remainder')->middleware('auth');
 //random string
 route::get('/code', function () {
 

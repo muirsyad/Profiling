@@ -40,9 +40,10 @@
     /* background: blanchedalmond; */
     background-position: center;
     background-repeat: no-repeat;
+    background-attachment: fixed;
     background-size: cover;
     box-sizing: border-box;
-    overflow: hidden;
+    overflow: visible;
    
     
     }

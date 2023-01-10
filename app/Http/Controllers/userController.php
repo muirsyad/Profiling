@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\Reminder;
 use App\Mail\Signup;
 use App\Models\Clients;
 use App\Models\Departments;
@@ -44,15 +45,15 @@ class userController extends Controller
     }
     public function Rstore(Request $request)
     {
-        //dd($request);
+        
         $formFields = $request->validate([
             'name' => ['required', 'min:3'],
-            // 'email' => ['required', 'email', Rule::unique('users', 'email')],
-            'email' => ['required', 'email'],
+            'email' => ['required', 'email', Rule::exists('users', 'email')],
+            //'email' => ['required', 'email'],
             'password' => 'required|confirmed|min:6',
             'client_id' => 'required',
             'role_id' => 'required',
-            'department_id' => 'required',
+            'department_id' => 'required|in:1,2,3,4,5',
             'status' => 'required',
             'created_at' => 'required',
             'is_delete' => 'required',
@@ -72,9 +73,11 @@ class userController extends Controller
         //auth()->login($user);
         return redirect('/')->with('message', 'Your account has been created successfully');
     }
+
+   
     public function Ustore(Request $request)
     {
-        //dd($request);
+        dd($request);
         $formFields = $request->validate([
             'name' => ['required', 'min:3'],
             'email' => ['required', 'email', Rule::unique('users', 'email')],
@@ -249,6 +252,23 @@ class userController extends Controller
         // }
 
         // Mail::to($request->email2)->send(new Signup($code, $url));
+        return redirect(route('Cview'));
+    }
+
+    public function RemianderMail(Request $request, $code)
+    {
+
+
+        $client_id = Clients::where('link_code', $code)->first();
+
+        $unanswered = User::where('client_id', $client_id->id)->where('status', 0)->get();
+        // dd($client_id,$unanswered);
+        $url = route('link', $code);
+        
+        foreach ($unanswered as $user) {
+            Mail::to($user->email)->send(new Reminder($code, $url));
+        }
+        
         return redirect(route('Cview'));
     }
 

@@ -50,8 +50,16 @@ a:active {text-decoration:none}
     
 } */
 .participants-index td:nth-child(4),
-.participants-view td:nth-child(5){
+.participants-view td:nth-child(5),
+.td-red
+{
   color:red;
+  
+}
+
+.td-yellow
+{
+  color:rgb(146, 146, 0);
   
 }
   
@@ -85,6 +93,8 @@ a:active {text-decoration:none}
 .done,.undone,.unregister{
     font-weight: bold;
 }
+
+
 
 /* nav css */
 

@@ -48,16 +48,23 @@ class adminController extends Controller
         //dd($count);
         $clients = Clients::all()->where('is_delete', '0');
         $totClients = $clients->count();
-        // foreach ($clients as $client) {
-        //     $userdone = User::where('client_id', $client->id)->where('status', 1)->count();
-        //     $all = User::where('client_id', $client->id)->count();
-
-        //     if ($userdone == $all) {
-        //         $affected = DB::table('clients')
-        //             ->where('id', $client->id)
-        //             ->update(['status' => 1]);
-        //     }
-        // }
+        
+        foreach ($clients as $i => $client) {
+            $userdone = User::where('client_id', $client->id)->where('status', 1)->count();
+            $all = User::where('client_id', $client->id)->count();
+           
+            //change status if all user answer
+            if ($userdone == $all) {
+                $affected = DB::table('clients')
+                    ->where('id', $client->id)
+                    ->update(['status' => 1]);
+            }else{
+                //stay value 0 if not all user answer
+                $affected = DB::table('clients')
+                    ->where('id', $client->id)
+                    ->update(['status' => 0]);
+            }
+        }
         $clients = Clients::all()->where('is_delete', '0')->where('status', 0);
         $uncomplete = $clients->count();
         $c_complete  = Clients::all()->where('is_delete', '0')->where('status', 1)->count();
