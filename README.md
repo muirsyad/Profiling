@@ -69,3 +69,5 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 Email: lhi-admin@gmail.com <br>
 password : icad4922 <br>
 newpassword : lhi!@consult <br>
+
+Figma-design report: https://www.figma.com/file/gZm2mAGyZnPbFiQtFoXYXM/report-lastest-as-10.01.2022?node-id=0%3A1&t=2r5FLE9A3wDqq0t9-1
